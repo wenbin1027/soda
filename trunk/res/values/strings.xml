@@ -2,4 +2,8 @@
 <resources>
     <string name="hello">Hello World, Bill.C.Lv!</string>
     <string name="app_name">soda</string>
+    <string name="uid">用户名</string>	<!-- 声明名为uid的字符串资源 -->
+    <string name="pwd">密 码</string>	<!-- 声明名为uid的字符串资源 -->
+    <string name="ok">确定</string>		<!-- 声明名为uid的字符串资源 -->
+    <string name="cancel">取消</string>	<!-- 声明名为uid的字符串资源 -->
 </resources>

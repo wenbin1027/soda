@@ -1,12 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    >
-<TextView  
+<AbsoluteLayout 
+    android:id="@+id/AbsoluteLayout01" 
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent" 
+    android:background="@color/white"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+ 	<TextView  
     android:layout_width="fill_parent" 
     android:layout_height="wrap_content" 
     android:text="@string/hello"
-    />
-</LinearLayout>
+    />   
+    <TextView 
+	    android:layout_x="20dip" 
+	    android:layout_y="20dip" 
+	    android:layout_height="wrap_content" 
+	    android:layout_width="wrap_content" 	    
+	    android:id="@+id/TextView01" 
+	    android:text="@string/uid">
+	</TextView>
+    <TextView 
+	    android:layout_x="20dip" 
+	    android:layout_y="80dip" 
+	    android:layout_height="wrap_content" 
+	    android:layout_width="wrap_content" 	    
+	    android:id="@+id/TextView02" 
+	    android:text="@string/pwd">
+    </TextView>
+    <EditText 
+        android:layout_x="80dip" 
+        android:layout_y="20dip" 
+        android:layout_height="wrap_content" 
+        android:layout_width="180dip"         
+        android:id="@+id/EditText01">
+    </EditText>
+    <EditText 
+        android:layout_x="80dip" 
+        android:layout_y="80dip" 
+        android:layout_height="wrap_content" 
+        android:layout_width="180dip"         
+        android:id="@+id/EditText02"
+        android:password="true"
+    ><!-- android:password设置是否为密码框 -->
+    </EditText>    
+	<Button 
+	    android:layout_x="155dip" 
+	    android:layout_y="140dip"
+	    android:layout_height="wrap_content" 
+	    android:id="@+id/Button01" 
+	    android:layout_width="wrap_content" 
+	    android:text="@string/ok" 
+	    >
+	</Button>
+	<Button 
+	    android:layout_x="210dip" 
+	    android:layout_y="140dip"
+	    android:layout_height="wrap_content" 
+	    android:id="@+id/Button02" 
+	    android:layout_width="wrap_content" 
+	    android:text="@string/cancel" 
+	    >
+	</Button>	
+	<ScrollView 
+	   android:layout_x="10dip" 
+       android:layout_y="200dip" 
+       android:layout_height="150dip" 
+       android:layout_width="250dip"  
+	   android:id="@+id/ScrollView01">
+	    <EditText 
+	        android:layout_width="fill_parent" 
+	    	android:layout_height="wrap_content"        
+	        android:id="@+id/EditText03"
+	        android:singleLine="false"
+	        android:gravity="top"
+	    >
+	    </EditText>		   
+	</ScrollView>
+</AbsoluteLayout>
