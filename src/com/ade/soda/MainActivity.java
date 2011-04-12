@@ -32,7 +32,7 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {	//重写onCreate方法
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);					//设置当前屏幕
-        final Button OkButton = (Button) findViewById(R.id.Button01);		//获取确定按钮对象
+ /*       final Button OkButton = (Button) findViewById(R.id.Button01);		//获取确定按钮对象
         final Button cancelButton = (Button) findViewById(R.id.Button02);	//获取取消按钮对象
         final EditText uid=(EditText)findViewById(R.id.EditText01);			//获取用户名文本框对象
         final EditText pwd=(EditText)findViewById(R.id.EditText02);			//获取密码文本框对象
@@ -60,6 +60,8 @@ public class MainActivity extends Activity {
                 		pwd.setText("");				//清空密码文本框内容
                 	} 
                 }); 
+ */ 
+        
         
 //        String consumerKey="3393006127";
 //        String consumerSecret="70768c222a4613ed7f930bae3dee2e57";
