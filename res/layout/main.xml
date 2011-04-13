@@ -1,28 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout 
-   android:id="@+id/LinearLayout01" 
+   android:id="@+id/LinearLayout" 
    android:layout_width="fill_parent" 
    android:layout_height="fill_parent" 
    xmlns:android="http://schemas.android.com/apk/res/android"
    android:orientation="vertical"
 	android:gravity="left"
 >
-   <LinearLayout 
-   android:id="@+id/LinearLayout02" 
+   <TableLayout 
+   android:id="@+id/TableLayoutTop" 
    android:layout_width="fill_parent" 
    android:layout_height="wrap_content"   
    android:background="@color/white"
+	   	android:stretchColumns="1"
+  		android:shrinkColumns="1"
    xmlns:android="http://schemas.android.com/apk/res/android">
+  		<TableRow 
+  		android:id="@+id/TableRow01"
+  		android:layout_width="fill_parent"
+  		android:layout_height="wrap_content"
+  		>
   		<Button 
 			android:text="@string/write" 
-			android:id="@+id/Button01"
+			android:id="@+id/BtnWrite"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content">
 		</Button>
 	   	<TextView 
 	     	android:text="@string/username" 
-	     	android:id="@+id/TextView01" 
-	     	android:layout_width="wrap_content" 
+	     	android:id="@+id/TextViewUsername" 
+	     	android:layout_width="fill_parent" 
 	     	android:layout_height="wrap_content"
 	    	android:layout_centerInParent="true"
 	    	android:background="@color/red"
@@ -31,20 +38,21 @@
 	   </TextView>
 	   <Button 
 			android:text="@string/refresh" 
-			android:id="@+id/Button02"
+			android:id="@+id/BtnRefresh"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content">
 		</Button>
-   	</LinearLayout>
+		</TableRow>
+   	</TableLayout>
    	<TableLayout 
-	   android:id="@+id/TableLayout02" 
+	   android:id="@+id/TableLayoutInformation" 
 	   android:layout_width="fill_parent" 
 	   android:layout_height="wrap_content"  
 	   android:background="@color/white"
 	   xmlns:android="http://schemas.android.com/apk/res/android">
 		    <TextView 
-		     android:text="@string/information" 
-		     android:id="@+id/TextView02" 
+		     android:text="@string/Msg" 
+		     android:id="@+id/TextViewMsg01" 
 		     android:layout_width="wrap_content" 
 		     android:layout_height="wrap_content"
 		     android:layout_centerInParent="true"
@@ -54,8 +62,8 @@
 		    >   
 		    </TextView>
 		    <TextView 
-		     android:text="@string/information" 
-		     android:id="@+id/TextView03" 
+		     android:text="@string/Msg" 
+		     android:id="@+id/TextViewMsg02" 
 		     android:layout_width="wrap_content" 
 		     android:layout_height="wrap_content"
 		     android:layout_centerInParent="true"
@@ -65,8 +73,8 @@
 		    >   
 		    </TextView>
 		    <TextView 
-		     android:text="@string/information" 
-		     android:id="@+id/TextView04" 
+		     android:text="@string/Msg" 
+		     android:id="@+id/TextViewMsg03" 
 		     android:layout_width="wrap_content" 
 		     android:layout_height="wrap_content"
 		     android:layout_centerInParent="true"
@@ -76,8 +84,8 @@
 		    >   
 		    </TextView>
 		    <TextView 
-		     android:text="@string/information" 
-		     android:id="@+id/TextView05" 
+		     android:text="@string/Msg" 
+		     android:id="@+id/TextViewMsg04" 
 		     android:layout_width="wrap_content" 
 		     android:layout_height="wrap_content"
 		     android:layout_centerInParent="true"
@@ -88,7 +96,7 @@
 		    </TextView>		    		  		    
 		    </TableLayout>
 	<LinearLayout 
-	   android:id="@+id/TableLayout03" 
+	   android:id="@+id/LinearLayoutBottom" 
 	   android:layout_width="fill_parent" 
 	   android:layout_height="wrap_content"  
 	   android:background="@color/white"
@@ -96,21 +104,27 @@
 	   xmlns:android="http://schemas.android.com/apk/res/android">
 	 	<Button 
 			android:text="@string/all" 
-			android:id="@+id/Button03"
+			android:id="@+id/BtnAllMsg"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content">
 		</Button>
 		<Button 
 			android:text="@string/user1" 
-			android:id="@+id/Button04"
+			android:id="@+id/BtnUser1Msg"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content">
 		</Button>
 		<Button 
 			android:text="@string/user2" 
-			android:id="@+id/Button05"
+			android:id="@+id/BtnUser2Msg"
 			android:layout_width="wrap_content" 
 			android:layout_height="wrap_content">
 		</Button>
+		<Button 
+			android:text="@string/usermore" 
+			android:id="@+id/BtnUserMore"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content">
+		</Button>		
 	</LinearLayout>	
 </LinearLayout>
