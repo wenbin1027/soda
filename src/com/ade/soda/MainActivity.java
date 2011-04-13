@@ -16,17 +16,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;	//引入相关类
 import android.widget.EditText;	//引入相关类
-import oauth.signpost.OAuthProvider;
-import oauth.signpost.basic.DefaultOAuthProvider;
-import oauth.signpost.commonshttp.CommonsHttpOAuthConsumer;
-import oauth.signpost.exception.OAuthCommunicationException;
-import oauth.signpost.exception.OAuthExpectationFailedException;
-import oauth.signpost.exception.OAuthMessageSignerException;
-import oauth.signpost.exception.OAuthNotAuthorizedException;
+
 
 public class MainActivity extends Activity {
-	CommonsHttpOAuthConsumer httpOauthConsumer;
-	OAuthProvider httpOauthprovider;
 	
     @Override
     public void onCreate(Bundle savedInstanceState) {	//重写onCreate方法
@@ -62,43 +54,6 @@ public class MainActivity extends Activity {
                 }); 
  */ 
         
-        
-//        String consumerKey="3393006127";
-//        String consumerSecret="70768c222a4613ed7f930bae3dee2e57";
-//        String callBackUrl="myapp://AuthActivity";
-//        try{
-//        	httpOauthConsumer = new CommonsHttpOAuthConsumer(consumerKey,consumerSecret);
-//    		httpOauthprovider = new DefaultOAuthProvider("http://api.t.sina.com.cn/oauth/request_token","http://api.t.sina.com.cn/oauth/access_token","http://api.t.sina.com.cn/oauth/authorize");
-//    		String authUrl = httpOauthprovider.retrieveRequestToken(httpOauthConsumer, callBackUrl);
-//    		startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(authUrl)));
-//
-//    	}catch(Exception e){
-//    		String s= e.getMessage();
-//    	}
     }
     
-//	@Override
-//    protected void onNewIntent(Intent intent) {
-//    	super.onNewIntent(intent);
-//    	Uri uri = intent.getData();
-//    	String verifier = uri.getQueryParameter(oauth.signpost.OAuth.OAUTH_VERIFIER);
-//    	try {
-//            httpOauthprovider.setOAuth10a(true); 
-//            httpOauthprovider.retrieveAccessToken(httpOauthConsumer,verifier);
-//        } catch (OAuthMessageSignerException ex) {
-//            ex.printStackTrace();
-//        } catch (OAuthNotAuthorizedException ex) {
-//            ex.printStackTrace();
-//        } catch (OAuthExpectationFailedException ex) {
-//            ex.printStackTrace();
-//        } catch (OAuthCommunicationException ex) {
-//            ex.printStackTrace();
-//        }
-//        SortedSet<String> user_id= httpOauthprovider.getResponseParameters().get("user_id");
-//        String userId=user_id.first();
-//        String userKey = httpOauthConsumer.getToken();
-//        String userSecret = httpOauthConsumer.getTokenSecret();
-//        
-//        Log.d("MainActivity","suerId:"+userId+"/userKey:"+userKey+"/userSecret:"+userSecret);
-//    }
 }
