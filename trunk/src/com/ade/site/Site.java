@@ -14,9 +14,10 @@ import com.ade.parser.Parser;
  * @created 10-ËÄÔÂ-2011 ÉÏÎç 08:33:51
  */
 public abstract class Site implements IHttpListener {
-
+	
 	protected String appKey;
 	protected String appSecret;
+	protected String boundary="SodaOfAde93859032";
 	private List<Blog> blogs;
 	private FriendsTimelineInterface friendsTimeline;
 	private HttpNet httpNet;
@@ -30,7 +31,14 @@ public abstract class Site implements IHttpListener {
 	public Site(){
 
 	}
-
+	
+	/**
+	 * @return the boundary
+	 */
+	public String getBoundary() {
+		return boundary;
+	}
+	
 	/**
 	 * @param friendsTimeline the friendsTimeline to set
 	 */
