@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * @author Administrator
+ * @author ä¸­æ–‡æ³¨é‡Š
  * @version 1.0
- * @created 10-ËÄÔÂ-2011 ÉÏÎç 08:33:49
+ * @created 10-ï¿½ï¿½ï¿½ï¿½-2011 ï¿½ï¿½ï¿½ï¿½ 08:33:49 
  */
 public class Blog {
 

@@ -1,4 +1,4 @@
-package com.ade.site;
+ï»¿package com.ade.site;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -54,13 +54,13 @@ public class OAuth {
  	private String accessUrl="";
  	private String consumerKey="";
  	private String consumerSecret="";
- 	private String oauth_token_secret="";  //ÓÃ»§Í¬ÒâÊÚÈ¨Ê±µÄÁÙÊ±µÄ
+ 	private String oauth_token_secret="";  //ç”¨æˆ·åŒæ„æˆæƒæ—¶çš„ä¸´æ—¶çš„
  	private boolean isSuccess=false;
  	private WebView webView;
- 	private AccessToken accessToken;       //×îÖÕµÄ¾­ÊÚÈ¨µÄtoken
+ 	private AccessToken accessToken;       //æœ€ç»ˆçš„ç»æˆæƒçš„token
  	private OAuthListener listener;
 
- 	//ÓÃ»§ÊÚÈ¨ºóµÄ´¦Àí£¬ÓÃÓÚ»ñÈ¡accessToken
+ 	//ç”¨æˆ·æˆæƒåçš„å¤„ç†ï¼Œç”¨äºè·å–accessToken
 	private Handler authorizeHandler=new Handler(new Handler.Callback() {
 		
 		@Override
@@ -110,7 +110,7 @@ public class OAuth {
 		}
 	});
  	
-	//»ñÈ¡accessTokenÊ±µÄÍøÂçÏìÓ¦£¬·ÖÏí³ö×îÖÕµÄ·ÃÎÊtoken
+	//è·å–accessTokenæ—¶çš„ç½‘ç»œå“åº”ï¼Œåˆ†äº«å‡ºæœ€ç»ˆçš„è®¿é—®token
 	private ResponseHandler<String> accessHandler=new ResponseHandler<String>(){
 		@Override
 		public String handleResponse(HttpResponse response)
@@ -146,7 +146,7 @@ public class OAuth {
 		}
 	};
 	
-	//ÇëÇóÊÚÈ¨µÄÍøÂçÏìÓ¦´¦Àí£¬µ¼Ïòµ½ä¯ÀÀÆ÷µÄÊÚÈ¨Ò³Ãæ
+	//è¯·æ±‚æˆæƒçš„ç½‘ç»œå“åº”å¤„ç†ï¼Œå¯¼å‘åˆ°æµè§ˆå™¨çš„æˆæƒé¡µé¢
 	private ResponseHandler<String> requestHandler=new ResponseHandler<String>(){
 		@Override
 		public String handleResponse(HttpResponse response)
@@ -190,7 +190,7 @@ public class OAuth {
 		initWebView();
 	}
 	
-	//Éú³ÉÎŞÓÃµÄËæ»ú×Ö·û´®
+	//ç”Ÿæˆæ— ç”¨çš„éšæœºå­—ç¬¦ä¸²
 	private String getNonce() {
 		String base = "abcdefghijklmnopqrstuvwxyz0123456789";
 		Random random = new Random();
@@ -202,7 +202,7 @@ public class OAuth {
 		return sb.toString();
 	}
 	
-	//Ê¹ÓÃHMAC-SHA1½øĞĞÇ©Ãû
+	//ä½¿ç”¨HMAC-SHA1è¿›è¡Œç­¾å
 	private String sign(String data, String key) {
 		String macName="HmacSHA1";
 		byte[] byteHMAC = null;
@@ -219,7 +219,7 @@ public class OAuth {
 		return oauth;
 	}
 	
-	//ÇëÇó·ÃÎÊtoken
+	//è¯·æ±‚è®¿é—®token
 	public void requestAccessToken(String consumerKey,String consumerSecret){
 		this.consumerKey=consumerKey;
 		this.consumerSecret=consumerSecret;
@@ -260,7 +260,7 @@ public class OAuth {
         webRequest(post,requestHandler);		
 	}
 
-	/**·¢ÆğÍøÂçÇëÇó
+	/**å‘èµ·ç½‘ç»œè¯·æ±‚
 	 * @param header
 	 */
 	private void webRequest(HttpUriRequest request,ResponseHandler<String> handler) {
@@ -293,13 +293,13 @@ public class OAuth {
 		webView.setWebViewClient(new WebViewClient(){
 			public boolean shouldOverrideUrlLoading (WebView view, String url){
 				if (url.startsWith(CALLBACKURL)){
-					saveAccessToken(url);  //¶ÔÓÃ»§Í¬ÒâÊÚÈ¨µÄ»Øµ÷Ò³Ãæ½øĞĞ´¦Àí
+					saveAccessToken(url);  //å¯¹ç”¨æˆ·åŒæ„æˆæƒçš„å›è°ƒé¡µé¢è¿›è¡Œå¤„ç†
 					return true;
 				}
 				return false;
 			}
 
-			/**·ÖÀëÓÃ»§ÊÚÈ¨Ê±µÄÁÙÊ±ÁîÅÆºÍÃÜÔ¿
+			/**åˆ†ç¦»ç”¨æˆ·æˆæƒæ—¶çš„ä¸´æ—¶ä»¤ç‰Œå’Œå¯†é’¥
 			 * @param url
 			 */
 			private void saveAccessToken(String url) {
@@ -319,7 +319,7 @@ public class OAuth {
 		});
 		webView.setWebChromeClient(new WebChromeClient(){
 			public void onCloseWindow (WebView window){
-				notifyListener();  //ÓÃ»§È¡ÏûÊÚÈ¨Ê±Í¨Öªµ÷ÓÃ·½
+				notifyListener();  //ç”¨æˆ·å–æ¶ˆæˆæƒæ—¶é€šçŸ¥è°ƒç”¨æ–¹
 			}
 		});
 	}
