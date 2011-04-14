@@ -11,7 +11,7 @@ import com.ade.parser.Parser;
 /**
  * @author Administrator
  * @version 1.0
- * @created 10-ËÄÔÂ-2011 ÉÏÎç 08:33:51
+ * @created 10-ï¿½ï¿½ï¿½ï¿½-2011 ï¿½ï¿½ï¿½ï¿½ 08:33:51
  */
 public abstract class Site implements IHttpListener {
 	
@@ -68,9 +68,28 @@ public abstract class Site implements IHttpListener {
 	}
 
 	public String getAppKey(){
-		return "";
+		return appKey;
 	}
 
+	/**
+	 * @return the appSecret
+	 */
+	public String getAppSecret() {
+		return appSecret;
+	}
+	
+
+	public String getAccessKey(){
+		return loggedInUser.getAccessToken();
+	}
+
+	/**
+	 * @return the appSecret
+	 */
+	public String getAccessSecret() {
+		return loggedInUser.getAccessSecret();
+	}
+	
 	public List<Blog> getBlogs(){
 		return null;
 	}
@@ -129,17 +148,4 @@ public abstract class Site implements IHttpListener {
 	public void uploadImage(String text, String fileName){
 
 	}
-
-	public void onBeginRequest(){
-
-	}
-
-	public void onResponsed(){
-
-	}
-
-	public void onError(){
-
-	}
-
 }

@@ -1,16 +1,20 @@
 package com.ade.net;
 
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.StatusLine;
+
 /**
  * @author Administrator
  * @version 1.0
- * @created 10-ËÄÔÂ-2011 ÉÏÎç 08:34:15
+ * @created 10-ï¿½ï¿½ï¿½ï¿½-2011 ï¿½ï¿½ï¿½ï¿½ 08:34:15
  */
 public interface IHttpListener {
 
 	public void onBeginRequest();
 
-	public void onError();
+	public void onError(String errorMessage);
 
-	public void onResponsed();
+	public void onResponsed(StatusLine statusLine,Header[] headers,HttpEntity entity);
 
 }

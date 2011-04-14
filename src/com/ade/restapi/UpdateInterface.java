@@ -1,19 +1,24 @@
 package com.ade.restapi;
 
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import org.apache.http.Header;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.StringEntity;
 
 import com.ade.site.Site;
 
 /**
  * @author Administrator
  * @version 1.0
- * @created 10-ËÄÔÂ-2011 ÉÏÎç 08:29:07
+ * @created 10-ï¿½ï¿½ï¿½ï¿½-2011 ï¿½ï¿½ï¿½ï¿½ 08:29:07
  */
 public abstract class UpdateInterface {
 
@@ -24,12 +29,6 @@ public abstract class UpdateInterface {
 	 */
 	protected abstract Header[] getHeader(String text, Site site);
 
-	/**
-	 * 
-	 * @param text
-	 * @param site
-	 */
-	protected abstract byte[] getPostData(String text, Site site);
 
 	/**
 	 * 
@@ -38,6 +37,7 @@ public abstract class UpdateInterface {
 	 */
 	protected abstract String getUrl(String text, Site site);
 
+	protected abstract List<NameValuePair> getParams(String text,Site site);
 	/**
 	 * 
 	 * @param text
@@ -61,10 +61,15 @@ public abstract class UpdateInterface {
 					request.addHeader(headers[i]);
 				}
 			}
-			byte[]data=getPostData(text,site);
+			List<NameValuePair> data=getParams(text,site);
 			if (data!=null){
-				ByteArrayEntity entity=new ByteArrayEntity(data);
-				request.setEntity(entity);
+				StringEntity entity;
+				try {
+					entity = new UrlEncodedFormEntity(data);
+					request.setEntity(entity);
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
 			}
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
