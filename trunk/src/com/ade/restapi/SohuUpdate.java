@@ -1,13 +1,16 @@
 package com.ade.restapi;
 
+import java.util.List;
+
 import org.apache.http.Header;
+import org.apache.http.NameValuePair;
 
 import com.ade.site.Site;
 
 /**
  * @author Administrator
  * @version 1.0
- * @created 10-ËÄÔÂ-2011 ÉÏÎç 08:29:16
+ * @created 10-ï¿½ï¿½ï¿½ï¿½-2011 ï¿½ï¿½ï¿½ï¿½ 08:29:16
  */
 public class SohuUpdate extends UpdateInterface {
 
@@ -30,12 +33,10 @@ public class SohuUpdate extends UpdateInterface {
 		return null;
 	}
 
-	/**
-	 * 
-	 * @param text
-	 * @param site
-	 */
-	protected byte[] getPostData(String text, Site site){
+	@Override
+	protected List<NameValuePair> getParams(String text, Site site) {
 		return null;
 	}
+
+
 }

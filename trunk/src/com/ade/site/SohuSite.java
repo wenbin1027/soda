@@ -1,14 +1,18 @@
 package com.ade.site;
 
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.StatusLine;
+
 /**
  * @author Administrator
  * @version 1.0
- * @created 10-ËÄÔÂ-2011 ÉÏÎç 08:33:53
+ * @created 10-ï¿½ï¿½ï¿½ï¿½-2011 ï¿½ï¿½ï¿½ï¿½ 08:33:53
  */
 public class SohuSite extends Site {
 
 	public SohuSite(){
-		name="ËÑºü";
+		name="æœç‹å¾®åš";
 		rootUrl="http://api.t.sohu.com";
 	}
 
@@ -18,6 +22,25 @@ public class SohuSite extends Site {
 
 	protected void onConstruct(){
 
+	}
+
+	@Override
+	public void onBeginRequest() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onError(String errorMessage) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onResponsed(StatusLine statusLine, Header[] headers,
+			HttpEntity entity) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

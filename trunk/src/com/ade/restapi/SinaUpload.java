@@ -1,13 +1,16 @@
 package com.ade.restapi;
 
+import java.util.List;
+
 import org.apache.http.Header;
+import org.apache.http.NameValuePair;
 
 import com.ade.site.Site;
 
 /**
  * @author Administrator
  * @version 1.0
- * @created 10-ËÄÔÂ-2011 ÉÏÎç 08:29:12
+ * @created 10-ï¿½ï¿½ï¿½ï¿½-2011 ï¿½ï¿½ï¿½ï¿½ 08:29:12
  */
 public class SinaUpload extends UploadInterface {
 
@@ -38,6 +41,12 @@ public class SinaUpload extends UploadInterface {
 	 * @param site
 	 */
 	protected byte[] getPostData(String fileName, String text, Site site){
+		return null;
+	}
+
+	@Override
+	protected List<NameValuePair> getParams(String fileName, String text,
+			Site site) {
 		return null;
 	}
 

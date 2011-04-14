@@ -1,30 +1,33 @@
 package com.ade.restapi;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 
+import java.util.List;
+import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
-
 import com.ade.site.Site;
+import com.ade.util.OAuthUtil;
 
 /**
  * @author Administrator
  * @version 1.0
- * @created 10-ËÄÔÂ-2011 ÉÏÎç 08:29:04
+ * @created 10-ï¿½ï¿½ï¿½ï¿½-2011 ï¿½ï¿½ï¿½ï¿½ 08:29:04
  */
 public abstract class FriendsTimelineInterface {
 
 	public HttpUriRequest getRequest(int count, int page, Site site){
 		HttpGet request=null;
-		try {
-			request=new HttpGet(new URI(getUrl(count,page,site)));
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
+		String url=getUrl(count,page,site);
+		request=new HttpGet(url);
+		List<NameValuePair> data=getParams(count,page,site);
+		OAuthUtil.signRequest(url, request, data, 
+				site.getAppKey(),site.getAppSecret(),
+				site.getAccessKey(), site.getAccessSecret());
 		
 		return request;
 	}
 	
+	protected abstract List<NameValuePair> getParams(int count, int page,Site site);
+
 	protected abstract String getUrl(int count, int page, Site site);
 }

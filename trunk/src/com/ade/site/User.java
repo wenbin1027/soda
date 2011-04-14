@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * @author Administrator
  * @version 1.0
- * @created 10-ËÄÔÂ-2011 ÉÏÎç 08:33:53
+ * @created 10-ï¿½ï¿½ï¿½ï¿½-2011 ï¿½ï¿½ï¿½ï¿½ 08:33:53
  */
 public class User {
 
@@ -24,36 +24,36 @@ public class User {
 	private String screenName;
 	private String url;
 	private boolean verified;
-	private String token;
+	private String accessToken;
+	private String accessSecret;
 	/**
 	 * @return the token
 	 */
-	public String getToken() {
-		return token;
+	public String getAccessToken() {
+		return accessToken;
 	}
 
 	/**
 	 * @param token the token to set
 	 */
-	public void setToken(String token) {
-		this.token = token;
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
 	}
 
 	/**
 	 * @return the tokenSecret
 	 */
-	public String getTokenSecret() {
-		return tokenSecret;
+	public String getAccessSecret() {
+		return accessSecret;
 	}
 
 	/**
 	 * @param tokenSecret the tokenSecret to set
 	 */
-	public void setTokenSecret(String tokenSecret) {
-		this.tokenSecret = tokenSecret;
+	public void setAccessSecret(String accessSecret) {
+		this.accessSecret = accessSecret;
 	}
 
-	private String tokenSecret;
 
 	public User(long id){
 		this.ID=id;
