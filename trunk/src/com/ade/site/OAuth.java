@@ -12,6 +12,7 @@ import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpUriRequest;
 
 import com.ade.net.HttpNet;
 import com.ade.net.IHttpListener;
@@ -24,6 +25,7 @@ import android.util.Log;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.graphics.*;
 
 public class OAuth implements IHttpListener{
 	private static final String TAG="OAuthActivity";
@@ -52,6 +54,7 @@ public class OAuth implements IHttpListener{
 		public boolean handleMessage(Message msg) {
 			if (msg.obj!=null){
 				AccessToken token=(AccessToken)msg.obj;
+				HttpUriRequest request=new HttpPost(accessUrl);
 				
 		        SortedSet<String> params=new TreeSet<String>();
 		        String nonce=OAuthUtil.getNonce();
@@ -64,8 +67,8 @@ public class OAuth implements IHttpListener{
 		        params.add(OAuthUtil.OAUTH_TOKEN+OAuthUtil.LINK+token.token);
 		        params.add(OAuthUtil.OAUTH_VERIFIER+OAuthUtil.LINK+token.secret);
 
-		        String baseString = OAuthUtil.makeBaseString(params,"POST",accessUrl);
-		        String signature=OAuthUtil.makeSignature(baseString,consumerSecret+'&'+oauth_token_secret);
+		        String baseString = OAuthUtil.makeBaseString(params,request.getMethod(),accessUrl);
+		        String signature=OAuthUtil.makeSignature(baseString,URLEncoder.encode(consumerSecret)+'&'+oauth_token_secret);
 		        
 		        String separater="\", ";
 		        StringBuilder header=new StringBuilder(OAuthUtil.OAUTH);
@@ -89,9 +92,9 @@ public class OAuth implements IHttpListener{
 		        
 		        currentStep=ACCESSTOKEN;
 		        
-				HttpPost post=new HttpPost(accessUrl);
-		        post.addHeader(OAuthUtil.AUTHORIZATION, header.toString());
-		        httpnet.request(post);						
+		        request.addHeader(OAuthUtil.AUTHORIZATION, header.toString());
+		        httpnet.request(request);	
+		        Log.i("OAuth", "AccessToken");
 			}
 			return false;
 		}
@@ -110,6 +113,8 @@ public class OAuth implements IHttpListener{
 		this.consumerKey=consumerKey;
 		this.consumerSecret=consumerSecret;
 		
+		HttpUriRequest request=new HttpPost(requestUrl);
+		
         SortedSet<String> params=new TreeSet<String>();
         String nonce=OAuthUtil.getNonce();
         String timestamp=""+(new Date()).getTime()/1000;
@@ -120,8 +125,8 @@ public class OAuth implements IHttpListener{
         params.add(OAuthUtil.OAUTH_CONSUMER_KEY+OAuthUtil.LINK+consumerKey);
         params.add(OAuthUtil.OAUTH_VERSION+OAuthUtil.LINK+OAuthUtil.VERSION10);
 
-        String baseString = OAuthUtil.makeBaseString(params,"POST",requestUrl);
-        String signature=OAuthUtil.makeSignature(baseString,consumerSecret+'&');
+        String baseString = OAuthUtil.makeBaseString(params,request.getMethod(),requestUrl);
+        String signature=OAuthUtil.makeSignature(baseString,URLEncoder.encode(consumerSecret)+'&');
         
         String separater="\", ";
         StringBuilder header=new StringBuilder(OAuthUtil.OAUTH);
@@ -143,9 +148,8 @@ public class OAuth implements IHttpListener{
         
         currentStep=REQUESTTOKEN;
         
-		HttpPost post=new HttpPost(requestUrl);
-        post.addHeader(OAuthUtil.AUTHORIZATION, header.toString());
-        httpnet.request(post);	
+        request.addHeader(OAuthUtil.AUTHORIZATION, header.toString());
+        httpnet.request(request);	
 	}
  	
  	/**
@@ -164,15 +168,23 @@ public class OAuth implements IHttpListener{
 	 */
 	private void initWebView() {
 		webView.getSettings().setJavaScriptEnabled(true);
+		webView.getSettings().setDomStorageEnabled(true);
 		webView.setWebViewClient(new WebViewClient(){
-			public boolean shouldOverrideUrlLoading (WebView view, String url){
-				if (url.startsWith(CALLBACKURL)){
-					saveAccessToken(url);  //对用户同意授权的回调页面进行处理
-					return true;
-				}
-				return false;
-			}
+			String url="";
+//			public boolean shouldOverrideUrlLoading (WebView view, String url){
+//				if (url.startsWith(CALLBACKURL)){
+//					return true;
+//				}
+//				return false;
+//			}
 
+			public void onPageStarted (WebView view, String url, Bitmap favicon){
+				if (!this.url.equals(url) && url.startsWith(CALLBACKURL)){
+					this.url=url;
+					view.stopLoading();
+					saveAccessToken(url);  //对用户同意授权的回调页面进行处理
+				}				
+			}
 			/**分离用户授权时的临时令牌和密钥
 			 * @param url
 			 */

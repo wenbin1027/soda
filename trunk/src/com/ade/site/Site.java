@@ -1,6 +1,8 @@
 package com.ade.site;
 import java.util.List;
 
+import org.apache.http.client.methods.HttpUriRequest;
+
 import com.ade.restapi.FriendsTimelineInterface;
 import com.ade.net.HttpNet;
 import com.ade.net.IHttpListener;
@@ -136,7 +138,7 @@ public abstract class Site implements IHttpListener {
 	public void updateText(String text){
 		if (updateInterface!=null){
 			httpNet=new HttpNet();
-			httpNet.request(updateInterface.getRequest("", this));
+			httpNet.request(updateInterface.getRequest(text, this));
 		}
 	}
 
