@@ -14,6 +14,8 @@ public class SohuSite extends Site {
 	public SohuSite(){
 		name="搜狐微博";
 		rootUrl="http://api.t.sohu.com";
+		appKey="afcEmgzaB3SxsWAdCosr";  
+		appSecret="KY6Q9LHhwkgKAZbfRfCSw$$ZOM%!STwQ2YAro)(i";
 	}
 
 	public void finalize() throws Throwable {

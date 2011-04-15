@@ -50,7 +50,7 @@ public class OAuthUtil {
         }
 
         String baseString = makeBaseString(params,request.getMethod(),url);
-        String signature=makeSignature(baseString,consumerSecret+'&'+accessSecret);
+        String signature=makeSignature(baseString,URLEncoder.encode(consumerSecret)+'&'+accessSecret);
         
         String separater="\", ";
         StringBuilder header=new StringBuilder(OAUTH);

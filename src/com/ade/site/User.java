@@ -54,6 +54,9 @@ public class User {
 		this.accessSecret = accessSecret;
 	}
 
+	public User(){
+		
+	}
 
 	public User(long id){
 		this.ID=id;

@@ -12,7 +12,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
-
+import com.ade.util.OAuthUtil;
 import com.ade.site.Site;
 
 /**
@@ -61,6 +61,9 @@ public abstract class UpdateInterface {
 		}
 		List<NameValuePair> data=getParams(text,site);
 		if (data!=null){
+			OAuthUtil.signRequest(getUrl(text,site), request, data, 
+					site.getAppKey(), site.getAppSecret(), 
+					site.getAccessKey(), site.getAccessSecret());
 			StringEntity entity;
 			try {
 				entity = new UrlEncodedFormEntity(data);
