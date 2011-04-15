@@ -28,6 +28,8 @@ public class OAuthUtil {
 	public static final String OAUTH_SIGNATURE="oauth_signature";
 	public static final String HMACSHA1="HMAC-SHA1";
 	public static final String VERSION10="1.0";
+	public static final String AUTHORIZATION="Authorization";
+	public static final String OAUTH="OAuth ";
 	public static final char	LINK='=';
  	
  	public static void signRequest(String url,HttpUriRequest request,List<NameValuePair> data,
@@ -51,7 +53,7 @@ public class OAuthUtil {
         String signature=makeSignature(baseString,consumerSecret+'&'+accessSecret);
         
         String separater="\", ";
-        StringBuilder header=new StringBuilder("OAuth ");
+        StringBuilder header=new StringBuilder(OAUTH);
         header.append(OAUTH_NONCE+LINK+"\"");
         header.append(nonce+separater);
         header.append(OAUTH_SIGNATURE_METHOD+LINK+"\"");
@@ -68,7 +70,7 @@ public class OAuthUtil {
         header.append(URLEncoder.encode(signature));
         header.append("\"");
         
-        request.addHeader("authorization", header.toString());
+        request.addHeader(AUTHORIZATION, header.toString());
 	}
  	
 	//生成无用的随机字符串
@@ -89,15 +91,20 @@ public class OAuthUtil {
 		byte[] byteHMAC = null;
 		try {
 			Mac mac = Mac.getInstance(macName);
-			SecretKeySpec spec = new SecretKeySpec(key.getBytes(), macName);
-			mac.init(spec);
-			byteHMAC = mac.doFinal(data.getBytes());
+			if (key!=null && data!=null){
+				SecretKeySpec spec = new SecretKeySpec(key.getBytes(), macName);
+				mac.init(spec);
+				byteHMAC = mac.doFinal(data.getBytes());
+			}
 		} catch (InvalidKeyException e) {
 			e.printStackTrace();
 		} catch (NoSuchAlgorithmException ignore) {
 		}
-		String oauth = Base64.encodeToString(byteHMAC,Base64.NO_WRAP);
-		return oauth;
+		if (byteHMAC!=null){
+			String oauth = Base64.encodeToString(byteHMAC,Base64.NO_WRAP);
+			return oauth;
+		}
+		return null;
 	}
 	
 	/**

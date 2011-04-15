@@ -52,27 +52,22 @@ public abstract class UpdateInterface {
 	}
 	
 	public HttpUriRequest getRequest(String text, Site site){
-		HttpPost request=null;
-		try {
-			request=new HttpPost(new URI(getUrl(text,site)));
-			Header[] headers=getHeader(text,site);
-			if (headers!=null){
-				for(int i=0;i<headers.length;i++){
-					request.addHeader(headers[i]);
-				}
+		HttpPost request=new HttpPost(getUrl(text,site));
+		Header[] headers=getHeader(text,site);
+		if (headers!=null){
+			for(int i=0;i<headers.length;i++){
+				request.addHeader(headers[i]);
 			}
-			List<NameValuePair> data=getParams(text,site);
-			if (data!=null){
-				StringEntity entity;
-				try {
-					entity = new UrlEncodedFormEntity(data);
-					request.setEntity(entity);
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
+		}
+		List<NameValuePair> data=getParams(text,site);
+		if (data!=null){
+			StringEntity entity;
+			try {
+				entity = new UrlEncodedFormEntity(data);
+				request.setEntity(entity);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
 			}
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
 		}
 		
 		return request;
