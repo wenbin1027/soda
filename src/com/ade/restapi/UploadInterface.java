@@ -63,34 +63,24 @@ public abstract class UploadInterface {
 	}
 
 	public HttpUriRequest getRequest(String fileName, String text, Site site){
-		HttpPost request=null;
-		try {
-			request=new HttpPost(new URI(getUrl(fileName,text,site)));
-			Header[] headers=getHeader(fileName,text,site);
-			if (headers!=null){
-				for(int i=0;i<headers.length;i++){
-					request.addHeader(headers[i]);
-				}
+		HttpPost request=new HttpPost(getUrl(fileName,text,site));
+		Header[] headers=getHeader(fileName,text,site);
+		if (headers!=null){
+			for(int i=0;i<headers.length;i++){
+				request.addHeader(headers[i]);
 			}
-			List<NameValuePair> data=getParams(fileName,text,site);
-			if (data!=null){
-				StringEntity entity;
-				try {
-					entity = new UrlEncodedFormEntity(data);
-					request.setEntity(entity);
-				} catch (UnsupportedEncodingException e) {
-					e.printStackTrace();
-				}
-			}
-//			byte[]data=getPostData(fileName,text,site);
-//			if (data!=null){
-//				UrlEncodedFormEntity entity=new UrlEncodedFormEntity(null); //TODO
-//				request.setEntity(entity);
-//			}
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
 		}
-		
+		List<NameValuePair> data=getParams(fileName,text,site);
+		if (data!=null){
+			StringEntity entity;
+			try {
+				entity = new UrlEncodedFormEntity(data);
+				request.setEntity(entity);
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+		}
+
 		return request;
 	}
 }

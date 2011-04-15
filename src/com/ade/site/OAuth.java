@@ -68,7 +68,7 @@ public class OAuth implements IHttpListener{
 		        String signature=OAuthUtil.makeSignature(baseString,consumerSecret+'&'+oauth_token_secret);
 		        
 		        String separater="\", ";
-		        StringBuilder header=new StringBuilder("OAuth ");
+		        StringBuilder header=new StringBuilder(OAuthUtil.OAUTH);
 		        header.append(OAuthUtil.OAUTH_NONCE+OAuthUtil.LINK+"\"");
 		        header.append(nonce+separater);
 		        header.append(OAuthUtil.OAUTH_SIGNATURE_METHOD+OAuthUtil.LINK+"\"");
@@ -90,7 +90,7 @@ public class OAuth implements IHttpListener{
 		        currentStep=ACCESSTOKEN;
 		        
 				HttpPost post=new HttpPost(accessUrl);
-		        post.addHeader("authorization", header.toString());
+		        post.addHeader(OAuthUtil.AUTHORIZATION, header.toString());
 		        httpnet.request(post);						
 			}
 			return false;
@@ -124,7 +124,7 @@ public class OAuth implements IHttpListener{
         String signature=OAuthUtil.makeSignature(baseString,consumerSecret+'&');
         
         String separater="\", ";
-        StringBuilder header=new StringBuilder("OAuth ");
+        StringBuilder header=new StringBuilder(OAuthUtil.OAUTH);
         header.append(OAuthUtil.OAUTH_NONCE+OAuthUtil.LINK+"\"");
         header.append(nonce+separater);
         header.append(OAuthUtil.OAUTH_CALLBACK+OAuthUtil.LINK+"\"");
@@ -144,7 +144,7 @@ public class OAuth implements IHttpListener{
         currentStep=REQUESTTOKEN;
         
 		HttpPost post=new HttpPost(requestUrl);
-        post.addHeader("authorization", header.toString());
+        post.addHeader(OAuthUtil.AUTHORIZATION, header.toString());
         httpnet.request(post);	
 	}
  	

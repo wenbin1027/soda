@@ -99,11 +99,11 @@ public abstract class Site implements IHttpListener {
 	}
 
 	public String getName(){
-		return "";
+		return name;
 	}
 
 	public String getRootUrl(){
-		return "";
+		return rootUrl;
 	}
 
 	public String getSource(){
