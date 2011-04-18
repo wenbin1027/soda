@@ -32,7 +32,7 @@ public class SohuUpdate extends UpdateInterface {
 	 */
 	protected Header[] getHeader(String text, Site site){
 		Header[] headers=new Header[1];
-		headers[0]=new BasicHeader("Content-Type","application/x-www-form-urlencoded; boundary="+site.getBoundary());
+		headers[0]=new BasicHeader("Content-Type","application/x-www-form-urlencoded");
 		return headers;
 	}
 	protected byte[] getPostData(String text, Site site){
