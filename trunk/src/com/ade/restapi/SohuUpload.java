@@ -1,7 +1,6 @@
 package com.ade.restapi;
 
 import java.io.*;
-
 import java.util.logging.Filter;
 
 import java.util.ArrayList;
@@ -9,6 +8,7 @@ import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 
 import android.graphics.Path.FillType;
@@ -22,11 +22,6 @@ import com.ade.site.Site;
  */
 public class SohuUpload extends UploadInterface {
 	//The Common string of the multipart/form-data encoding format
-	private static final String mf1="Content-Type: multipart/form-data; boundary=---------------------------";
-	private static final String mf2="\r\nContent-Disposition: form-data; name=\"pic\"; filename=";	
-	private static final String mf3="\r\nContent-Type: image/jpeg\r\n\r\n";
-	protected String rn="\r\n";
-	protected String L="---------------------------";
 	/**
 	 * 
 	 * @param fileName
@@ -34,7 +29,7 @@ public class SohuUpload extends UploadInterface {
 	 * @param site
 	 */
 	protected String getUrl(String fileName, String text, Site site){
-		return "http://api.t.sohu.com/statuses/upload.json";
+		return site.getRootUrl()+"statuses/upload.json";
 	}
 
 	/**
@@ -44,7 +39,9 @@ public class SohuUpload extends UploadInterface {
 	 * @param site
 	 */
 	protected Header[] getHeader(String fileName, String text, Site site){
-		return null;
+		Header[] headers=new Header[1];
+		headers[0]=new BasicHeader("Content-Type","multipart/form-data; boundary="+site.getBoundary());
+		return headers;
 	}
 
 	/**
@@ -55,43 +52,36 @@ public class SohuUpload extends UploadInterface {
 	 */
 	protected byte[] getPostData(String fileName, String text, Site site){
 		//According to the data file names read in, then follow the multipart / form-data encoding data structure organized into upstream
-		String Q="\"";
 		String Boundary=site.getBoundary();
-		StringBuilder dat=new StringBuilder(mf1);
-		dat.append(Boundary);
-		dat.append(rn);
-		dat.append(L);
-		dat.append(Boundary);
-		dat.append(mf2);
-		dat.append(Q);
-		dat.append(fileName);
-		dat.append(Q);
-		dat.append(mf3);
-		File file= new File(fileName);
-		InputStream in = null;
-		//To read the contents of the file in bytes
-		try {
-			in = new FileInputStream(file);
-			int tempbyte;
-			while((tempbyte=in.read()) != -1){
-				dat.append(tempbyte);
-				}
-			in.close();
-			} catch (IOException e) {
-		      e.printStackTrace();
-		      }
-		dat.append(rn);
-		dat.append(L);
-		dat.append(Boundary);
-		return dat.toString().getBytes();
+		StringBuilder Front=new StringBuilder("\r\n---------------------------");
+		Front.append(Boundary);
+		Front.append("\r\nContent-Disposition: form-data; name=\"pic\"; filename=\"");
+		Front.append(fileName);
+		Front.append("\"\r\nContent-Type: image/jpeg\r\n\r\n");
+        File file = new File(fileName);
+        byte[] filebuffer = new byte[(int)file.length()];
+        try {
+        	FileInputStream is = new FileInputStream(fileName);
+        	is.read(filebuffer);
+        	}catch (Exception e) {
+        		// TODO Auto-generated catch block
+        		e.printStackTrace();
+        	 }
+        StringBuilder Back=new StringBuilder("\r\n---------------------------");
+        Back.append(Boundary);
+        byte[] PostData=new byte[(int)(Front.toString().getBytes().length+filebuffer.length+Back.toString().getBytes().length)];
+        System.arraycopy(Front.toString().getBytes(),0,PostData,0,Front.toString().getBytes().length);
+        System.arraycopy(filebuffer,0,PostData,(int)(Front.toString().getBytes().length),filebuffer.length);
+        System.arraycopy(Back.toString().getBytes(),0,PostData,(int)(Front.toString().getBytes().length+filebuffer.length),Back.toString().getBytes().length);
+		return PostData;
 	}
 
 	@Override
 	protected List<NameValuePair> getParams(String fileName, String text,
 			Site site) {
 		List<NameValuePair> params=new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("fileName",fileName));
-		params.add(new BasicNameValuePair("text",text));
+		params.add(new BasicNameValuePair("pic",fileName));
+		params.add(new BasicNameValuePair("status",text));
 		return params;
 	}
 
