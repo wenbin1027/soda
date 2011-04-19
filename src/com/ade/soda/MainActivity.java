@@ -63,7 +63,8 @@ public class MainActivity extends Activity implements SiteListener {
 	private final int TESTOK=1;
 	private User user=new User();
 	private Site site;
-	private int currentSite=SiteManager.SOHU;  //测试时注意修改此处为要测的网站
+	//private int currentSite=SiteManager.SOHU;  //测试时注意修改此处为要测的网站
+	private int currentSite=SiteManager.SINA;  //测试时注意修改此处为要测的网站
 	private View lastClickedView;
 	
 	private ResponseHandler<String> handler=new ResponseHandler<String>(){
@@ -90,8 +91,8 @@ public class MainActivity extends Activity implements SiteListener {
 				startActivityForResult(intent,AUTHREQUESTCODE);
 				break;
 			case TESTOK:
-				Toast.makeText(MainActivity.this, "测试成功", Toast.LENGTH_LONG).show();
-				Log.i(TAG, "测试成功");
+				Toast.makeText(MainActivity.this, "测试成功sina", Toast.LENGTH_LONG).show();
+				Log.i(TAG, "测试成功sina");
 				break;
 			}
 			return false;
@@ -113,17 +114,23 @@ public class MainActivity extends Activity implements SiteListener {
 			public void onClick(View v) {
 				lastClickedView=v;
 				//使用说明：通过如下代码可以进行发送微博的测试。首先会出现授权界面，授权后再点此按钮即可发送微博了。
-				//site.updateText("微博测试vv");
+				//site.updateText("微博测试nancy,second");
 				//若嫌授权麻烦，则可在第一次授权后在LogCat中找到TOKEN和SECRET的日志：
 				//04-19 03:38:52.266: INFO/OAuthActivity(1841): TOKEN=46b571ca341cfeb4737f419ed4ce0392  SECRET=920143c011048ab9e4c8904440e7ed1a
 				//然后使用如下代码.
 				//注意这里的TOKEN和SECRET对不同的用户名是不一样的，请仔细使用
-				user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");  
-				user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
-				site.logIn(user);
-				site.friendsTimeline();
+				//user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");  
+				//user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
+				//site.logIn(user);
+				//site.friendsTimeline();
 				//site.updateText("上传微博");
-				//site.uploadImage("/data/data/com.ade.soda/10697.jpg","微博测试vv");
+				try {
+					site.uploadImage("/data/data/com.ade.soda/testpic.jpg","微博测试nancy");
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+					Log.i(TAG,"pic file not found." );
+				}
 				//注意要先将欲上传的图片PUSH到模拟器对应的路径下
 			}
         });
