@@ -13,7 +13,7 @@ import com.ade.parser.Parser;
  */
 public class SinaSite extends Site {
 
-	public SinaSite(){
+	protected void onConstruct(){
 		name="新浪微博";
 		rootUrl="http://api.t.sina.com.cn";
 		appKey="2321851444";  
@@ -23,25 +23,21 @@ public class SinaSite extends Site {
 		oauthAccessUrl="/oauth/access_token";
 	}
 
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
-
-	protected void onConstruct(){
-
-	}
-
 	@Override
 	public void onError(String errorMessage,Parser parser) {
-		// TODO Auto-generated method stub
-		
+		notifyError(errorMessage);
 	}
 
 	@Override
 	public void onResponsed(StatusLine statusLine, Header[] headers,
 			HttpEntity entity,Parser parser) {
-		// TODO Auto-generated method stub
 		
+		if (statusLine.getStatusCode()==401){  //Unauthorized
+			onError("用户未授权",parser);
+		}
+		isLoggedIn=true;
+		
+		notifyResponse();
 	}
 
 }

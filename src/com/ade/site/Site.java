@@ -37,9 +37,11 @@ public abstract class Site implements IHttpListener{
 	protected String oauthUrl;
 	protected String oauthAccessUrl;
 
-	public Site(){
-
+	public Site() {
+		onConstruct();
 	}
+	
+	protected abstract void onConstruct();
 	
 	public void addListener(SiteListener listener){
 		if (listeners==null)
@@ -174,8 +176,6 @@ public abstract class Site implements IHttpListener{
 		this.loggedInUser=user;
 		//friendsTimeline();
 	}
-
-	protected abstract void onConstruct();
 
 	/**
 	 * 
