@@ -34,6 +34,7 @@ public class SohuSite extends Site {
 		
 		if (statusLine.getStatusCode()==401){  //Unauthorized
 			onError("用户未授权",parser);
+			return;
 		}
 		isLoggedIn=true;
 		

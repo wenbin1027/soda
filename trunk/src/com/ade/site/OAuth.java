@@ -29,7 +29,7 @@ import android.webkit.WebViewClient;
 import android.graphics.*;
 
 public class OAuth implements IHttpListener{
-	private static final String TAG="OAuthActivity";
+	private static final String TAG="OAuth";
 
  	private static final String CALLBACKURL="http://auth";
  	private static final int REQUESTTOKEN=0;  //获取请求令牌环节
@@ -95,7 +95,6 @@ public class OAuth implements IHttpListener{
 		        
 		        request.addHeader(OAuthUtil.AUTHORIZATION, header.toString());
 		        httpnet.request(request);	
-		        Log.i("OAuth", "AccessToken");
 			}
 			return false;
 		}

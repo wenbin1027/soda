@@ -63,40 +63,16 @@ public class HttpNet {
 	 * @param url
 	 */
 	public void request(HttpUriRequest request){
-		//cancel();
-		parser=null;
-		this.request=request;
-		client=new DefaultHttpClient();
-		request.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE,
-				false);  //消除握手
-		new Thread(new Runnable(){
-
-			@Override
-			public void run() {
-				try {
-					client.execute(HttpNet.this.request, responseHandler);
-					notifyBegin();
-				} catch (ClientProtocolException e) {
-					e.printStackTrace();
-					notifyError("Client Protocol ERROR!");
-				} catch (IOException e) {
-					e.printStackTrace();
-					notifyError("Internet access ERROR!");
-				}
-			}
-			
-		}).start();
-
+		request(request,null);
 	}
 	
 	public void request(HttpUriRequest request,Parser parser){
-		//cancel();
 		this.parser=parser;
 		this.request=request;
 		client=new DefaultHttpClient();
-//		new Thread(new Runnable(){
-//			@Override
-//			public void run() {
+		new Thread(new Runnable(){
+			@Override
+			public void run() {
 				HttpNet.this.request.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE,
 						false);  //消除握手
 				try {
@@ -109,8 +85,8 @@ public class HttpNet {
 					e.printStackTrace();
 					notifyError("Internet access ERROR!");
 				}				
-//			}
-//		}).start();
+			}
+		}).start();
 
 	}
 	
