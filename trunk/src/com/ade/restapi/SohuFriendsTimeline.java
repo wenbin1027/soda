@@ -28,24 +28,7 @@ public class SohuFriendsTimeline extends FriendsTimelineInterface {
 		super(parser);
 	}
 	protected String getUrl(int count, int page, Site site){
-		StringBuilder sb=new StringBuilder(site.getRootUrl());
-		sb.append(PATH);
-		if (count>=0 || page>=0){
-			sb.append('?');
-		}
-		if (count>=0){
-			sb.append("count=");
-			sb.append(count);			
-		}
-		if (count>=0 && page>=0)
-			sb.append('&');
-		
-		if (page>=0){
-			sb.append("page=");
-			sb.append(page);
-		}
-		
-		return sb.toString();
+		return new String(site.getRootUrl()+PATH);
 	}
 
 	@Override

@@ -74,35 +74,57 @@ public class OAuthUtil {
         header.append(URLEncoder.encode(signature));
         header.append("\"");
         request.addHeader(AUTHORIZATION, header.toString());
-        
-//        if (request.getMethod()==HttpGet.METHOD_NAME){
-//        	char and='&';
-//        	StringBuilder temp=new StringBuilder(url);
-//        	if (!url.contains("?"))
-//        		temp.append('?');
-//        	else
-//        		temp.append(and);
-//        	temp.append(OAUTH_NONCE+LINK);
-//        	temp.append(nonce+and);
-//        	temp.append(OAUTH_SIGNATURE_METHOD+LINK);
-//            temp.append(HMACSHA1+and);
-//            temp.append(OAUTH_TIMESTAMP+LINK);
-//            temp.append(timestamp+and);
-//            temp.append(OAUTH_CONSUMER_KEY+LINK);
-//            temp.append(consumerKey+and);
-//            temp.append(OAUTH_VERSION+LINK);
-//            temp.append(VERSION10+and);
-//            temp.append(OAUTH_TOKEN+LINK);
-//            temp.append(accessToken+and);
-//            temp.append(OAUTH_SIGNATURE+LINK);
-//            temp.append(/*URLEncoder.encode*/(signature));
-//            request=new HttpGet(temp.toString());
-//            request.addHeader(AUTHORIZATION, header.toString());
-//
-//        }
-        
-	}
+ 	}
  	
+	public static String signGetRequest(String url,List<NameValuePair> data,
+			String consumerKey,String consumerSecret,String accessToken,String accessSecret){
+        SortedSet<String> params=new TreeSet<String>();
+        String nonce=getNonce();
+        String timestamp=""+(new Date()).getTime()/1000;
+        params.add(OAUTH_NONCE+LINK+nonce);
+        params.add(OAUTH_SIGNATURE_METHOD+LINK+HMACSHA1);
+        params.add(OAUTH_TIMESTAMP+LINK+timestamp);
+        params.add(OAUTH_CONSUMER_KEY+LINK+consumerKey);
+        params.add(OAUTH_VERSION+LINK+VERSION10);
+        params.add(OAUTH_TOKEN+LINK+accessToken);
+        if (data!=null){
+	        for(int i=0;i<data.size();i++){
+	        	params.add(data.get(i).getName()+LINK+URLEncoder.encode(data.get(i).getValue()));
+	        }
+        }
+
+        String baseString = makeBaseString(params,"GET",url);
+        String signature=makeSignature(baseString,URLEncoder.encode(consumerSecret)+'&'+accessSecret);
+        
+    	char and='&';
+    	StringBuilder temp=new StringBuilder(url);
+    	if (!url.contains("?"))
+    		temp.append('?');
+    	else
+    		temp.append(and);
+    	temp.append(OAUTH_NONCE+LINK);
+    	temp.append(nonce+and);
+    	temp.append(OAUTH_SIGNATURE_METHOD+LINK);
+        temp.append(HMACSHA1+and);
+        temp.append(OAUTH_TIMESTAMP+LINK);
+        temp.append(timestamp+and);
+        temp.append(OAUTH_CONSUMER_KEY+LINK);
+        temp.append(consumerKey+and);
+        temp.append(OAUTH_VERSION+LINK);
+        temp.append(VERSION10+and);
+        temp.append(OAUTH_TOKEN+LINK);
+        temp.append(accessToken+and);
+        if (data!=null){
+	        for(int i=0;i<data.size();i++){
+	        	temp.append(data.get(i).getName()+LINK);
+	        	temp.append(data.get(i).getValue()+and);
+	        }
+        }
+        temp.append(OAUTH_SIGNATURE+LINK);
+        temp.append(signature);
+        return temp.toString();
+	}	
+	
 	//生成无用的随机字符串
 	public static String getNonce() {
 		String base = "abcdefghijklmnopqrstuvwxyz0123456789";
