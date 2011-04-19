@@ -1,5 +1,6 @@
 package com.ade.site;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -8,10 +9,9 @@ import java.util.List;
  * @version 1.0
  * @created 10-����-2011 ���� 08:33:53
  */
-public class User {
+public class User implements Serializable{
 
 	private List<Blog> blogs;
-	private long blogsCount;
 	private Date createdAt;
 	private String description;
 	private long followersCount;
@@ -62,36 +62,35 @@ public class User {
 		this.ID=id;
 	}
 
-	public void finalize() throws Throwable {
-
-	}
-
 	public List<Blog> getBlogs(){
-		return null;
+		return blogs;
 	}
 
 	public long getBlogsCount(){
-		return 0;
+		if (blogs!=null)
+			return blogs.size();
+		else
+			return 0;
 	}
 
 	public Date getCreatedAt(){
-		return null;
+		return createdAt;
 	}
 
 	public String getDescription(){
-		return "";
+		return description;
 	}
 
 	public long getFollowersCount(){
-		return 0;
+		return followersCount;
 	}
 
 	public long getFriendsCount(){
-		return 0;
+		return friendsCount;
 	}
 
 	public String getGender(){
-		return "";
+		return gender;
 	}
 
 	public long getID(){
@@ -99,27 +98,79 @@ public class User {
 	}
 
 	public String getLocation(){
-		return "";
+		return location;
 	}
 
 	public String getName(){
-		return "";
+		return name;
 	}
 
 	public String getProfileImageUrl(){
-		return "";
+		return profileImageUrl;
 	}
 
 	public String getScreenName(){
-		return "";
+		return screenName;
 	}
 
 	public String getUrl(){
-		return "";
+		return url;
+	}
+
+	public void setBlogs(List<Blog> blogs) {
+		this.blogs = blogs;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public void setFollowersCount(long followersCount) {
+		this.followersCount = followersCount;
+	}
+
+	public void setFriendsCount(long friendsCount) {
+		this.friendsCount = friendsCount;
+	}
+
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+
+	public void setID(long iD) {
+		ID = iD;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setProfileImageUrl(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
+	}
+
+	public void setScreenName(String screenName) {
+		this.screenName = screenName;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public void setVerified(boolean verified) {
+		this.verified = verified;
 	}
 
 	public boolean isVerified(){
-		return false;
+		return verified;
 	}
 
 }

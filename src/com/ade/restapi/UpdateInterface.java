@@ -3,6 +3,7 @@ package com.ade.restapi;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import org.apache.http.Header;
@@ -52,16 +53,17 @@ public abstract class UpdateInterface {
 	}
 	
 	public HttpUriRequest getRequest(String text, Site site){
-		HttpPost request=new HttpPost(getUrl(text,site));
-		Header[] headers=getHeader(text,site);
+		String textEncode=URLEncoder.encode(text);
+		HttpPost request=new HttpPost(getUrl(textEncode,site));
+		Header[] headers=getHeader(textEncode,site);
 		if (headers!=null){
 			for(int i=0;i<headers.length;i++){
 				request.addHeader(headers[i]);
 			}
 		}
-		List<NameValuePair> data=getParams(text,site);
+		List<NameValuePair> data=getParams(textEncode,site);
 		if (data!=null){
-			OAuthUtil.signRequest(getUrl(text,site), request, data, 
+			OAuthUtil.signRequest(getUrl(textEncode,site), request, data, 
 					site.getAppKey(), site.getAppSecret(), 
 					site.getAccessKey(), site.getAccessSecret());
 			StringEntity entity;

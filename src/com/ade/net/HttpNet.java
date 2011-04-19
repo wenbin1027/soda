@@ -19,6 +19,8 @@ import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
+import com.ade.parser.Parser;
+
 /**
  * @author Administrator
  * @version 1.0
@@ -27,6 +29,9 @@ import org.apache.http.protocol.HttpContext;
 public class HttpNet {
 
 	protected IHttpListener listener;
+	protected HttpClient client;
+	protected Parser parser;
+	protected HttpUriRequest request;
 
 	protected ResponseHandler<String> responseHandler=new ResponseHandler<String>(){
 		@Override
@@ -58,18 +63,62 @@ public class HttpNet {
 	 * @param url
 	 */
 	public void request(HttpUriRequest request){
-		HttpClient client=new DefaultHttpClient();
+		//cancel();
+		parser=null;
+		this.request=request;
+		client=new DefaultHttpClient();
 		request.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE,
 				false);  //消除握手
-		try {
-			client.execute(request, responseHandler);
-			notifyBegin();
-		} catch (ClientProtocolException e) {
-			e.printStackTrace();
-			notifyError("Client Protocol ERROR!");
-		} catch (IOException e) {
-			e.printStackTrace();
-			notifyError("Internet access ERROR!");
+		new Thread(new Runnable(){
+
+			@Override
+			public void run() {
+				try {
+					client.execute(HttpNet.this.request, responseHandler);
+					notifyBegin();
+				} catch (ClientProtocolException e) {
+					e.printStackTrace();
+					notifyError("Client Protocol ERROR!");
+				} catch (IOException e) {
+					e.printStackTrace();
+					notifyError("Internet access ERROR!");
+				}
+			}
+			
+		}).start();
+
+	}
+	
+	public void request(HttpUriRequest request,Parser parser){
+		//cancel();
+		this.parser=parser;
+		this.request=request;
+		client=new DefaultHttpClient();
+//		new Thread(new Runnable(){
+//			@Override
+//			public void run() {
+				HttpNet.this.request.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE,
+						false);  //消除握手
+				try {
+					client.execute(HttpNet.this.request, responseHandler);
+					notifyBegin();
+				} catch (ClientProtocolException e) {
+					e.printStackTrace();
+					notifyError("Client Protocol ERROR!");
+				} catch (IOException e) {
+					e.printStackTrace();
+					notifyError("Internet access ERROR!");
+				}				
+//			}
+//		}).start();
+
+	}
+	
+	public void cancel(){
+		if (request!=null){
+			if (!request.isAborted()){
+				request.abort();
+			}
 		}
 	}
 	
@@ -80,11 +129,11 @@ public class HttpNet {
 	
 	protected void notifyError(String errorMessage){
 		if (listener!=null)
-			listener.onError(errorMessage);
+			listener.onError(errorMessage,parser);
 	}
 	
 	protected void notifyResponse(StatusLine statusLine,Header[] headers,HttpEntity entity){
 		if (listener!=null)
-			listener.onResponsed(statusLine,headers,entity);
+			listener.onResponsed(statusLine,headers,entity,parser);
 	}
 }

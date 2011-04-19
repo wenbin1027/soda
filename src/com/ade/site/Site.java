@@ -1,4 +1,6 @@
 package com.ade.site;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.http.client.methods.HttpUriRequest;
@@ -15,23 +17,64 @@ import com.ade.parser.Parser;
  * @version 1.0
  * @created 10-����-2011 ���� 08:33:51
  */
-public abstract class Site implements IHttpListener {
+public abstract class Site implements IHttpListener{
 	
 	protected String appKey;
 	protected String appSecret;
 	protected String boundary="SodaOfAde93859032";
-	private List<Blog> blogs;
+	protected List<Blog> blogs;
 	private FriendsTimelineInterface friendsTimeline;
-	private HttpNet httpNet;
-	private User loggedInUser;
+	protected HttpNet httpNet;
+	protected User loggedInUser;
 	protected String name;
 	protected String rootUrl;
 	protected String source;
 	private UpdateInterface updateInterface;
 	private UploadInterface uploadInterface;
+	protected List<SiteListener> listeners;
+	protected boolean isLoggedIn=false;
+	protected String oauthRequestUrl;
+	protected String oauthUrl;
+	protected String oauthAccessUrl;
 
 	public Site(){
 
+	}
+	
+	public void addListener(SiteListener listener){
+		if (listeners==null)
+			listeners=new ArrayList<SiteListener>();
+		listeners.add(listener);
+	}
+	
+	public void removeListener(SiteListener listener){
+		if (listener !=null && listeners!=null){
+			listeners.remove(listener);
+		}
+	}
+	
+	protected void notifyBegin(){
+		if (listeners!=null){
+			for(SiteListener listener:listeners){
+				listener.onBeginRequest();
+			}
+		}
+	}
+	
+	protected void notifyError(String errorMessage){
+		if (listeners!=null){
+			for(SiteListener listener:listeners){
+				listener.onError(errorMessage);
+			}
+		}
+	}
+	
+	protected void notifyResponse(){
+		if (listeners!=null){
+			for(SiteListener listener:listeners){
+				listener.onResponsed();
+			}
+		}
 	}
 	
 	/**
@@ -65,7 +108,8 @@ public abstract class Site implements IHttpListener {
 	public void friendsTimeline(){
 		if (friendsTimeline!=null){
 			httpNet=new HttpNet();
-			httpNet.request(friendsTimeline.getRequest(-1, 1, this));
+			httpNet.setListener(this);
+			httpNet.request(friendsTimeline.getRequest(10, -1, this));
 		}
 	}
 
@@ -82,22 +126,31 @@ public abstract class Site implements IHttpListener {
 	
 
 	public String getAccessKey(){
-		return loggedInUser.getAccessToken();
+		if (loggedInUser!=null)
+			return loggedInUser.getAccessToken();
+		else
+			return "";
 	}
 
 	/**
 	 * @return the appSecret
 	 */
 	public String getAccessSecret() {
-		return loggedInUser.getAccessSecret();
+		if (loggedInUser!=null)
+			return loggedInUser.getAccessSecret();
+		else
+			return "";
 	}
 	
 	public List<Blog> getBlogs(){
-		return null;
+		return blogs;
 	}
 
 	public User getLoggedInUser(){
-		return null;
+		if (isLoggedIn)
+			return loggedInUser;
+		else
+			return null;
 	}
 
 	public String getName(){
@@ -108,12 +161,8 @@ public abstract class Site implements IHttpListener {
 		return rootUrl;
 	}
 
-	public String getSource(){
-		return "";
-	}
-
 	public boolean isLoggedIn(){
-		return false;
+		return isLoggedIn;
 	}
 
 	/**
@@ -123,10 +172,7 @@ public abstract class Site implements IHttpListener {
 	 */
 	public void logIn(User user){
 		this.loggedInUser=user;
-	}
-
-	public void myHome(){
-
+		//friendsTimeline();
 	}
 
 	protected abstract void onConstruct();
@@ -138,6 +184,7 @@ public abstract class Site implements IHttpListener {
 	public void updateText(String text){
 		if (updateInterface!=null){
 			httpNet=new HttpNet();
+			httpNet.setListener(this);
 			httpNet.request(updateInterface.getRequest(text, this));
 		}
 	}
@@ -147,7 +194,29 @@ public abstract class Site implements IHttpListener {
 	 * @param text
 	 * @param fileName
 	 */
-	public void uploadImage(String text, String fileName){
+	public void uploadImage( String fileName,String text){
+		if (uploadInterface!=null){
+			httpNet=new HttpNet();
+			httpNet.setListener(this);
+			httpNet.request(uploadInterface.getRequest(fileName,text, this));
+		}
+	}
+	
 
+	@Override
+	public void onBeginRequest() {
+		notifyBegin();
+	}
+
+	public String getOauthRequestUrl() {
+		return getRootUrl()+oauthRequestUrl;
+	}
+
+	public String getOauthUrl() {
+		return getRootUrl()+oauthUrl;
+	}
+
+	public String getOauthAccessUrl() {
+		return getRootUrl()+oauthAccessUrl;
 	}
 }

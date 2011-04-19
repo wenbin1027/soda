@@ -16,6 +16,7 @@ import org.apache.http.client.methods.HttpUriRequest;
 
 import com.ade.net.HttpNet;
 import com.ade.net.IHttpListener;
+import com.ade.parser.Parser;
 import com.ade.util.OAuthUtil;
 
 import android.net.Uri;
@@ -232,13 +233,13 @@ public class OAuth implements IHttpListener{
 	}
 
 	@Override
-	public void onError(String errorMessage) {
+	public void onError(String errorMessage,Parser parser) {
 		notifyListener();
 	}
 
 	@Override
 	public void onResponsed(StatusLine statusLine, Header[] headers,
-			HttpEntity entity) {
+			HttpEntity entity,Parser parser) {
 		InputStream content=null;
 		try {
 			content = entity.getContent();
