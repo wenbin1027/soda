@@ -13,7 +13,7 @@ import com.ade.parser.Parser;
  */
 public class SohuSite extends Site {
 
-	public SohuSite(){
+	protected void onConstruct(){
 		name="搜狐微博";
 		rootUrl="http://api.t.sohu.com";
 		appKey="bHi9G9CcHCeXBMhWReow";  
@@ -21,14 +21,6 @@ public class SohuSite extends Site {
 		oauthRequestUrl="/oauth/request_token";
 		oauthUrl="/oauth/authorize";
 		oauthAccessUrl="/oauth/access_token";
-	}
-
-	public void finalize() throws Throwable {
-		super.finalize();
-	}
-
-	protected void onConstruct(){
-
 	}
 
 	@Override
@@ -41,9 +33,6 @@ public class SohuSite extends Site {
 			HttpEntity entity,Parser parser) {
 		
 		if (statusLine.getStatusCode()==401){  //Unauthorized
-//			HTTP/1.1 401 Unauthorized
-//	
-//			{"code":401,"error":"This method requires authentication.","request":"/statuses/friends_timeline.json"}
 			onError("用户未授权",parser);
 		}
 		isLoggedIn=true;

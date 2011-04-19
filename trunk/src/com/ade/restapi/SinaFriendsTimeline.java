@@ -28,27 +28,32 @@ public class SinaFriendsTimeline extends FriendsTimelineInterface {
 	protected String getUrl(int count, int page, Site site){
 		StringBuilder sb=new StringBuilder(site.getRootUrl());
 		sb.append(PATH);
-		if (count>0 && page>0){
-			sb.append('?');
-		}
-		if (count>0){
-			sb.append("&count=");
-			sb.append(count);			
-		}
-		if (page>0){
-			sb.append("&page=");
-			sb.append(page);
-		}
+//		if (count>0 && page>0){
+//			sb.append('?');
+//		}
+//		if (count>0){
+//			sb.append("&count=");
+//			sb.append(count);			
+//		}
+//		if (page>0){
+//			sb.append("&page=");
+//			sb.append(page);
+//		}
 		
 		return sb.toString();
 	}
 
 	@Override
 	protected List<NameValuePair> getParams(int count, int page, Site site) {
-		List<NameValuePair> params=new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("count",""+count));
-		params.add(new BasicNameValuePair("page",""+page));
-		return params;
+		if (count>=0 || page>=0){
+			List<NameValuePair> params=new ArrayList<NameValuePair>();
+			if (count>=0)
+				params.add(new BasicNameValuePair("count",""+count));
+			if (page>=0)
+				params.add(new BasicNameValuePair("page",""+page));
+			return params;
+		}
+		return null;
 	}
 
 }
