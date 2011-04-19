@@ -51,29 +51,31 @@ public class SohuUpload extends UploadInterface {
 	 * @param fileName
 	 * @param text
 	 * @param site
+	 * @throws IOException 
 	 */
-	protected byte[] getPostData(String fileName, String text, Site site){
-		String Boundary=site.getBoundary();
-		StringBuilder Front=new StringBuilder("--"+site.getBoundary());
-		Front.append("\r\nContent-Disposition: form-data; name=\"status\"\r\n\r\n");
-		Front.append(text);
-		Front.append("\r\n--"+site.getBoundary());
-		Front.append("\r\nContent-Disposition: form-data; name=\"pic\"; filename=\"temp\"");
-		Front.append("\r\nContent-type: application/octet-stream\r\n\r\n");
-		File Imagefile = new File(fileName);
-		byte[] filebuffer = new byte[(int)Imagefile.length()];
+	protected byte[] getPostData(String fileName, String text, Site site) throws IOException{
+		String boundary=site.getBoundary();
+		StringBuilder front=new StringBuilder("--"+boundary);
+		front.append("\r\nContent-Disposition: form-data; name=\"status\"\r\n\r\n");
+		front.append(text);
+		front.append("\r\n--"+boundary);
+		front.append("\r\nContent-Disposition: form-data; name=\"pic\"; filename=\"temp\"");
+		front.append("\r\nContent-type: application/octet-stream\r\n\r\n");
+		File imageFile = new File(fileName);
+		byte[] fileBuffer = new byte[(int)imageFile.length()];
 		try {
 			FileInputStream is = new FileInputStream(fileName);
-			is.read(filebuffer);
+			is.read(fileBuffer);
 			is.close();
-			} catch (IOException e) {
-			e.printStackTrace();//待UI完成后再次修改，于UI中显示文件读入错误
-		      }
-		StringBuilder Back=new StringBuilder("\r\n--"+site.getBoundary()+"--"+"\r\n");
-		byte[] PostData=new byte[(int)(Front.toString().getBytes().length+filebuffer.length+Back.toString().getBytes().length)];
-		System.arraycopy(Front.toString().getBytes(),0,PostData,0,Front.toString().getBytes().length);
-		System.arraycopy(filebuffer,0,PostData,(int)(Front.toString().getBytes().length),filebuffer.length);
-		System.arraycopy(Back.toString().getBytes(),0,PostData,(int)(Front.toString().getBytes().length+filebuffer.length),Back.toString().getBytes().length);
+		} catch (IOException e) {
+			e.printStackTrace();
+			throw e;
+	    }
+		StringBuilder back=new StringBuilder("\r\n--"+boundary+"--"+"\r\n");
+		byte[] PostData=new byte[(int)(front.toString().getBytes().length+fileBuffer.length+back.toString().getBytes().length)];
+		System.arraycopy(front.toString().getBytes(),0,PostData,0,front.toString().getBytes().length);
+		System.arraycopy(fileBuffer,0,PostData,(int)(front.toString().getBytes().length),fileBuffer.length);
+		System.arraycopy(back.toString().getBytes(),0,PostData,(int)(front.toString().getBytes().length+fileBuffer.length),back.toString().getBytes().length);
 		return PostData;
 	}
 

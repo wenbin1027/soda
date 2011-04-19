@@ -1,5 +1,6 @@
 package com.ade.restapi;
 
+import java.io.IOException;
 import java.net.URLEncoder;
 import java.util.List;
 
@@ -31,8 +32,9 @@ public abstract class UploadInterface {
 	 * @param fileName
 	 * @param text
 	 * @param site
+	 * @throws IOException 
 	 */
-	protected abstract byte[] getPostData(String fileName, String text, Site site);
+	protected abstract byte[] getPostData(String fileName, String text, Site site) throws IOException;
 
 	/**
 	 * 
@@ -58,7 +60,7 @@ public abstract class UploadInterface {
 		return true;
 	}
 
-	public HttpUriRequest getRequest(String fileName, String text, Site site){
+	public HttpUriRequest getRequest(String fileName, String text, Site site) throws IOException{
 		String textEncode=URLEncoder.encode(text);
 		String fileNameEncode=URLEncoder.encode(fileName);
 		HttpPost request=new HttpPost(getUrl(fileNameEncode,textEncode,site));
@@ -74,7 +76,12 @@ public abstract class UploadInterface {
 					site.getAppKey(), site.getAppSecret(), 
 					site.getAccessKey(), site.getAccessSecret());
 			ByteArrayEntity entity;
-			entity=new ByteArrayEntity(getPostData(fileName,textEncode,site));
+			try {
+				entity=new ByteArrayEntity(getPostData(fileName,textEncode,site));
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw e;
+			}
 			request.setEntity(entity);
 		}
 		return request;
