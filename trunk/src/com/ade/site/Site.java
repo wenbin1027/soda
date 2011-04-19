@@ -1,4 +1,5 @@
 package com.ade.site;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -193,12 +194,21 @@ public abstract class Site implements IHttpListener{
 	 * 
 	 * @param text
 	 * @param fileName
+	 * @throws IOException 
 	 */
-	public void uploadImage( String fileName,String text){
+	public void uploadImage( String fileName,String text) throws IOException{
 		if (uploadInterface!=null){
 			httpNet=new HttpNet();
 			httpNet.setListener(this);
-			httpNet.request(uploadInterface.getRequest(fileName,text, this));
+			try {
+				httpNet.request(uploadInterface.getRequest(fileName,text, this));
+			} catch (IOException e) {
+				e.printStackTrace();
+				throw new IOException("读取照片文件时出错");
+			}finally{
+				httpNet.setListener(null);
+				httpNet=null;
+			}
 		}
 	}
 	
