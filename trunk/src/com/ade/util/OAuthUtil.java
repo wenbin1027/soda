@@ -1,5 +1,7 @@
 package com.ade.util;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -14,6 +16,8 @@ import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
 import org.apache.http.NameValuePair;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 
 public class OAuthUtil {
@@ -69,8 +73,34 @@ public class OAuthUtil {
         header.append(OAUTH_SIGNATURE+LINK+"\"");
         header.append(URLEncoder.encode(signature));
         header.append("\"");
-        
         request.addHeader(AUTHORIZATION, header.toString());
+        
+//        if (request.getMethod()==HttpGet.METHOD_NAME){
+//        	char and='&';
+//        	StringBuilder temp=new StringBuilder(url);
+//        	if (!url.contains("?"))
+//        		temp.append('?');
+//        	else
+//        		temp.append(and);
+//        	temp.append(OAUTH_NONCE+LINK);
+//        	temp.append(nonce+and);
+//        	temp.append(OAUTH_SIGNATURE_METHOD+LINK);
+//            temp.append(HMACSHA1+and);
+//            temp.append(OAUTH_TIMESTAMP+LINK);
+//            temp.append(timestamp+and);
+//            temp.append(OAUTH_CONSUMER_KEY+LINK);
+//            temp.append(consumerKey+and);
+//            temp.append(OAUTH_VERSION+LINK);
+//            temp.append(VERSION10+and);
+//            temp.append(OAUTH_TOKEN+LINK);
+//            temp.append(accessToken+and);
+//            temp.append(OAUTH_SIGNATURE+LINK);
+//            temp.append(/*URLEncoder.encode*/(signature));
+//            request=new HttpGet(temp.toString());
+//            request.addHeader(AUTHORIZATION, header.toString());
+//
+//        }
+        
 	}
  	
 	//生成无用的随机字符串

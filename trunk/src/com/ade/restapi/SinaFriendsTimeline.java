@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.ade.parser.Parser;
 import com.ade.site.Site;
 
 /**
@@ -18,9 +19,12 @@ import com.ade.site.Site;
  * @created 10-����-2011 ���� 08:29:10
  */
 public class SinaFriendsTimeline extends FriendsTimelineInterface {
-
 	private static final String PATH="/statuses/friends_timeline.json";
 
+	public SinaFriendsTimeline(Parser parser) {
+		super(parser);
+	}
+	
 	protected String getUrl(int count, int page, Site site){
 		StringBuilder sb=new StringBuilder(site.getRootUrl());
 		sb.append(PATH);

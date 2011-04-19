@@ -33,6 +33,8 @@ import com.ade.restapi.FriendsTimelineInterface;
 import com.ade.restapi.SinaFriendsTimeline;
 import com.ade.site.OAuth;
 import com.ade.site.SinaSite;
+import com.ade.site.SiteListener;
+import com.ade.site.SiteManager;
 import com.ade.site.SohuSite;
 import com.ade.site.Site;
 import com.ade.site.User;
@@ -44,14 +46,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;		
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;	
 import android.widget.EditText;	
+import android.widget.Toast;
 
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements SiteListener {
+	private final int AUTHREQUESTCODE=0;
+	private final int SITEERROR=0;
+	private User user=new User();
+	private Site site;
 	private ResponseHandler<String> handler=new ResponseHandler<String>(){
 
 		@Override
@@ -63,31 +72,52 @@ public class MainActivity extends Activity {
 		
 	};
 	
+	private Handler mainHandler=new Handler(new Handler.Callback() {
+		@Override
+		public boolean handleMessage(Message msg) {
+			switch(msg.what){
+			case SITEERROR:
+				String errorMessage=(String)msg.obj;
+				Toast.makeText(MainActivity.this, errorMessage!=null?errorMessage:"未知错误", Toast.LENGTH_LONG).show();
+				Intent intent=new Intent(MainActivity.this,OAuthActivity.class);
+				intent.putExtra("site",(int)0);
+				intent.putExtra("user",new User());
+				startActivityForResult(intent,AUTHREQUESTCODE);
+				break;
+			}
+			return false;
+		}
+	});
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {	
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);	
+        
+        SiteManager.getInstance().setContext(this);
+        SiteManager.getInstance().loadSites();
+        site=SiteManager.getInstance().getSites().get(0);
+		site.addListener(MainActivity.this);
+        
         findViewById(R.id.BtnWrite).setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				//for test
-				Site site=new SohuSite();
-				UpdateInterface update=new SohuUpdate();
-				site.setUpdateInterface(update);
-				User user=new User();
-				user.setAccessToken("afcEmgzaB3SxsWAdCosr");
-				user.setAccessSecret("KY6Q9LHhwkgKAZbfRfCSw$$ZOM%!STwQ2YAro)(i");
+				//使用说明：通过如下代码可以进行发送微博的测试。首先会出现授权界面，授权后再点此按钮即可发送微博了。
+				//site.updateText("微博测试vv");
+				//若嫌授权麻烦，则可在第一次授权后在LogCat中找到TOKEN和SECRET的日志：
+				//04-19 03:38:52.266: INFO/OAuthActivity(1841): TOKEN=46b571ca341cfeb4737f419ed4ce0392  SECRET=920143c011048ab9e4c8904440e7ed1a
+				//然后使用如下代码
+				user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");  
+				user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
 				site.logIn(user);
-				site.updateText("[色]微博测试");
+				site.uploadImage("/data/data/com.ade.soda/10697.jpg","微博测试vv");
 			}
         });
         
         findViewById(R.id.BtnRefresh).setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-//				startActivity(
-//						new Intent(MainActivity.this,OAuthActivity.class));
-				testSohuUpdate();
+
 			}
 
 			/**仅供测试
@@ -158,5 +188,44 @@ public class MainActivity extends Activity {
 				}
 			}
         });
-     }    
+     }
+
+	@Override
+	public void onBeginRequest() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void onError(String errorMessage) {
+		Message msg=new Message();
+		msg.what=SITEERROR;
+		msg.obj=errorMessage;
+		mainHandler.sendMessage(msg);
+	}
+
+
+	@Override
+	public void onResponsed() {
+		// TODO Auto-generated method stub
+		
+	}    
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode==AUTHREQUESTCODE){
+			if (resultCode==RESULT_OK){
+				//TODO: refresh view
+				if (data.hasExtra("user")){
+					user=(User)data.getSerializableExtra("user");
+					site.logIn(user);
+				}
+			}
+			else{
+				//TODO: tips fail
+			}
+			Toast.makeText(this, resultCode==RESULT_OK?"Auth Success":"Auth Fail", Toast.LENGTH_LONG).show();
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
 }

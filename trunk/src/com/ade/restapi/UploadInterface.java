@@ -1,19 +1,15 @@
 package com.ade.restapi;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
-import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.entity.StringEntity;
-
 import com.ade.site.Site;
+import com.ade.util.OAuthUtil;
 
 /**
  * @author Administrator
@@ -63,24 +59,24 @@ public abstract class UploadInterface {
 	}
 
 	public HttpUriRequest getRequest(String fileName, String text, Site site){
-		HttpPost request=new HttpPost(getUrl(fileName,text,site));
-		Header[] headers=getHeader(fileName,text,site);
+		String textEncode=URLEncoder.encode(text);
+		String fileNameEncode=URLEncoder.encode(fileName);
+		HttpPost request=new HttpPost(getUrl(fileNameEncode,textEncode,site));
+		Header[] headers=getHeader(fileNameEncode,textEncode,site);
 		if (headers!=null){
 			for(int i=0;i<headers.length;i++){
 				request.addHeader(headers[i]);
 			}
 		}
-		List<NameValuePair> data=getParams(fileName,text,site);
+		List<NameValuePair> data=getParams(fileNameEncode,textEncode,site);
 		if (data!=null){
-			StringEntity entity;
-			try {
-				entity = new UrlEncodedFormEntity(data);
-				request.setEntity(entity);
-			} catch (UnsupportedEncodingException e) {
-				e.printStackTrace();
-			}
+			OAuthUtil.signRequest(getUrl(fileNameEncode,textEncode,site), request, data, 
+					site.getAppKey(), site.getAppSecret(), 
+					site.getAccessKey(), site.getAccessSecret());
+			ByteArrayEntity entity;
+			entity=new ByteArrayEntity(getPostData(fileName,textEncode,site));
+			request.setEntity(entity);
 		}
-
 		return request;
 	}
 }

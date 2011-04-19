@@ -1,10 +1,16 @@
 package com.ade.restapi;
 
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 import org.apache.http.NameValuePair;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.entity.StringEntity;
+
+import com.ade.parser.Parser;
 import com.ade.site.Site;
 import com.ade.util.OAuthUtil;
 
@@ -13,7 +19,11 @@ import com.ade.util.OAuthUtil;
  * @version 1.0
  * @created 10-����-2011 ���� 08:29:04
  */
-public abstract class FriendsTimelineInterface {
+public abstract class FriendsTimelineInterface extends ApiInterface{
+
+	public FriendsTimelineInterface(Parser parser) {
+		super(parser);
+	}
 
 	public HttpUriRequest getRequest(int count, int page, Site site){
 		HttpGet request=null;

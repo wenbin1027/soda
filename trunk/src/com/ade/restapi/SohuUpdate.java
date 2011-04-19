@@ -22,7 +22,7 @@ public class SohuUpdate extends UpdateInterface {
 	 * @param site
 	 */
 	protected String getUrl(String text, Site site){
-		return site.getRootUrl()+"statuses/update.json";
+		return site.getRootUrl()+"/statuses/update.json";
 	}
 
 	/**

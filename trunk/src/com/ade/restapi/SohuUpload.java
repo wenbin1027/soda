@@ -15,6 +15,8 @@ import org.apache.http.message.BasicNameValuePair;
 
 import com.ade.site.Site;
 
+import dalvik.system.TemporaryDirectory;
+
 /**
  * @author Administrator
  * @version 1.0
@@ -29,7 +31,7 @@ public class SohuUpload extends UploadInterface {
 	 * @param site
 	 */
 	protected String getUrl(String fileName, String text, Site site){
-		return site.getRootUrl()+"statuses/upload.json";
+		return site.getRootUrl()+"/statuses/upload.json";
 	}
 
 	/**
@@ -51,24 +53,23 @@ public class SohuUpload extends UploadInterface {
 	 * @param site
 	 */
 	protected byte[] getPostData(String fileName, String text, Site site){
-		//According to the data file names read in, then follow the multipart / form-data encoding data structure organized into upstream
 		String Boundary=site.getBoundary();
-		StringBuilder Front=new StringBuilder("\r\n"+site.getBoundary());
-		Front.append(Boundary);
-		Front.append("\r\nContent-Disposition: form-data; name=\"pic\"; filename=\"");
-		Front.append(fileName);
-		Front.append("\"\r\nContent-Type: image/jpeg\r\n\r\n");
+		StringBuilder Front=new StringBuilder("--"+site.getBoundary());
+		Front.append("\r\nContent-Disposition: form-data; name=\"status\"\r\n\r\n");
+		Front.append(text);
+		Front.append("\r\n--"+site.getBoundary());
+		Front.append("\r\nContent-Disposition: form-data; name=\"pic\"; filename=\"temp\"");
+		Front.append("\r\nContent-type: application/octet-stream\r\n\r\n");
 		File Imagefile = new File(fileName);
 		byte[] filebuffer = new byte[(int)Imagefile.length()];
 		try {
 			FileInputStream is = new FileInputStream(fileName);
 			is.read(filebuffer);
 			is.close();
-		}catch (IOException e) {
+			} catch (IOException e) {
 			e.printStackTrace();//待UI完成后再次修改，于UI中显示文件读入错误
-		}
-		StringBuilder Back=new StringBuilder("\r\n"+site.getBoundary()+"--");
-		Back.append(Boundary);
+		      }
+		StringBuilder Back=new StringBuilder("\r\n--"+site.getBoundary()+"--"+"\r\n");
 		byte[] PostData=new byte[(int)(Front.toString().getBytes().length+filebuffer.length+Back.toString().getBytes().length)];
 		System.arraycopy(Front.toString().getBytes(),0,PostData,0,Front.toString().getBytes().length);
 		System.arraycopy(filebuffer,0,PostData,(int)(Front.toString().getBytes().length),filebuffer.length);
@@ -80,7 +81,6 @@ public class SohuUpload extends UploadInterface {
 	protected List<NameValuePair> getParams(String fileName, String text,
 			Site site) {
 		List<NameValuePair> params=new ArrayList<NameValuePair>();
-		params.add(new BasicNameValuePair("pic",fileName));
 		params.add(new BasicNameValuePair("status",text));
 		return params;
 	}

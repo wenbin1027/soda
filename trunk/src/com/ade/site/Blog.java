@@ -1,5 +1,6 @@
 package com.ade.site;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -8,7 +9,7 @@ import java.util.List;
  * @version 1.0
  * @created 10-����-2011 ���� 08:33:49 
  */
-public class Blog {
+public class Blog implements Serializable{
 
 	private Date createdAt;
 	private long ID;
@@ -16,13 +17,8 @@ public class Blog {
 	private Site site;
 	private String text;
 	private User user;
-	public User m_User;
 
 	public Blog(){
-
-	}
-
-	public void finalize() throws Throwable {
 
 	}
 
@@ -44,27 +40,51 @@ public class Blog {
 	}
 
 	public Date getCreatedAt(){
-		return null;
+		return createdAt;
 	}
 
 	public long getID(){
-		return 0;
+		return ID;
 	}
 
 	public Blog getRetweetedBlog(){
-		return null;
+		return retweetedBlog;
 	}
 
 	public Site getSite(){
-		return null;
+		return site;
 	}
 
 	public String getText(){
-		return "";
+		return text;
 	}
 
 	public User getUser(){
-		return null;
+		return user;
+	}
+
+	public void setCreatedAt(Date createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public void setID(long iD) {
+		ID = iD;
+	}
+
+	public void setRetweetedBlog(Blog retweetedBlog) {
+		this.retweetedBlog = retweetedBlog;
+	}
+
+	public void setSite(Site site) {
+		this.site = site;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 }

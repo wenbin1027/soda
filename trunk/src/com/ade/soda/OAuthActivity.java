@@ -2,14 +2,20 @@ package com.ade.soda;
 
 import com.ade.site.OAuth;
 import com.ade.site.OAuthListener;
+import com.ade.site.Site;
+import com.ade.site.SiteManager;
+import com.ade.site.User;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.webkit.WebView;
 import android.widget.Toast;
 
 public class OAuthActivity extends Activity implements OAuthListener{
-	
+	private Site site;
+	private User user;
+	private OAuth oauth;
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -17,36 +23,39 @@ public class OAuthActivity extends Activity implements OAuthListener{
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.oauth);
-		
-		testSohuAuth();
-		//testSinaAuth();
+		Intent intent=getIntent();
+		if (intent.hasExtra("site")){
+			site=SiteManager.getInstance().getSites().get(intent.getIntExtra("site",0));
+		}
+		if (intent.hasExtra("user")){
+			user=(User) intent.getSerializableExtra("user");
+		}	
+		if (site!=null){
+			doAuth();
+		}
 	}
-
-	/**仅供测试
-	 * 
-	 */
-	private void testSohuAuth() {
-		OAuth auth=new OAuth("http://api.t.sohu.com/oauth/request_token",
-				"http://api.t.sohu.com/oauth/authorize",
-				"http://api.t.sohu.com/oauth/access_token",(WebView)findViewById(R.id.webViewOauth));
-		auth.setListener(this);
-		auth.requestAccessToken("afcEmgzaB3SxsWAdCosr","KY6Q9LHhwkgKAZbfRfCSw$$ZOM%!STwQ2YAro)(i");
-	}
-
-	/**仅供测试
-	 * 
-	 */
-	private void testSinaAuth() {
-		OAuth auth=new OAuth("http://api.t.sina.com.cn/oauth/request_token",
-				"http://api.t.sina.com.cn/oauth/authorize",
-				"http://api.t.sina.com.cn/oauth/access_token",(WebView)findViewById(R.id.webViewOauth));
-		auth.setListener(this);
-		auth.requestAccessToken("3393006127","70768c222a4613ed7f930bae3dee2e57");
+	
+	private void doAuth(){
+		oauth=new OAuth(site.getOauthRequestUrl(),site.getOauthUrl(),
+				site.getOauthAccessUrl(),(WebView)findViewById(R.id.webViewOauth));
+		oauth.setListener(this);
+		oauth.requestAccessToken(site.getAppKey(), site.getAppSecret());
 	}
 
 	@Override
 	public void onFinish(OAuth auth) {
-		Toast.makeText(this, auth.isSuccess()?"Success":"Fail", Toast.LENGTH_LONG).show();
-		finish();
+		if (auth.isSuccess()){
+			if (user!=null){
+				user.setAccessToken(auth.getAccessToken().token);
+				user.setAccessSecret(auth.getAccessToken().secret);
+			}
+			Intent intent=new Intent();
+			intent.putExtra("user", user);
+			setResult(RESULT_OK,intent);
+			finish();
+		}
+		else{
+			finishActivity(RESULT_CANCELED);
+		}
 	}
 }
