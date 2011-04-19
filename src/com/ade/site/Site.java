@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.apache.http.client.methods.HttpUriRequest;
 
+import android.util.Log;
+
 import com.ade.restapi.FriendsTimelineInterface;
 import com.ade.net.HttpNet;
 import com.ade.net.IHttpListener;
@@ -201,7 +203,9 @@ public abstract class Site implements IHttpListener{
 			httpNet=new HttpNet();
 			httpNet.setListener(this);
 			try {
+				Log.i("Nancy", "Entering into uploadImage");
 				httpNet.request(uploadInterface.getRequest(fileName,text, this));
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 				throw new IOException("读取照片文件时出错");
