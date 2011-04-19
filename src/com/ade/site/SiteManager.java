@@ -30,14 +30,6 @@ public class SiteManager {
 		sites=new ArrayList<Site>(2);
 	}
 
-	/**
-	 * 
-	 * @param site
-	 */
-	private void addSite(Site site){
-		sites.add(site);
-	}
-
 	public static SiteManager getInstance(){
 		if (instance==null){
 			instance=new SiteManager();
@@ -50,8 +42,8 @@ public class SiteManager {
 	}
 
 	public boolean loadSites(){
-		makeSite(SOHU);
-		makeSite(SINA);
+		sites.add(SOHU, makeSite(SOHU));
+		sites.add(SINA, makeSite(SINA));
 		return true;
 	}
 
@@ -63,25 +55,15 @@ public class SiteManager {
 			site.setUpdateInterface(new SohuUpdate());
 			site.setUploadInterface(new SohuUpload());
 			site.setFriendsTimeline(new SohuFriendsTimeline(new FriendsTimelineParser()));
-			addSite(site);
 			break;
 		case SINA:
 			site=new SinaSite();
 			site.setUpdateInterface(new SinaUpdate());
 			site.setUploadInterface(new SinaUpload());
 			site.setFriendsTimeline(new SinaFriendsTimeline(new FriendsTimelineParser()));
-			addSite(site);
 			break;
 		}
 		return site;
-	}
-
-	/**
-	 * 
-	 * @param site
-	 */
-	private void removeSite(Site site){
-		sites.remove(site);
 	}
 
 	public void saveSites(){

@@ -202,6 +202,11 @@ public abstract class Site implements IHttpListener{
 		}
 	}
 	
+	public void abort(){
+		if (httpNet!=null){
+			httpNet.cancel();
+		}
+	}
 
 	@Override
 	public void onBeginRequest() {

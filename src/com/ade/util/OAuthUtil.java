@@ -121,7 +121,7 @@ public class OAuthUtil {
 	        }
         }
         temp.append(OAUTH_SIGNATURE+LINK);
-        temp.append(signature);
+        temp.append(URLEncoder.encode(signature));
         return temp.toString();
 	}	
 	
