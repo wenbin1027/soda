@@ -8,6 +8,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.ade.parser.Parser;
 import com.ade.site.Site;
 
 /**
@@ -16,6 +17,10 @@ import com.ade.site.Site;
  * @created 10-����-2011 ���� 08:29:16
  */
 public class SohuUpdate extends UpdateInterface {
+	public SohuUpdate(Parser parser) {
+		super(parser);
+	}
+
 	/**
 	 * 
 	 * @param text

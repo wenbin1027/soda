@@ -63,8 +63,7 @@ public class MainActivity extends Activity implements SiteListener {
 	private final int TESTOK=1;
 	private User user=new User();
 	private Site site;
-	//private int currentSite=SiteManager.SOHU;  //测试时注意修改此处为要测的网站
-	private int currentSite=SiteManager.SINA;  //测试时注意修改此处为要测的网站
+	private int currentSite=SiteManager.SOHU;  //测试时注意修改此处为要测的网站
 	private View lastClickedView;
 	
 	private ResponseHandler<String> handler=new ResponseHandler<String>(){
@@ -91,8 +90,8 @@ public class MainActivity extends Activity implements SiteListener {
 				startActivityForResult(intent,AUTHREQUESTCODE);
 				break;
 			case TESTOK:
-				Toast.makeText(MainActivity.this, "测试成功sina", Toast.LENGTH_LONG).show();
-				Log.i(TAG, "测试成功sina");
+				Toast.makeText(MainActivity.this, "测试成功", Toast.LENGTH_LONG).show();
+				Log.i(TAG, "测试成功");
 				break;
 			}
 			return false;
@@ -119,18 +118,18 @@ public class MainActivity extends Activity implements SiteListener {
 				//04-19 03:38:52.266: INFO/OAuthActivity(1841): TOKEN=46b571ca341cfeb4737f419ed4ce0392  SECRET=920143c011048ab9e4c8904440e7ed1a
 				//然后使用如下代码.
 				//注意这里的TOKEN和SECRET对不同的用户名是不一样的，请仔细使用
-				//user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");  
-				//user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
-				//site.logIn(user);
-				//site.friendsTimeline();
+				user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");  
+				user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
+				site.logIn(user);
+				site.friendsTimeline();
 				//site.updateText("上传微博");
-				try {
-					site.uploadImage("/data/data/com.ade.soda/testpic.jpg","微博测试nancy");
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-					Log.i(TAG,"pic file not found." );
-				}
+//				try {
+//					site.uploadImage("/data/data/com.ade.soda/10697.jpg","微博测试");
+//				} catch (Exception e) {
+//					// TODO Auto-generated catch block
+//					e.printStackTrace();
+//					Log.i(TAG,"pic file not found." );
+//				}
 				//注意要先将欲上传的图片PUSH到模拟器对应的路径下
 			}
         });

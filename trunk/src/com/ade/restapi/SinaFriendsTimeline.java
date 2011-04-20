@@ -1,15 +1,9 @@
 package com.ade.restapi;
 
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.http.NameValuePair;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.message.BasicNameValuePair;
-
 import com.ade.parser.Parser;
 import com.ade.site.Site;
 

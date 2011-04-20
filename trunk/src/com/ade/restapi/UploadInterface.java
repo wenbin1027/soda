@@ -9,6 +9,8 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.ByteArrayEntity;
+
+import com.ade.parser.Parser;
 import com.ade.site.Site;
 import com.ade.util.OAuthUtil;
 
@@ -17,7 +19,11 @@ import com.ade.util.OAuthUtil;
  * @version 1.0
  * @created 10-����-2011 ���� 08:29:09
  */
-public abstract class UploadInterface {
+public abstract class UploadInterface extends ApiInterface {
+
+	public UploadInterface(Parser parser) {
+		super(parser);
+	}
 
 	/**
 	 * 

@@ -11,6 +11,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 
+import com.ade.parser.Parser;
 import com.ade.site.Site;
 
 /**
@@ -19,6 +20,10 @@ import com.ade.site.Site;
  * @created 10-����-2011 ���� 08:29:12
  */
 public class SinaUpload extends UploadInterface {
+
+	public SinaUpload(Parser parser) {
+		super(parser);
+	}
 
 	/**
 	 * 

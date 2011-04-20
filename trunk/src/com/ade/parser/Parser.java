@@ -1,13 +1,12 @@
 package com.ade.parser;
 
-import java.io.InputStream;
-
+import org.json.JSONException;
 import com.ade.site.Site;
 
 /**
  * @author Administrator
  * @version 1.0
- * @created 10-ËÄÔÂ-2011 ÉÏÎç 08:34:38
+ * @created 10-ï¿½ï¿½ï¿½ï¿½-2011 ï¿½ï¿½ï¿½ï¿½ 08:34:38
  */
 public abstract class Parser {
 
@@ -15,15 +14,11 @@ public abstract class Parser {
 
 	}
 
-	public void finalize() throws Throwable {
-
-	}
-
 	/**
 	 * 
 	 * @param stream
 	 */
-	public int getErrorCode(InputStream stream){
+	public int getErrorCode(){
 		return 0;
 	}
 
@@ -31,15 +26,18 @@ public abstract class Parser {
 	 * 
 	 * @param stream
 	 * @param site
+	 * @throws JSONException 
 	 */
-	protected abstract boolean onParse(InputStream stream, Site site);
+	protected abstract boolean onParse(String in, Site site) throws JSONException;
 
 	/**
 	 * 
 	 * @param stream
 	 * @param site
+	 * @throws JSONException 
 	 */
-	public boolean parse(InputStream stream, Site site){
+	public boolean parse(String in, Site site) throws JSONException{
+		onParse(in,site);
 		return false;
 	}
 

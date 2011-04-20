@@ -10,7 +10,7 @@ import java.util.List;
  * @created 10-����-2011 ���� 08:33:53
  */
 public class User implements Serializable{
-
+	private static final long serialVersionUID = 4621473305493545567L;
 	private List<Blog> blogs;
 	private Date createdAt;
 	private String description;

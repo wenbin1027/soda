@@ -1,19 +1,16 @@
 package com.ade.site;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.http.client.methods.HttpUriRequest;
-
+import java.util.Set;
+import java.util.TreeSet;
 import android.util.Log;
-
 import com.ade.restapi.FriendsTimelineInterface;
 import com.ade.net.HttpNet;
 import com.ade.net.IHttpListener;
 import com.ade.restapi.UpdateInterface;
 import com.ade.restapi.UploadInterface;
-import com.ade.parser.Parser;
+
 
 /**
  * @author Administrator
@@ -25,7 +22,7 @@ public abstract class Site implements IHttpListener{
 	protected String appKey;
 	protected String appSecret;
 	protected String boundary="SodaOfAde93859032";
-	protected List<Blog> blogs;
+	protected Set<Blog> blogs=new TreeSet<Blog>();
 	private FriendsTimelineInterface friendsTimeline;
 	protected HttpNet httpNet;
 	protected User loggedInUser;
@@ -114,7 +111,7 @@ public abstract class Site implements IHttpListener{
 		if (friendsTimeline!=null){
 			httpNet=new HttpNet();
 			httpNet.setListener(this);
-			httpNet.request(friendsTimeline.getRequest(10, -1, this));
+			httpNet.request(friendsTimeline.getRequest(10, -1, this),friendsTimeline.getParser());
 		}
 	}
 
@@ -147,7 +144,7 @@ public abstract class Site implements IHttpListener{
 			return "";
 	}
 	
-	public List<Blog> getBlogs(){
+	public Set<Blog> getBlogs(){
 		return blogs;
 	}
 
@@ -188,7 +185,7 @@ public abstract class Site implements IHttpListener{
 		if (updateInterface!=null){
 			httpNet=new HttpNet();
 			httpNet.setListener(this);
-			httpNet.request(updateInterface.getRequest(text, this));
+			httpNet.request(updateInterface.getRequest(text, this),updateInterface.getParser());
 		}
 	}
 
@@ -204,7 +201,7 @@ public abstract class Site implements IHttpListener{
 			httpNet.setListener(this);
 			try {
 				Log.i("Nancy", "Entering into uploadImage");
-				httpNet.request(uploadInterface.getRequest(fileName,text, this));
+				httpNet.request(uploadInterface.getRequest(fileName,text, this),uploadInterface.getParser());
 				
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -1,21 +1,15 @@
 package com.ade.restapi;
 
 import java.io.*;
-//import java.util.logging.Filter;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
-
-//import android.graphics.Path.FillType;
-
+import com.ade.parser.Parser;
 import com.ade.site.Site;
 
-import dalvik.system.TemporaryDirectory;
 
 /**
  * @author Administrator
@@ -23,7 +17,10 @@ import dalvik.system.TemporaryDirectory;
  * @created 10-����-2011 ���� 08:29:18
  */
 public class SohuUpload extends UploadInterface {
-	//The Common string of the multipart/form-data encoding format
+	public SohuUpload(Parser parser) {
+		super(parser);
+	}
+
 	/**
 	 * 
 	 * @param fileName
