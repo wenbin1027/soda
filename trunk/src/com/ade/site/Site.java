@@ -209,9 +209,6 @@ public abstract class Site implements IHttpListener{
 			} catch (IOException e) {
 				e.printStackTrace();
 				throw new IOException("读取照片文件时出错");
-			}finally{
-				httpNet.setListener(null);
-				httpNet=null;
 			}
 		}
 	}
