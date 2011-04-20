@@ -8,5 +8,15 @@
     <string name="all">全部</string>	
     <string name="user1">用户1</string>	
     <string name="user2">用户2</string>
-    <string name="usermore">更多</string>    	
+    <string name="usermore">更多</string>
+        	
+    <string name="writeMsg">请在此写信息</string>    	
+    <string name="img">图片</string>    	
+    <string name="face">表情</string>    	
+    <string name="sendMsg">发送</string> 
+       	
+    <string name="RE">回复</string>    	
+    <string name="FW">转发</string>    	
+    <string name="more">更多</string>    	   	
+   	
 </resources>
