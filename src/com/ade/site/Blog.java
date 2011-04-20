@@ -9,8 +9,9 @@ import java.util.List;
  * @version 1.0
  * @created 10-����-2011 ���� 08:33:49 
  */
-public class Blog implements Serializable{
+public class Blog implements Serializable,Comparable<Blog>{
 
+	private static final long serialVersionUID = 1595610101629159577L;
 	private Date createdAt;
 	private long ID;
 	private Blog retweetedBlog;
@@ -85,6 +86,21 @@ public class Blog implements Serializable{
 
 	public void setUser(User user) {
 		this.user = user;
+	}
+
+	public int compareTo(Blog another) {
+		if (another instanceof Blog || another==null){
+			Blog blog=(Blog)another;
+			if (this.ID>blog.ID)
+				return 1;
+			else if (this.ID<blog.ID)
+				return -1;
+			else
+				return 0;
+		}
+		else{
+			return 0;
+		}
 	}
 
 }

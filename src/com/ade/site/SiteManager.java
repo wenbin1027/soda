@@ -4,15 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
-
-import com.ade.parser.FriendsTimelineParser;
+import com.ade.parser.SinaFriendsTimelineParser;
+import com.ade.parser.SinaUpdateParser;
+import com.ade.parser.SohuFriendsTimelineParser;
+import com.ade.parser.SohuUpdateParser;
+import com.ade.parser.SohuUploadParser;
 import com.ade.restapi.SinaFriendsTimeline;
 import com.ade.restapi.SinaUpdate;
 import com.ade.restapi.SinaUpload;
 import com.ade.restapi.SohuFriendsTimeline;
 import com.ade.restapi.SohuUpdate;
 import com.ade.restapi.SohuUpload;
-import com.ade.restapi.UpdateInterface;
 
 /**
  * @author Administrator
@@ -52,15 +54,15 @@ public class SiteManager {
 		switch(type){
 		case SOHU:
 			site=new SohuSite();
-			site.setUpdateInterface(new SohuUpdate());
-			site.setUploadInterface(new SohuUpload());
-			site.setFriendsTimeline(new SohuFriendsTimeline(new FriendsTimelineParser()));
+			site.setUpdateInterface(new SohuUpdate(new SohuUpdateParser()));
+			site.setUploadInterface(new SohuUpload(new SohuUploadParser()));
+			site.setFriendsTimeline(new SohuFriendsTimeline(new SohuFriendsTimelineParser()));
 			break;
 		case SINA:
 			site=new SinaSite();
-			site.setUpdateInterface(new SinaUpdate());
-			site.setUploadInterface(new SinaUpload());
-			site.setFriendsTimeline(new SinaFriendsTimeline(new FriendsTimelineParser()));
+			site.setUpdateInterface(new SinaUpdate(new SinaUpdateParser()));
+			site.setUploadInterface(new SinaUpload(new SinaUpdateParser()));
+			site.setFriendsTimeline(new SinaFriendsTimeline(new SinaFriendsTimelineParser()));
 			break;
 		}
 		return site;

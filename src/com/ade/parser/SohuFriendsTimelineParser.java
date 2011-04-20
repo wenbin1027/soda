@@ -1,0 +1,87 @@
+package com.ade.parser;
+
+import java.util.Date;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import com.ade.site.Blog;
+import com.ade.site.Site;
+import com.ade.site.User;
+
+public class SohuFriendsTimelineParser extends Parser {
+
+	@Override
+	protected boolean onParse(String in, Site site) throws JSONException {
+		/*
+		[{"created_at":"Fri Mar 12 22:21:42 +0800 2010",
+			"id":"442779",
+			"text":"win7 自带的截图软件有快捷键吗?",
+			"source":"web",
+			"favorited":"0",
+			"truncated":"false",
+			"in_reply_to_status_id":"",
+			"in_reply_to_user_id":"",
+			"in_reply_to_screen_name":"",
+			"small_pic":"",
+			"middle_pic":"",
+			"original_pic":"",
+			"user":{
+			    "id":"1093",
+			    "screen_name":"Hongtium",
+			    "name":"",
+			    "location":"",
+			    "description":"生活在封建统治阶级下",
+			    "url":"",
+			    "profile_image_url":"http://up2.upload.chinaren.com/mblog/icon/68/b1/m_12670300466279.JPG",
+			    "protected":false,
+			    "followers_count":238,
+			    "profile_background_color":"",
+			    "profile_text_color":"",
+			    "profile_link_color":"",
+			    "profile_sidebar_fill_color":"",
+			    "profile_sidebar_border_color":"",
+			    "friends_count":63,
+			    "created_at":"Fri Dec 04 16:11:56 +0800 2009",
+			    "favourites_count":0,
+			    "utc_offset":"",
+			    "time_zone":"",
+			    "profile_background_image_url":"",
+			    "notifications":"",
+			    "geo_enabled":false,
+			    "statuses_count":870,
+			    "following":true,
+			    "verified":false,
+			    "lang":"GBK",
+			    "contributors_enabled":false}}
+			…]
+		*/
+
+		//JSONTokener tokener=new JSONTokener(in);
+		//JSONArray blogs = (JSONArray) tokener.nextValue();
+		JSONArray blogs=new JSONArray(in);
+		if (blogs!=null){
+			for(int i=0;i<blogs.length();i++){
+				JSONObject blog=blogs.getJSONObject(i);
+				if (blog!=null){
+					Blog newBlog=new Blog();
+					newBlog.setCreatedAt(new Date(blog.getString("created_at")));
+					newBlog.setID(blog.getLong("id"));
+					newBlog.setText(blog.getString("text"));
+					//继续解析其他的blog内容
+					
+					User blogUser=new User();
+					JSONObject user=blog.getJSONObject("user");
+					blogUser.setID(user.getLong("id"));
+					blogUser.setScreenName(user.getString("screen_name"));
+					//继续解析其他的user数据
+					
+					newBlog.setUser(blogUser);
+					site.getBlogs().add(newBlog);
+				}
+			}
+		}
+		
+		return true;
+	}
+
+}

@@ -1,19 +1,16 @@
 package com.ade.restapi;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.List;
-
 import org.apache.http.Header;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.StringEntity;
 import com.ade.util.OAuthUtil;
+import com.ade.parser.Parser;
 import com.ade.site.Site;
 
 /**
@@ -21,7 +18,12 @@ import com.ade.site.Site;
  * @version 1.0
  * @created 10-����-2011 ���� 08:29:07
  */
-public abstract class UpdateInterface {
+public abstract class UpdateInterface extends ApiInterface {
+
+	public UpdateInterface(Parser parser) {
+		super(parser);
+	}
+
 
 	/**
 	 * 
