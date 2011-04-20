@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout 
+   android:id="@+id/LinearLayoutWrite" 
+   android:layout_width="fill_parent" 
+   android:layout_height="fill_parent" 
+   xmlns:android="http://schemas.android.com/apk/res/android"
+   android:orientation="vertical"
+	android:gravity="left"
+>
+		    <TextView 
+		     android:text="@string/Msg" 
+		     android:id="@+id/TextViewMsg02" 
+		     android:layout_width="fill_parent" 
+		     android:layout_height="fill_parent"
+		     android:layout_centerInParent="true"
+		     android:background="@color/green"
+		     android:textColor="@color/black"
+		     android:layout_margin="4px"
+		     android:layout_weight="1"
+		    >   
+		    </TextView>
+		    
+		   	<EditText 
+		     android:text="@string/writeMsg" 
+		     android:id="@+id/EditText" 
+		     android:layout_width="fill_parent" 
+		     android:layout_height="fill_parent"
+		     android:layout_centerInParent="true"
+		     android:background="@color/green"
+		     android:textColor="@color/black"
+		     android:layout_margin="4px"
+		     android:layout_weight="1"
+		    >   
+		   </EditText>
+		   
+	<LinearLayout 
+	   android:id="@+id/LinearLayoutWriteBottom" 
+	   android:layout_width="fill_parent" 
+	   android:layout_height="wrap_content"  
+	   android:orientation="horizontal" android:gravity="left"
+	   android:background="@color/white"
+>
+	 	<Button 
+			android:text="@string/img" 
+			android:id="@+id/BtnImg"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content">
+		</Button>
+		<Button 
+			android:text="@string/face" 
+			android:id="@+id/BtnFace"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content">
+		</Button>
+		<Button 
+			android:text="@string/sendMsg" 
+			android:id="@+id/BtnSendMsg"
+			android:layout_width="fill_parent" 
+			android:layout_height="wrap_content">
+		</Button>
+		<Button 
+			android:text="@string/usermore" 
+			android:id="@+id/BtnUserMore"
+			android:layout_width="wrap_content" 
+			android:layout_height="wrap_content">
+		</Button>		
+	</LinearLayout>	
+</LinearLayout>
