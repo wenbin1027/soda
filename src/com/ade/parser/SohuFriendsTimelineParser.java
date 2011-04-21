@@ -67,15 +67,31 @@ public class SohuFriendsTimelineParser extends Parser {
 					newBlog.setCreatedAt(new Date(blog.getString("created_at")));
 					newBlog.setID(blog.getLong("id"));
 					newBlog.setText(blog.getString("text"));
-					//继续解析其他的blog内容
 					
+					//User数据部分
 					User blogUser=new User();
 					JSONObject user=blog.getJSONObject("user");
 					blogUser.setID(user.getLong("id"));
 					blogUser.setScreenName(user.getString("screen_name"));
-					//继续解析其他的user数据
-					
+					blogUser.setName(user.getString("name"));
+					blogUser.setLocation(user.getString("location"));
+					blogUser.setDescription(user.getString("description"));
+					blogUser.setUrl(user.getString("url"));
+					blogUser.setProfileImageUrl(user.getString("profile_image_url"));
+					blogUser.setFollowersCount(user.getLong("user.getBoolean"));
+					blogUser.setFriendsCount(user.getLong("friendscount"));
+					blogUser.setCreatedAt(new Date(user.getString("created_at")));
+					blogUser.setVerified(user.getBoolean("verified"));
 					newBlog.setUser(blogUser);
+					
+					//转发微博部分
+					Blog retweetedBlog=new Blog();
+					retweetedBlog.setID(blog.getLong("in_reply_to_status_id"));
+					User retweetedUser=new User();
+					retweetedUser.setID(user.getLong("in_reply_to_user_id"));
+					retweetedUser.setScreenName(user.getString("in_reply_to_screen_name"));
+					newBlog.setRetweetedBlog(retweetedBlog);
+					
 					site.getBlogs().add(newBlog);
 				}
 			}
