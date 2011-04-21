@@ -20,38 +20,71 @@
 			android:layout_weight="1">
 		</Button>
 	</LinearLayout>
-	<TableLayout android:id="@+id/TableLayoutInformation"
+	<FrameLayout  
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:layout_weight="1">
+	<TableLayout android:id="@+id/TableLayoutMsgAll"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:background="@color/white" android:layout_weight="1">
-		<TextView android:text="@string/Msg" android:id="@+id/TextViewMsg01"
+		android:background="@color/white" >
+		<TextView android:text="@string/MsgUser1" android:id="@+id/TextViewMsg01"
 			android:layout_width="wrap_content" android:layout_height="fill_parent"
 			android:layout_centerInParent="true" android:background="@color/green"
 			android:textColor="@color/black" android:layout_margin="4px"
 			android:layout_weight="1">
 		</TextView>
-		<TextView android:text="@string/Msg" android:id="@+id/TextViewMsg02"
+		<TextView android:text="@string/MsgUser2" android:id="@+id/TextViewMsg02"
 			android:layout_width="wrap_content" android:layout_height="fill_parent"
 			android:layout_centerInParent="true" android:background="@color/green"
 			android:textColor="@color/black" android:layout_margin="4px"
 			android:layout_weight="1">
 		</TextView>
-		<TextView android:text="@string/Msg" android:id="@+id/TextViewMsg03"
+		<TextView android:text="@string/MsgUser3" android:id="@+id/TextViewMsg03"
 			android:layout_width="wrap_content" android:layout_height="fill_parent"
 			android:layout_centerInParent="true" android:background="@color/green"
 			android:textColor="@color/black" android:layout_margin="4px"
 			android:layout_weight="1">
 		</TextView>
-		<TextView android:text="@string/Msg" android:id="@+id/TextViewMsg04"
+		<TextView android:text="@string/MsgUser1" android:id="@+id/TextViewMsg04"
 			android:layout_width="fill_parent" android:layout_height="fill_parent"
 			android:layout_centerInParent="true" android:background="@color/green"
 			android:textColor="@color/black" android:layout_margin="4px"
 			android:layout_weight="1">
 		</TextView>
 	</TableLayout>
+		<TableLayout android:id="@+id/TableLayoutMsgUser1"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:background="@color/white" >
+		<TextView android:text="@string/MsgUser1" android:id="@+id/TextViewMsg01"
+			android:layout_width="wrap_content" android:layout_height="fill_parent"
+			android:layout_centerInParent="true" android:background="@color/green"
+			android:textColor="@color/black" android:layout_margin="4px"
+			android:layout_weight="1">
+		</TextView>
+
+		<TextView android:text="@string/MsgUser1" android:id="@+id/TextViewMsg04"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:layout_centerInParent="true" android:background="@color/green"
+			android:textColor="@color/black" android:layout_margin="4px"
+			android:layout_weight="1">
+		</TextView>
+	</TableLayout>
+		<TableLayout android:id="@+id/TableLayoutMsgUser2"
+		android:layout_width="fill_parent" android:layout_height="fill_parent"
+		android:background="@color/white" >
+
+		<TextView android:text="@string/MsgUser2" android:id="@+id/TextViewMsg02"
+			android:layout_width="wrap_content" android:layout_height="fill_parent"
+			android:layout_centerInParent="true" android:background="@color/green"
+			android:textColor="@color/black" android:layout_margin="4px"
+			android:layout_weight="1">
+		</TextView>
+		
+	</TableLayout>
+	</FrameLayout>
 	<LinearLayout android:id="@+id/LinearLayoutBottom"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:background="@color/white" android:shrinkColumns="0"
-		xmlns:android="http://schemas.android.com/apk/res/android">
+		android:background="@color/white" >
 		<Button android:text="@string/all" android:id="@+id/BtnAllMsg"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:layout_weight="1">
@@ -69,4 +102,5 @@
 			android:layout_weight="1">
 		</Button>
 	</LinearLayout>
+	
 </LinearLayout>

@@ -193,7 +193,14 @@ public class MainActivity extends Activity implements SiteListener {
 					@Override
 					public void onClick(View v) {
 						//todo
-					}
+							Intent intentSet = new Intent(MainActivity.this,
+						SetActivity.class);
+				MainActivity.this.startActivity(intentSet);
+				MainActivity.this.overridePendingTransition(
+						android.R.anim.slide_in_left,
+						android.R.anim.slide_out_right);
+			}
+					
 				});
 		findViewById(R.id.BtnUser1Msg).setOnClickListener(
 				new OnClickListener() {
@@ -255,4 +262,50 @@ public class MainActivity extends Activity implements SiteListener {
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
+
 }
+/*标签制作，未完成
+import android.widget.TabHost; 
+import android.app.TabActivity;
+
+public class MainActivity extends TabActivity implements SiteListener {
+
+private TabHost myTabhost;
+
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		myTabhost = this.getTabHost();
+        LayoutInflater.from(this).inflate(R.layout.main, myTabhost.getTabContentView(), false);
+        myTabhost.addTab(
+        		myTabhost.newTabSpec("All")
+        		.setIndicator("All")
+        		.setContent(R.id.TableLayoutMsgAll)
+        		); 
+        myTabhost.addTab(
+        		myTabhost.newTabSpec("User1")
+        		.setIndicator("User1")
+        		.setContent(R.id.TableLayoutMsgUser1)
+        		);
+        myTabhost.addTab(
+        		myTabhost.newTabSpec("User2")
+        		.setIndicator("User2")
+        		.setContent(R.id.TableLayoutMsgUser2)
+        		);        
+onlongtouchevent进入配置页面未完成
+	  @Override public boolean onTouchEvent(MotionEvent event) {
+	  switch(event.getAction()){ case MotionEvent.ACTION_DOWN:
+	  
+	  break; case MotionEvent.ACTION_MOVE:
+	  
+	  break; case MotionEvent.ACTION_UP:
+	  
+	  break; } return super.onTouchEvent(event); }
+	 
+
+     
+     
+     }
+}
+
+
+*/
