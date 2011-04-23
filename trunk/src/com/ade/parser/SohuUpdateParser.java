@@ -59,44 +59,35 @@ public class SohuUpdateParser extends Parser {
 		    "contributors_enabled":false},}}
 			…]
 		 */
-		JSONArray blogs=new JSONArray(in);
-		if (blogs!=null){
-			for(int i=0;i<blogs.length();i++){
-				JSONObject blog=blogs.getJSONObject(i);
-				if (blog!=null){
-					Blog newBlog=new Blog();
-					newBlog.setCreatedAt(new Date(blog.getString("created_at")));
-					newBlog.setID(blog.getLong("id"));
-					newBlog.setText(blog.getString("text"));
-					
-					//User数据部分
-					User blogUser=new User();
-					JSONObject user=blog.getJSONObject("user");
-					blogUser.setID(user.getLong("id"));
-					blogUser.setScreenName(user.getString("screen_name"));
-					blogUser.setName(user.getString("name"));
-					blogUser.setLocation(user.getString("location"));
-					blogUser.setDescription(user.getString("description"));
-					blogUser.setUrl(user.getString("url"));
-					blogUser.setProfileImageUrl(user.getString("profile_image_url"));
-					blogUser.setFollowersCount(user.getLong("user.getBoolean"));
-					blogUser.setFriendsCount(user.getLong("friendscount"));
-					blogUser.setCreatedAt(new Date(user.getString("created_at")));
-					blogUser.setVerified(user.getBoolean("verified"));
-					newBlog.setUser(blogUser);
-					
-					//转发微博部分
-					Blog retweetedBlog=new Blog();
-					retweetedBlog.setID(blog.getLong("in_reply_to_status_id"));
-					retweetedBlog.setText(blog.getString("in_reply_to_status_text"));
-					User retweetedUser=new User();
-					retweetedUser.setID(user.getLong("in_reply_to_user_id"));
-					retweetedUser.setScreenName(user.getString("in_reply_to_screen_name"));
-					newBlog.setRetweetedBlog(retweetedBlog);
-					
-					site.getBlogs().add(newBlog);
-				}
-			}
+		JSONObject blog=new JSONObject(in);
+		if (blog!=null){
+			Blog newBlog=new Blog();
+			newBlog.setCreatedAt(new Date(blog.getString("created_at")));
+			newBlog.setID(blog.getLong("id"));
+			newBlog.setText(blog.getString("text"));
+			newBlog.setInReplyToStatusID(blog.getLong("in_reply_to_status_id"));
+			newBlog.setInReplyToUserID(blog.getLong("in_reply_to_user_id"));
+			newBlog.setInReplyToScreenName(blog.getString("in_reply_to_screen_name"));
+			newBlog.setInReplyToStatusText(blog.getString("in_reply_to_status_text"));
+			
+			//User数据部分
+			User blogUser=new User();
+			JSONObject user=blog.getJSONObject("user");
+			blogUser.setID(user.getLong("id"));
+			blogUser.setScreenName(user.getString("screen_name"));
+			blogUser.setName(user.getString("name"));
+			blogUser.setLocation(user.getString("location"));
+			blogUser.setDescription(user.getString("description"));
+			blogUser.setUrl(user.getString("url"));
+			blogUser.setProfileImageUrl(user.getString("profile_image_url"));
+			blogUser.setFollowersCount(user.getLong("followers_count"));
+			blogUser.setFriendsCount(user.getLong("friendscount"));
+			blogUser.setCreatedAt(new Date(user.getString("created_at")));
+			blogUser.setVerified(user.getBoolean("verified"));
+			newBlog.setUser(blogUser);
+
+
+			site.getBlogs().add(newBlog);
 		}
 		return false;
 	}

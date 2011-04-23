@@ -67,6 +67,9 @@ public class SohuFriendsTimelineParser extends Parser {
 					newBlog.setCreatedAt(new Date(blog.getString("created_at")));
 					newBlog.setID(blog.getLong("id"));
 					newBlog.setText(blog.getString("text"));
+					newBlog.setInReplyToStatusID(blog.getLong("in_reply_to_status_id"));
+					newBlog.setInReplyToUserID(blog.getLong("in_reply_to_user_id"));
+					newBlog.setInReplyToScreenName(blog.getString("in_reply_to_screen_name"));
 					
 					//User数据部分
 					User blogUser=new User();
@@ -78,19 +81,11 @@ public class SohuFriendsTimelineParser extends Parser {
 					blogUser.setDescription(user.getString("description"));
 					blogUser.setUrl(user.getString("url"));
 					blogUser.setProfileImageUrl(user.getString("profile_image_url"));
-					blogUser.setFollowersCount(user.getLong("user.getBoolean"));
+					blogUser.setFollowersCount(user.getLong("followers_count"));
 					blogUser.setFriendsCount(user.getLong("friendscount"));
 					blogUser.setCreatedAt(new Date(user.getString("created_at")));
 					blogUser.setVerified(user.getBoolean("verified"));
 					newBlog.setUser(blogUser);
-					
-					//转发微博部分
-					Blog retweetedBlog=new Blog();
-					retweetedBlog.setID(blog.getLong("in_reply_to_status_id"));
-					User retweetedUser=new User();
-					retweetedUser.setID(user.getLong("in_reply_to_user_id"));
-					retweetedUser.setScreenName(user.getString("in_reply_to_screen_name"));
-					newBlog.setRetweetedBlog(retweetedBlog);
 					
 					site.getBlogs().add(newBlog);
 				}
