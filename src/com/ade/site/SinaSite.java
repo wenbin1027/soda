@@ -1,8 +1,13 @@
 package com.ade.site;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
+import org.json.JSONException;
 
 import com.ade.parser.Parser;
 
@@ -37,6 +42,33 @@ public class SinaSite extends Site {
 			return;
 		}
 		isLoggedIn=true;
+		
+		if (parser!=null){
+			try {
+				BufferedReader reader = new BufferedReader(
+						new InputStreamReader(entity.getContent(), "UTF-8")); 
+				StringBuilder builder = new StringBuilder(); 
+				for (String line = null; (line = reader.readLine()) != null;) {
+					builder.append(line).append("\n"); 
+				} 
+				entity.consumeContent();
+				parser.parse(builder.toString(), this);
+				builder=null;
+				reader.close();
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+				onError("数据解析出错",parser);
+				return;				
+			} catch (JSONException e) {
+				e.printStackTrace();
+				onError("数据解析出错",parser);
+				return;				
+			} catch (IOException e) {
+				e.printStackTrace();
+				onError("数据解析出错",parser);
+				return;				
+			}
+		}
 		
 		notifyResponse();
 	}
