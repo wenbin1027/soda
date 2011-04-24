@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import java.util.SortedSet;
 
 import org.apache.http.HttpEntity;
@@ -31,6 +32,7 @@ import org.apache.http.params.HttpParams;
 
 import com.ade.restapi.FriendsTimelineInterface;
 import com.ade.restapi.SinaFriendsTimeline;
+import com.ade.site.Blog;
 import com.ade.site.OAuth;
 import com.ade.site.SinaSite;
 import com.ade.site.SiteListener;
@@ -95,6 +97,10 @@ public class MainActivity extends Activity implements SiteListener {
 				Toast.makeText(MainActivity.this, "测试成功", Toast.LENGTH_LONG)
 						.show();
 				Log.i(TAG, "测试成功");
+				Set<Blog> blogs=site.getBlogs();
+				for(Blog blog:blogs){
+					System.out.println(blog);
+				}
 				break;
 			}
 			return false;
@@ -115,12 +121,12 @@ public class MainActivity extends Activity implements SiteListener {
 			@Override
 			public void onClick(View v) {
 
-				Intent intentWrite = new Intent(MainActivity.this,
-						WriteActivity.class);
-				MainActivity.this.startActivity(intentWrite);
-				MainActivity.this.overridePendingTransition(
-						android.R.anim.slide_in_left,
-						android.R.anim.slide_out_right);
+//				Intent intentWrite = new Intent(MainActivity.this,
+//						WriteActivity.class);
+//				MainActivity.this.startActivity(intentWrite);
+//				MainActivity.this.overridePendingTransition(
+//						android.R.anim.slide_in_left,
+//						android.R.anim.slide_out_right);
 			
 				lastClickedView=v;
 				//使用说明：通过如下代码可以进行发送微博的测试。首先会出现授权界面，授权后再点此按钮即可发送微博了。
@@ -133,7 +139,7 @@ public class MainActivity extends Activity implements SiteListener {
 
 				user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
 				site.logIn(user);
-				site.friendsTimeline();
+				site.friendsTimeline(10,1);
 
 				// site.updateText("上传微博");
 				// site.uploadImage("/data/data/com.ade.soda/10697.jpg","微博测试vv");

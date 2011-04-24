@@ -15,7 +15,6 @@ public class User implements Serializable{
 	private Date createdAt;
 	private String description;
 	private long followersCount;
-	private long friendsCount;
 	private String gender;
 	private long ID;
 	private String location;
@@ -85,10 +84,6 @@ public class User implements Serializable{
 		return followersCount;
 	}
 
-	public long getFriendsCount(){
-		return friendsCount;
-	}
-
 	public String getGender(){
 		return gender;
 	}
@@ -133,10 +128,6 @@ public class User implements Serializable{
 		this.followersCount = followersCount;
 	}
 
-	public void setFriendsCount(long friendsCount) {
-		this.friendsCount = friendsCount;
-	}
-
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
@@ -171,6 +162,18 @@ public class User implements Serializable{
 
 	public boolean isVerified(){
 		return verified;
+	}
+
+	@Override
+	public String toString() {
+		return "User [ID=" + ID + ", accessSecret=" + accessSecret
+				+ ", accessToken=" + accessToken + ", blogs=" + blogs
+				+ ", createdAt=" + createdAt + ", description=" + description
+				+ ", followersCount=" + followersCount 
+				+ ", gender=" + gender + ", location="
+				+ location + ", name=" + name + ", profileImageUrl="
+				+ profileImageUrl + ", screenName=" + screenName + ", url="
+				+ url + ", verified=" + verified + "]";
 	}
 
 }

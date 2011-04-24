@@ -120,15 +120,27 @@ public class Blog implements Serializable,Comparable<Blog>{
 		if (another instanceof Blog || another==null){
 			Blog blog=(Blog)another;
 			if (this.ID>blog.ID)
-				return 1;
-			else if (this.ID<blog.ID)
 				return -1;
+			else if (this.ID<blog.ID)
+				return 1;
 			else
 				return 0;
 		}
 		else{
 			return 0;
 		}
+	}
+
+	@Override
+	public String toString() {
+		return "Blog [ID=" + ID + ", InReplyToScreenName="
+				+ InReplyToScreenName + ", InReplyToStatusID="
+				+ InReplyToStatusID + ", InReplyToStatusText="
+				+ InReplyToStatusText + ", InReplyToUserID=" + InReplyToUserID
+				+ ", MiddlePic=" + MiddlePic + ", OriginalPic=" + OriginalPic
+				+ ", SmallPic=" + SmallPic + ", createdAt=" + createdAt
+				+ ", retweetedBlog=" + retweetedBlog + ", site=" + site
+				+ ", text=" + text + ", user=" + user + "]";
 	}
 
 }
