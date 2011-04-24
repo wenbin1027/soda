@@ -22,7 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-/**本例供测试SOHU微博的好友列表功能，供参考
+/**本例供测试微博的好友列表功能，供参考
  * @author Administrator
  *
  */
@@ -34,7 +34,7 @@ implements SiteListener{
 	private final int END = 2;
 	private User user = new User();
 	private Site site;
-	private int currentSite = SiteManager.SOHU;
+	private int currentSite = SiteManager.SINA;
 	private ListView listView;
 	private Dialog progressDlg;
 	private int blogPage=0;
@@ -106,8 +106,13 @@ implements SiteListener{
 		SiteManager.getInstance().loadSites();
 		site = SiteManager.getInstance().getSites().get(currentSite);
 		site.addListener(TestFriendsTimelineActivity.this);
-		user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");  
-		user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
+		//user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");  
+		//user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
+		
+		//SINA token
+		user.setAccessToken("4207a6817f50785a07f456da1f4d20b7");  
+		user.setAccessSecret("751c76001bcef5b3c225dbd942c33eaa");
+		
 		site.logIn(user);
 		blogPage=0;
 		site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);

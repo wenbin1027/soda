@@ -64,7 +64,7 @@ public class MainActivity extends Activity implements SiteListener {
 	private final int TESTOK = 1;
 	private User user = new User();
 	private Site site;
-	private int currentSite = SiteManager.SOHU; // 测试时注意修改此处为要测的网站
+	private int currentSite = SiteManager.SINA; // 测试时注意修改此处为要测的网站
 	private View lastClickedView;
 
 	private ResponseHandler<String> handler = new ResponseHandler<String>() {
@@ -130,14 +130,14 @@ public class MainActivity extends Activity implements SiteListener {
 			
 				lastClickedView=v;
 				//使用说明：通过如下代码可以进行发送微博的测试。首先会出现授权界面，授权后再点此按钮即可发送微博了。
-				//site.updateText("微博测试nancy,second");
+				site.updateText("微博测试nancy,third");
 				//若嫌授权麻烦，则可在第一次授权后在LogCat中找到TOKEN和SECRET的日志：
 				//04-19 03:38:52.266: INFO/OAuthActivity(1841): TOKEN=46b571ca341cfeb4737f419ed4ce0392  SECRET=920143c011048ab9e4c8904440e7ed1a
 				//然后使用如下代码.
 				//注意这里的TOKEN和SECRET对不同的用户名是不一样的，请仔细使用
-				user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");  
+				//user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");  
 
-				user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
+				//user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
 				site.logIn(user);
 				site.friendsTimeline(10,1);
 
