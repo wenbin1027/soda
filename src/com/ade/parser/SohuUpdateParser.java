@@ -81,13 +81,12 @@ public class SohuUpdateParser extends Parser {
 			blogUser.setUrl(user.getString("url"));
 			blogUser.setProfileImageUrl(user.getString("profile_image_url"));
 			blogUser.setFollowersCount(user.getLong("followers_count"));
-			blogUser.setFriendsCount(user.getLong("friendscount"));
 			blogUser.setCreatedAt(new Date(user.getString("created_at")));
 			blogUser.setVerified(user.getBoolean("verified"));
 			newBlog.setUser(blogUser);
 
 
-			site.getBlogs().add(newBlog);
+			site.addBlog(newBlog);
 		}
 		return false;
 	}

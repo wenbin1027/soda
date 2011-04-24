@@ -1,6 +1,7 @@
 package com.ade.site;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -107,11 +108,11 @@ public abstract class Site implements IHttpListener{
 		this.uploadInterface = uploadInterface;
 	}
 
-	public void friendsTimeline(){
+	public void friendsTimeline(int count,int page){
 		if (friendsTimeline!=null){
 			httpNet=new HttpNet();
 			httpNet.setListener(this);
-			httpNet.request(friendsTimeline.getRequest(10, -1, this),friendsTimeline.getParser());
+			httpNet.request(friendsTimeline.getRequest(count, page, this),friendsTimeline.getParser());
 		}
 	}
 
@@ -147,6 +148,38 @@ public abstract class Site implements IHttpListener{
 	public Set<Blog> getBlogs(){
 		return blogs;
 	}
+	
+	public long getBlogsCount(){
+		return blogs.size();
+	}
+	
+	public void addBlog(Blog blog){
+		blogs.add(blog);
+	}
+	
+	public void removeBlog(Blog blog){
+		blogs.remove(blog);
+	}
+	
+	public Blog getBlogById(long blogID){
+		Iterator<Blog> iterator=blogs.iterator();
+		Blog ret=null;
+		while(iterator.hasNext()){
+			ret=iterator.next();
+			if (ret.getID()==blogID){
+				break;
+			}
+		}
+		return ret;
+	}
+	
+	public Iterator<Blog> getBlogsIterator(){
+		return blogs.iterator();
+	}
+	
+	public void clearBlogs(){
+		blogs.clear();
+	}
 
 	public User getLoggedInUser(){
 		if (isLoggedIn)
@@ -174,7 +207,6 @@ public abstract class Site implements IHttpListener{
 	 */
 	public void logIn(User user){
 		this.loggedInUser=user;
-		//friendsTimeline();
 	}
 
 	/**

@@ -73,11 +73,11 @@ public class HttpNet {
 		new Thread(new Runnable(){
 			@Override
 			public void run() {
+				notifyBegin();
 				HttpNet.this.request.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE,
 						false);  //消除握手
 				try {
 					client.execute(HttpNet.this.request, responseHandler);
-					notifyBegin();
 				} catch (ClientProtocolException e) {
 					e.printStackTrace();
 					notifyError("Client Protocol ERROR!");

@@ -56,8 +56,6 @@ public class SohuFriendsTimelineParser extends Parser {
 			…]
 		*/
 
-		//JSONTokener tokener=new JSONTokener(in);
-		//JSONArray blogs = (JSONArray) tokener.nextValue();
 		JSONArray blogs=new JSONArray(in);
 		if (blogs!=null){
 			for(int i=0;i<blogs.length();i++){
@@ -67,9 +65,10 @@ public class SohuFriendsTimelineParser extends Parser {
 					newBlog.setCreatedAt(new Date(blog.getString("created_at")));
 					newBlog.setID(blog.getLong("id"));
 					newBlog.setText(blog.getString("text"));
-					newBlog.setInReplyToStatusID(blog.getLong("in_reply_to_status_id"));
-					newBlog.setInReplyToUserID(blog.getLong("in_reply_to_user_id"));
-					newBlog.setInReplyToScreenName(blog.getString("in_reply_to_screen_name"));
+					newBlog.setInReplyToStatusID(blog.optLong("in_reply_to_status_id"));
+					newBlog.setInReplyToUserID(blog.optLong("in_reply_to_user_id"));
+					newBlog.setInReplyToScreenName(blog.optString("in_reply_to_screen_name"));
+					newBlog.setInReplyToStatusText(blog.optString("in_reply_to_status_text"));
 					
 					//User数据部分
 					User blogUser=new User();
@@ -82,12 +81,11 @@ public class SohuFriendsTimelineParser extends Parser {
 					blogUser.setUrl(user.getString("url"));
 					blogUser.setProfileImageUrl(user.getString("profile_image_url"));
 					blogUser.setFollowersCount(user.getLong("followers_count"));
-					blogUser.setFriendsCount(user.getLong("friendscount"));
 					blogUser.setCreatedAt(new Date(user.getString("created_at")));
 					blogUser.setVerified(user.getBoolean("verified"));
 					newBlog.setUser(blogUser);
 					
-					site.getBlogs().add(newBlog);
+					site.addBlog(newBlog);
 				}
 			}
 		}
