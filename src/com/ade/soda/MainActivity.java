@@ -97,8 +97,8 @@ public class MainActivity extends Activity implements SiteListener {
 				Toast.makeText(MainActivity.this, "测试成功", Toast.LENGTH_LONG)
 						.show();
 				Log.i(TAG, "测试成功");
-				Set<Blog> blogs=site.getBlogs();
-				for(Blog blog:blogs){
+				Set<Blog> blogs = site.getBlogs();
+				for (Blog blog : blogs) {
 					System.out.println(blog);
 				}
 				break;
@@ -121,39 +121,41 @@ public class MainActivity extends Activity implements SiteListener {
 			@Override
 			public void onClick(View v) {
 
-//				Intent intentWrite = new Intent(MainActivity.this,
-//						WriteActivity.class);
-//				MainActivity.this.startActivity(intentWrite);
-//				MainActivity.this.overridePendingTransition(
-//						android.R.anim.slide_in_left,
-//						android.R.anim.slide_out_right);
-			
-				lastClickedView=v;
-				//使用说明：通过如下代码可以进行发送微博的测试。首先会出现授权界面，授权后再点此按钮即可发送微博了。
-				site.updateText("微博测试nancy,third");
-				//若嫌授权麻烦，则可在第一次授权后在LogCat中找到TOKEN和SECRET的日志：
-				//04-19 03:38:52.266: INFO/OAuthActivity(1841): TOKEN=46b571ca341cfeb4737f419ed4ce0392  SECRET=920143c011048ab9e4c8904440e7ed1a
-				//然后使用如下代码.
-				//注意这里的TOKEN和SECRET对不同的用户名是不一样的，请仔细使用
-				//user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");  
+				// Intent intentWrite = new Intent(MainActivity.this,
+				// WriteActivity.class);
+				// MainActivity.this.startActivity(intentWrite);
+				// MainActivity.this.overridePendingTransition(
+				// android.R.anim.slide_in_left,
+				// android.R.anim.slide_out_right);
 
-				//user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
+				lastClickedView = v;
+				// 使用说明：通过如下代码可以进行发送微博的测试。首先会出现授权界面，授权后再点此按钮即可发送微博了。
+				site.updateText("微博测试nancy,third");
+				// 若嫌授权麻烦，则可在第一次授权后在LogCat中找到TOKEN和SECRET的日志：
+				// 04-19 03:38:52.266: INFO/OAuthActivity(1841):
+				// TOKEN=46b571ca341cfeb4737f419ed4ce0392
+				// SECRET=920143c011048ab9e4c8904440e7ed1a
+				// 然后使用如下代码.
+				// 注意这里的TOKEN和SECRET对不同的用户名是不一样的，请仔细使用
+				// user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");
+
+				// user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
 				site.logIn(user);
-				site.friendsTimeline(10,1);
+				site.friendsTimeline(10, 1);
 
 				// site.updateText("上传微博");
 				// site.uploadImage("/data/data/com.ade.soda/10697.jpg","微博测试vv");
 				// 注意要先将欲上传的图片PUSH到模拟器对应的路径下
 
-				//site.updateText("上传微博");
-//				try {
-//					site.uploadImage("/data/data/com.ade.soda/10697.jpg","微博测试");
-//				} catch (Exception e) {
-//					// TODO Auto-generated catch block
-//					e.printStackTrace();
-//					Log.i(TAG,"pic file not found." );
-//				}
-				//注意要先将欲上传的图片PUSH到模拟器对应的路径下
+				// site.updateText("上传微博");
+				// try {
+				// site.uploadImage("/data/data/com.ade.soda/10697.jpg","微博测试");
+				// } catch (Exception e) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// Log.i(TAG,"pic file not found." );
+				// }
+				// 注意要先将欲上传的图片PUSH到模拟器对应的路径下
 
 			}
 		});
@@ -194,41 +196,55 @@ public class MainActivity extends Activity implements SiteListener {
 						MainActivity.this.startActivity(intentRE);
 					}
 				});
-		findViewById(R.id.BtnAllMsg).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						//todo
-							Intent intentSet = new Intent(MainActivity.this,
-						SetActivity.class);
-				MainActivity.this.startActivity(intentSet);
-				MainActivity.this.overridePendingTransition(
-						android.R.anim.slide_in_left,
-						android.R.anim.slide_out_right);
+		findViewById(R.id.BtnAllMsg).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// todo
+				findViewById(R.id.TableLayoutMsgAll)
+						.setVisibility(View.VISIBLE);
+				findViewById(R.id.TableLayoutMsgUser1).setVisibility(View.GONE);
+				findViewById(R.id.TableLayoutMsgUser2).setVisibility(View.GONE);
 			}
-					
-				});
+
+		});
 		findViewById(R.id.BtnUser1Msg).setOnClickListener(
 				new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						//todo
+						// todo
+						findViewById(R.id.TableLayoutMsgAll).setVisibility(
+								View.GONE);
+						findViewById(R.id.TableLayoutMsgUser1).setVisibility(
+								View.VISIBLE);
+						findViewById(R.id.TableLayoutMsgUser2).setVisibility(
+								View.GONE);
 					}
 				});
 		findViewById(R.id.BtnUser2Msg).setOnClickListener(
 				new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						//todo
+						// todo
+						findViewById(R.id.TableLayoutMsgAll).setVisibility(
+								View.GONE);
+						findViewById(R.id.TableLayoutMsgUser1).setVisibility(
+								View.GONE);
+						findViewById(R.id.TableLayoutMsgUser2).setVisibility(
+								View.VISIBLE);
 					}
 				});
-		findViewById(R.id.BtnUserMore).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						//todo
-					}
-				});
+		findViewById(R.id.BtnSet).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				// todo
+				Intent intentSet = new Intent(MainActivity.this,
+						SetActivity.class);
+				MainActivity.this.startActivity(intentSet);
+				MainActivity.this.overridePendingTransition(
+						android.R.anim.slide_in_left,
+						android.R.anim.slide_out_right);
+			}
+		});
 	}
 
 	@Override
@@ -270,48 +286,35 @@ public class MainActivity extends Activity implements SiteListener {
 	}
 
 }
-/*标签制作，未完成
-import android.widget.TabHost; 
-import android.app.TabActivity;
-
-public class MainActivity extends TabActivity implements SiteListener {
-
-private TabHost myTabhost;
-
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		myTabhost = this.getTabHost();
-        LayoutInflater.from(this).inflate(R.layout.main, myTabhost.getTabContentView(), false);
-        myTabhost.addTab(
-        		myTabhost.newTabSpec("All")
-        		.setIndicator("All")
-        		.setContent(R.id.TableLayoutMsgAll)
-        		); 
-        myTabhost.addTab(
-        		myTabhost.newTabSpec("User1")
-        		.setIndicator("User1")
-        		.setContent(R.id.TableLayoutMsgUser1)
-        		);
-        myTabhost.addTab(
-        		myTabhost.newTabSpec("User2")
-        		.setIndicator("User2")
-        		.setContent(R.id.TableLayoutMsgUser2)
-        		);        
-onlongtouchevent进入配置页面未完成
-	  @Override public boolean onTouchEvent(MotionEvent event) {
-	  switch(event.getAction()){ case MotionEvent.ACTION_DOWN:
-	  
-	  break; case MotionEvent.ACTION_MOVE:
-	  
-	  break; case MotionEvent.ACTION_UP:
-	  
-	  break; } return super.onTouchEvent(event); }
-	 
-
-     
-     
-     }
-}
-
-
-*/
+/*
+ * 标签制作，未完成 import android.widget.TabHost; import android.app.TabActivity;
+ * 
+ * public class MainActivity extends TabActivity implements SiteListener {
+ * 
+ * private TabHost myTabhost;
+ * 
+ * public void onCreate(Bundle savedInstanceState) {
+ * super.onCreate(savedInstanceState); myTabhost = this.getTabHost();
+ * LayoutInflater.from(this).inflate(R.layout.main,
+ * myTabhost.getTabContentView(), false); myTabhost.addTab(
+ * myTabhost.newTabSpec("All") .setIndicator("All")
+ * .setContent(R.id.TableLayoutMsgAll) ); myTabhost.addTab(
+ * myTabhost.newTabSpec("User1") .setIndicator("User1")
+ * .setContent(R.id.TableLayoutMsgUser1) ); myTabhost.addTab(
+ * myTabhost.newTabSpec("User2") .setIndicator("User2")
+ * .setContent(R.id.TableLayoutMsgUser2) ); onlongtouchevent进入配置页面未完成
+ * 
+ * @Override public boolean onTouchEvent(MotionEvent event) {
+ * switch(event.getAction()){ case MotionEvent.ACTION_DOWN:
+ * 
+ * break; case MotionEvent.ACTION_MOVE:
+ * 
+ * break; case MotionEvent.ACTION_UP:
+ * 
+ * break; } return super.onTouchEvent(event); }
+ * 
+ * 
+ * 
+ * 
+ * } }
+ */

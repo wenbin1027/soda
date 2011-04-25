@@ -26,7 +26,7 @@
     android:layout_weight="1">
 	<TableLayout android:id="@+id/TableLayoutMsgAll"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:background="@color/white" >
+		android:background="@color/white" android:visibility="visible">
 		<TextView android:text="@string/MsgUser1" android:id="@+id/TextViewMsg01"
 			android:layout_width="wrap_content" android:layout_height="fill_parent"
 			android:layout_centerInParent="true" android:background="@color/green"
@@ -54,7 +54,7 @@
 	</TableLayout>
 		<TableLayout android:id="@+id/TableLayoutMsgUser1"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:background="@color/white" >
+		android:background="@color/white" android:visibility="invisible">
 		<TextView android:text="@string/MsgUser1" android:id="@+id/TextViewMsg01"
 			android:layout_width="wrap_content" android:layout_height="fill_parent"
 			android:layout_centerInParent="true" android:background="@color/green"
@@ -71,7 +71,7 @@
 	</TableLayout>
 		<TableLayout android:id="@+id/TableLayoutMsgUser2"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:background="@color/white" >
+		android:background="@color/white" android:visibility="invisible">
 
 		<TextView android:text="@string/MsgUser2" android:id="@+id/TextViewMsg02"
 			android:layout_width="wrap_content" android:layout_height="fill_parent"
@@ -97,7 +97,7 @@
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:layout_weight="1">
 		</Button>
-		<Button android:text="@string/usermore" android:id="@+id/BtnUserMore"
+		<Button android:text="@string/set" android:id="@+id/BtnSet"
 			android:layout_width="wrap_content" android:layout_height="wrap_content"
 			android:layout_weight="1">
 		</Button>
