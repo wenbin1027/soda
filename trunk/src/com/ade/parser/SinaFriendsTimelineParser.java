@@ -121,41 +121,39 @@ public class SinaFriendsTimelineParser extends Parser {
 					//newBlog.setInReplyToStatusText(blog.optString("in_reply_to_status_text"));
 					
 					//Get Retweeted BLOG. Retweeted Blog is optional for this response
-					try {
+					boolean hasRetweeted ;
+					hasRetweeted = blog.has("retweeted_status");
+					if ( hasRetweeted ){
 						JSONObject retBlog;
 						retBlog = blog.getJSONObject("retweeted_status");
-						if (retBlog !=null){
-							Blog myRetBlog = new Blog();
-							myRetBlog.setCreatedAt(new Date(retBlog.getString("created_at")));
-							myRetBlog.setID(retBlog.getLong("id"));
-							myRetBlog.setText(retBlog.getString("text"));
-							myRetBlog.setInReplyToStatusID(retBlog.optLong("in_reply_to_status_id"));
-							myRetBlog.setInReplyToUserID(retBlog.optLong("in_reply_to_user_id"));
-							myRetBlog.setInReplyToScreenName(retBlog.optString("in_reply_to_screen_name"));
+						Blog myRetBlog = new Blog();
+						myRetBlog.setCreatedAt(new Date(retBlog.getString("created_at")));
+						myRetBlog.setID(retBlog.getLong("id"));
+						myRetBlog.setText(retBlog.getString("text"));
+						myRetBlog.setInReplyToStatusID(retBlog.optLong("in_reply_to_status_id"));
+						myRetBlog.setInReplyToUserID(retBlog.optLong("in_reply_to_user_id"));
+						myRetBlog.setInReplyToScreenName(retBlog.optString("in_reply_to_screen_name"));
 							
-							//retweeted user data
-							User myRetUser = new User();
-							JSONObject retUser=retBlog.getJSONObject("user");
-							myRetUser.setID(retUser.getLong("id"));
-							myRetUser.setScreenName(retUser.getString("screen_name"));
-							myRetUser.setName(retUser.getString("name"));
-							myRetUser.setLocation(retUser.getString("location"));
-							myRetUser.setDescription(retUser.getString("description"));
-							myRetUser.setUrl(retUser.getString("url"));
-							myRetUser.setProfileImageUrl(retUser.getString("profile_image_url"));
-							myRetUser.setFollowersCount(retUser.getLong("followers_count"));
-							myRetUser.setCreatedAt(new Date(retUser.getString("created_at")));
-							myRetUser.setVerified(retUser.getBoolean("verified"));
+						//retweeted user data
+						User myRetUser = new User();
+						JSONObject retUser=retBlog.getJSONObject("user");
+						myRetUser.setID(retUser.getLong("id"));
+						myRetUser.setScreenName(retUser.getString("screen_name"));
+						myRetUser.setName(retUser.getString("name"));
+						myRetUser.setLocation(retUser.getString("location"));
+						myRetUser.setDescription(retUser.getString("description"));
+						myRetUser.setUrl(retUser.getString("url"));
+						myRetUser.setProfileImageUrl(retUser.getString("profile_image_url"));
+						myRetUser.setFollowersCount(retUser.getLong("followers_count"));
+						myRetUser.setCreatedAt(new Date(retUser.getString("created_at")));
+						myRetUser.setVerified(retUser.getBoolean("verified"));
 							
-							myRetBlog.setUser(myRetUser);
+						myRetBlog.setUser(myRetUser);
 							
-							newBlog.setRetweetedBlog(myRetBlog);
+						newBlog.setRetweetedBlog(myRetBlog);
 							
-						}
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
 					}
+					
 					
 					
 					
