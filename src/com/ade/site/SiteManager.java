@@ -16,11 +16,6 @@ import com.ade.restapi.SohuFriendsTimeline;
 import com.ade.restapi.SohuUpdate;
 import com.ade.restapi.SohuUpload;
 
-/**
- * @author Administrator
- * @version 1.0
- * @created 10-����-2011 ���� 08:33:52
- */
 public class SiteManager {
 	public static final int SOHU=0;
 	public static final int SINA=1;
@@ -41,6 +36,21 @@ public class SiteManager {
 
 	public List<Site> getSites(){
 		return sites;
+	}
+	
+	public Site getSite(int siteType){
+		if (sites.isEmpty()){
+			return null;
+		}
+		if (siteType==SOHU){
+			return sites.get(SOHU);
+		}
+		else if (siteType==SINA){
+			return sites.get(SINA);
+		}
+		else{
+			return null;
+		}
 	}
 
 	public boolean loadSites(){
