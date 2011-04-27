@@ -171,20 +171,15 @@ public class OAuth implements IHttpListener{
 		webView.getSettings().setDomStorageEnabled(true);
 		webView.setWebViewClient(new WebViewClient(){
 			String url="";
-//			public boolean shouldOverrideUrlLoading (WebView view, String url){
-//				if (url.startsWith(CALLBACKURL)){
-//					return true;
-//				}
-//				return false;
-//			}
-
 			public void onPageStarted (WebView view, String url, Bitmap favicon){
+				System.out.println(url);
 				if (!this.url.equals(url) && url.startsWith(CALLBACKURL)){
 					this.url=url;
 					view.stopLoading();
 					saveAccessToken(url);  //对用户同意授权的回调页面进行处理
 				}				
 			}
+			
 			/**分离用户授权时的临时令牌和密钥
 			 * @param url
 			 */

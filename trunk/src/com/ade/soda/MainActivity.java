@@ -75,7 +75,6 @@ public class MainActivity extends Activity implements SiteListener {
 			HttpResponse res = response;
 			return null;
 		}
-
 	};
 
 	private Handler mainHandler = new Handler(new Handler.Callback() {
@@ -121,14 +120,11 @@ public class MainActivity extends Activity implements SiteListener {
 			@Override
 			public void onClick(View v) {
 
-				// Intent intentWrite = new Intent(MainActivity.this,
-				// WriteActivity.class);
-				// MainActivity.this.startActivity(intentWrite);
-				// MainActivity.this.overridePendingTransition(
-				// android.R.anim.slide_in_left,
-				// android.R.anim.slide_out_right);
+				Intent intentWrite = new Intent(MainActivity.this,WriteActivity.class);
+				intentWrite.putExtra("site", currentSite);
+				MainActivity.this.startActivity(intentWrite);
 
-				lastClickedView = v;
+/*				lastClickedView = v;
 				// 使用说明：通过如下代码可以进行发送微博的测试。首先会出现授权界面，授权后再点此按钮即可发送微博了。
 				site.updateText("微博测试nancy,third");
 				// 若嫌授权麻烦，则可在第一次授权后在LogCat中找到TOKEN和SECRET的日志：
@@ -156,7 +152,7 @@ public class MainActivity extends Activity implements SiteListener {
 				// Log.i(TAG,"pic file not found." );
 				// }
 				// 注意要先将欲上传的图片PUSH到模拟器对应的路径下
-
+*/
 			}
 		});
 		findViewById(R.id.TextViewMsg01).setOnClickListener(
@@ -236,13 +232,10 @@ public class MainActivity extends Activity implements SiteListener {
 		findViewById(R.id.BtnSet).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// todo
 				Intent intentSet = new Intent(MainActivity.this,
 						SetActivity.class);
+				intentSet.putExtra("site", currentSite);
 				MainActivity.this.startActivity(intentSet);
-				MainActivity.this.overridePendingTransition(
-						android.R.anim.slide_in_left,
-						android.R.anim.slide_out_right);
 			}
 		});
 	}
