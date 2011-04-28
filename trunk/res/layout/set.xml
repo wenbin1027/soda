@@ -1,44 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:id="@+id/LinearLayoutSet" android:layout_width="fill_parent"
-	android:layout_height="fill_parent" android:background="@color/blue"
-	android:orientation="vertical">
-	<LinearLayout android:id="@+id/LinearLayoutSetUser"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:orientation="horizontal">
-		<TextView android:text="@string/username" android:id="@+id/TextViewusername"
-			android:layout_height="wrap_content" android:layout_width="fill_parent"
-			android:layout_centerInParent="true" android:background="@color/green"
-			android:layout_weight="1">
-		</TextView>
-		<EditText android:text="@string/enterusername"
-			android:layout_height="wrap_content" android:layout_width="fill_parent"
-			android:id="@+id/enterusername" android:layout_weight="1">
-		</EditText>
-	</LinearLayout>
-	<LinearLayout android:id="@+id/LinearLayoutPwd"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:orientation="horizontal">
-		<TextView android:text="@string/pwd" android:id="@+id/TextViewpwd"
-			android:layout_height="wrap_content" android:layout_width="fill_parent"
-			android:layout_centerInParent="true" android:background="@color/green"
-			android:layout_weight="1">
-		</TextView>
-		<EditText android:text="@string/enterpwd"
-			android:layout_height="wrap_content" android:layout_width="fill_parent"
-			android:id="@+id/enterPwd" android:password="true"
-			android:layout_weight="1">
-		</EditText>
-	</LinearLayout>
-	<RadioGroup android:id="@+id/RadioGroupsever"
-		android:orientation="horizontal" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_gravity="center_horizontal">
-		<RadioButton android:text="@string/sina" android:id="@+id/sina"
-			android:checked="true" android:layout_width="wrap_content"
-			android:layout_height="wrap_content">
-		</RadioButton>
-		<RadioButton android:text="@string/sohu" android:id="@+id/sohu"
-			android:layout_width="wrap_content" android:layout_height="wrap_content">
-		</RadioButton>
-	</RadioGroup>
+<LinearLayout android:id="@+id/LinearLayout01"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android">
+	<ListView android:id="@+id/ListView01" android:layout_height="wrap_content"
+		android:layout_width="fill_parent"></ListView>
 </LinearLayout>
+ 
