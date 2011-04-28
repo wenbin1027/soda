@@ -10,51 +10,46 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;	
-import android.widget.EditText;	
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.Toast;
 
 
 import android.widget.Toast;
 
-public class SetActivity extends Activity implements OnClickListener{
+public class SetActivity extends Activity implements OnItemClickListener{
 	private Site site;  //需要的话就用，不需要就删掉
-	
+	private ListView lView;
+	private	String providerNames[];
+
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.set);
 		Intent intent=getIntent();
 		if (intent!=null){
 			if (intent.hasExtra("site")){  //传进来的是当前site
 				site=SiteManager.getInstance().getSite(intent.getIntExtra("site", -1));
 			}
 		}
-		findViewById(R.id.enterusername).setOnClickListener(this);
-		findViewById(R.id.enterPwd).setOnClickListener(this);
-		findViewById(R.id.sina).setOnClickListener(this);
-		findViewById(R.id.sohu).setOnClickListener(this);
-		}
-	@Override
-	public void onClick(View v) {
-		// TODO Auto-generated method stub
-		switch(v.getId())
-		{
-			case R.id.enterusername:
-				//todo
-				break;
-			case R.id.enterPwd:
-				//todo
-				break;
-			case R.id.sina:
-				//todo
-				break;
-			case R.id.sohu:
-				//todo
-				break;
-			default:
-				break;
-		}
+
+		setContentView(R.layout.set);
+		lView = (ListView) findViewById(R.id.ListView01);
+		this.providerNames = new String[] { getString(R.string.sina), getString(R.string.sohu)};
+		lView.setAdapter(
+			new ArrayAdapter<String>(
+				this, 
+				android.R.layout.simple_list_item_multiple_choice, providerNames
+			)
+		);
+		lView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		lView.setOnItemClickListener(this);
 	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		// TODO Pass the account info to OAuthActivity
+		Toast.makeText(this, this.providerNames[arg2], Toast.LENGTH_LONG).show();
+	}
+
 }
-	
