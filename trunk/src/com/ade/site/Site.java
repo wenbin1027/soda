@@ -37,7 +37,9 @@ public abstract class Site implements IHttpListener{
 	protected String oauthRequestUrl;
 	protected String oauthUrl;
 	protected String oauthAccessUrl;
-
+	protected String proxyHost;
+	protected int proxyPort;
+	
 	public Site() {
 		onConstruct();
 	}
@@ -112,6 +114,9 @@ public abstract class Site implements IHttpListener{
 		if (friendsTimeline!=null){
 			httpNet=new HttpNet();
 			httpNet.setListener(this);
+			if (isProxy()){
+				httpNet.setProxy(proxyHost, proxyPort);
+			}
 			httpNet.request(friendsTimeline.getRequest(count, page, this),friendsTimeline.getParser());
 		}
 	}
@@ -263,5 +268,16 @@ public abstract class Site implements IHttpListener{
 
 	public String getOauthAccessUrl() {
 		return getRootUrl()+oauthAccessUrl;
+	}
+	
+	public void setProxy(String proxyHost,int port){
+		this.proxyHost=proxyHost;
+		this.proxyPort=port;
+	}
+	
+	protected boolean isProxy(){
+		if (proxyHost!=null)
+			return true;
+		return false;
 	}
 }

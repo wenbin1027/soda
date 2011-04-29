@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -14,8 +15,10 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.client.params.AllClientPNames;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.params.HttpParams;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.HttpContext;
 
@@ -32,6 +35,8 @@ public class HttpNet {
 	protected HttpClient client;
 	protected Parser parser;
 	protected HttpUriRequest request;
+	protected String proxyHost;
+	protected int proxyPort;
 
 	protected ResponseHandler<String> responseHandler=new ResponseHandler<String>(){
 		@Override
@@ -76,6 +81,12 @@ public class HttpNet {
 				notifyBegin();
 				HttpNet.this.request.getParams().setBooleanParameter(CoreProtocolPNames.USE_EXPECT_CONTINUE,
 						false);  //消除握手
+				if (isProxy()){
+					HttpParams params=HttpNet.this.request.getParams();
+					HttpHost proxy = new HttpHost(proxyHost,proxyPort);
+					params.setParameter(AllClientPNames.DEFAULT_PROXY, proxy);
+					HttpNet.this.request.setParams(params);
+				}
 				try {
 					client.execute(HttpNet.this.request, responseHandler);
 				} catch (ClientProtocolException e) {
@@ -90,6 +101,17 @@ public class HttpNet {
 
 	}
 	
+	public void setProxy(String proxyHost,int port){
+		this.proxyHost=proxyHost;
+		this.proxyPort=port;
+	}
+	
+	protected boolean isProxy(){
+		if (proxyHost!=null)
+			return true;
+		return false;
+	}
+
 	public void cancel(){
 		if (request!=null){
 			if (!request.isAborted()){
