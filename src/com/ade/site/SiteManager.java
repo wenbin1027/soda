@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.content.Context;
+
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Proxy;
+
 import com.ade.parser.SinaFriendsTimelineParser;
 import com.ade.parser.SinaUpdateParser;
 import com.ade.parser.SohuFriendsTimelineParser;
@@ -23,6 +28,11 @@ public class SiteManager {
 	private List<Site> sites;
 	private Context context;
 
+	private SiteManager(Context context){
+		this.context=context;
+		sites=new ArrayList<Site>(2);
+	}
+	
 	private SiteManager(){
 		sites=new ArrayList<Site>(2);
 	}
@@ -33,7 +43,14 @@ public class SiteManager {
 		}
 		return instance;
 	}
-
+	
+	public static SiteManager getInstance(Context context){
+		if (instance==null){
+			instance=new SiteManager(context);
+		}
+		return instance;
+	}
+	
 	public List<Site> getSites(){
 		return sites;
 	}
@@ -61,6 +78,7 @@ public class SiteManager {
 
 	private Site makeSite(int type){
 		Site site=null;
+
 		switch(type){
 		case SOHU:
 			site=new SohuSite();
@@ -74,6 +92,15 @@ public class SiteManager {
 			site.setUploadInterface(new SinaUpload(new SinaUpdateParser()));
 			site.setFriendsTimeline(new SinaFriendsTimeline(new SinaFriendsTimelineParser()));
 			break;
+		}
+		
+		if (context!=null){
+			ConnectivityManager cm = (ConnectivityManager)context
+			.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo netinfo = cm.getActiveNetworkInfo(); 
+			if(site!=null && netinfo!=null && netinfo.getType()!=ConnectivityManager.TYPE_WIFI){
+				site.setProxy(Proxy.getDefaultHost(), Proxy.getDefaultPort());
+			}
 		}
 		return site;
 	}

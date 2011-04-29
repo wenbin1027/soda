@@ -111,9 +111,8 @@ public class MainActivity extends Activity implements SiteListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		SiteManager.getInstance().setContext(this);
-		SiteManager.getInstance().loadSites();
-		site = SiteManager.getInstance().getSites().get(currentSite);
+		SiteManager.getInstance(this).loadSites();
+		site = SiteManager.getInstance(this).getSites().get(currentSite);
 		site.addListener(MainActivity.this);
 
 		findViewById(R.id.BtnWrite).setOnClickListener(new OnClickListener() {
