@@ -19,46 +19,7 @@
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
 			android:layout_weight="1">
 		</Button>
-	</LinearLayout><!--
-	<FrameLayout android:layout_width="fill_parent"
-		android:layout_height="fill_parent" android:layout_weight="1">
-		<LinearLayout android:id="@+id/linearLayoutSina"
-        android:layout_width="fill_parent"  android:layout_height="fill_parent"
-        android:gravity="center_horizontal"  android:orientation="vertical">
-		    <ListView android:id="@+id/SinaList" android:layout_width="fill_parent"
-		    android:layout_height="fill_parent">
-		    </ListView>
-		</LinearLayout>
-		<LinearLayout android:id="@+id/linearLayoutSohu"
-        android:layout_width="fill_parent"  android:layout_height="fill_parent"
-        android:gravity="center_horizontal"  android:orientation="vertical">
-		    <ListView android:id="@+id/SohuList" android:layout_width="fill_parent"
-		    android:layout_height="fill_parent">
-		    </ListView>
-		</LinearLayout>
-	</FrameLayout>
-	<LinearLayout android:id="@+id/LinearLayoutBottom"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:background="@color/white">
-		<Button android:text="@string/about" android:id="@+id/BtnAboutMsg"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_weight="1">
-		</Button>
-		<Button android:text="@string/sina" android:id="@+id/BtnSinaMsg"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_weight="1">
-		</Button>
-		<Button android:text="@string/sohu" android:id="@+id/BtnSohuMsg"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_weight="1">
-		</Button>
-		<Button android:text="@string/set" android:id="@+id/BtnSet"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_weight="1">
-		</Button>
 	</LinearLayout>
-
--->
 	<TabHost
 		android:id="@+id/tabhost" android:layout_width="fill_parent"
 		android:layout_height="fill_parent">
@@ -73,14 +34,14 @@
 					android:id="@+id/tab_sina" android:orientation="vertical"
 					android:layout_width="fill_parent" android:layout_height="fill_parent">
 					<com.ade.soda.BlogListView android:id="@+id/SinaList" android:layout_width="fill_parent"
-						android:layout_height="fill_parent">
+						android:layout_height="fill_parent" android:clickable="true">
 					</com.ade.soda.BlogListView>
 				</RelativeLayout>
 
 				<RelativeLayout android:layout_width="fill_parent"
 					android:layout_height="fill_parent" android:id="@+id/tab_sohu">
 					<com.ade.soda.BlogListView android:id="@+id/SohuList" android:layout_width="fill_parent"
-						android:layout_height="fill_parent">
+						android:layout_height="fill_parent" android:clickable="true">
 					</com.ade.soda.BlogListView>
 				</RelativeLayout>
 			</FrameLayout>
