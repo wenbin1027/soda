@@ -1,7 +1,10 @@
 package com.ade.soda;
 
+import java.util.List;
+
 import com.ade.site.Site;
 import com.ade.site.SiteManager;
+import com.ade.site.User;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -17,17 +20,21 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class SetActivity extends Activity {
+	private final int AUTHREQUESTCODE = 0;
 	private ListView mListView;
+	private List<Site> sites;
 	private	String[] siteNames;
-	private int[] siteIds;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.set);
 		
 		// Initialize ListView
-		siteNames = new String[] { getString(R.string.sina), getString(R.string.sohu)};
-		siteIds = new int[] {SiteManager.SINA, SiteManager.SOHU};
+		sites=SiteManager.getInstance().getSites();
+		siteNames=new String[sites.size()];
+		for(int i=0;i<sites.size();i++){
+			siteNames[i]=sites.get(i).getName();
+		}
 		
 		mListView = (ListView) findViewById(R.id.ListView01);
 		mListView.setAdapter(
@@ -46,20 +53,16 @@ public class SetActivity extends Activity {
 	// Load ListView state
 	private void loadListViewState() {
 		for(int i = 0; i < mListView.getCount(); i++){
-			mListView.setItemChecked(i, siteAuthenticated(i));
+			mListView.setItemChecked(i, siteAuthenticated(sites.get(i)));
 		}
 	}
 	
 	// helper method
 	// Check if a site has an access key.
-	private Boolean siteAuthenticated(int siteIndex){
+	private Boolean siteAuthenticated(Site site){
 		Boolean result = false;
-		
-		// TODO Please confirm that this is a valid method to do this
-		SiteManager siteMgr = SiteManager.getInstance();
-		Site currentSite = siteMgr.getSite(siteIds[siteIndex]);
-		String accessKey = currentSite.getAccessKey();
-		if(accessKey == null || accessKey == ""){
+
+		if(!site.isLoggedIn()){
 			result = false;
 		}else{
 			result = true;
@@ -75,12 +78,13 @@ public class SetActivity extends Activity {
 			Boolean itemChecked = selectedIndexes.get(arg2);
 
 			if(itemChecked) {
-				if(!siteAuthenticated(arg2)) {
+				if(!siteAuthenticated(sites.get(arg2))) {
 					// Pass the site ID to OAuthActivity
 					Intent intent = new Intent(SetActivity.this, OAuthActivity.class);
-					intent.putExtra("site", siteIds[arg2]);
-					startActivityForResult(intent, RESULT_OK);
-					
+					intent.putExtra("siteID", sites.get(arg2).getSiteID());
+					intent.putExtra("user", new User());
+					startActivityForResult(intent, AUTHREQUESTCODE);
+				
 					loadListViewState();
 				}
 			} else {
@@ -88,10 +92,10 @@ public class SetActivity extends Activity {
 				AlertDialog.Builder bld = new AlertDialog.Builder(SetActivity.this);
 				
 				// TODO Move the strings to resource
-				bld.setTitle(String.format("确定禁用\"%s\"帐户吗?\r\n再次启用需要重新验证。", siteNames[arg2]));
+				bld.setTitle(String.format("确定禁用\"%s\"帐户吗?再次启用需要重新验证。", sites.get(arg2).getName()));
 				bld.setPositiveButton("确定", new DialogInterface.OnClickListener() {
 		            public void onClick(DialogInterface dialog, int whichButton) {
-		            	invalidateAuthentication(arg2);
+		            	invalidateAuthentication(sites.get(arg2));
 		            }
 		        });
 		        bld.setNegativeButton("取消", new DialogInterface.OnClickListener() {
@@ -107,8 +111,26 @@ public class SetActivity extends Activity {
 	
 	// helper method
 	// Invalidate the authentication for selected site
-	private void invalidateAuthentication(int siteIndex) {
-		// TODO Invalidate the access key
-		Toast.makeText(SetActivity.this, "TODO: Invalidate access key " + siteNames[siteIndex], Toast.LENGTH_SHORT).show();
+	private void invalidateAuthentication(Site site) {
+		site.logOut();
+		//TODO:
+		Toast.makeText(SetActivity.this, "TODO: Invalidate access key " + site.getName(), Toast.LENGTH_SHORT).show();
+	}
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == AUTHREQUESTCODE) {
+			if (resultCode == RESULT_OK) {
+				if (data.hasExtra("user")) {
+					User user = (User) data.getSerializableExtra("user");
+					int siteID=data.getIntExtra("siteID",SiteManager.SINA);
+					SiteManager.getInstance().getSite(siteID).logIn(user);
+				}
+			}
+			Toast.makeText(this,
+					resultCode == RESULT_OK ? "Auth Success" : "Auth Fail",
+					Toast.LENGTH_LONG).show();
+		}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 }

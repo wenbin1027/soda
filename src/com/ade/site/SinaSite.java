@@ -11,11 +11,6 @@ import org.json.JSONException;
 
 import com.ade.parser.Parser;
 
-/**
- * @author Administrator
- * @version 1.0
- * @created 10-����-2011 ���� 08:33:50
- */
 public class SinaSite extends Site {
 
 	protected void onConstruct(){
@@ -26,6 +21,7 @@ public class SinaSite extends Site {
 		oauthRequestUrl="/oauth/request_token";
 		oauthUrl="/oauth/authorize";
 		oauthAccessUrl="/oauth/access_token";
+		siteID=SiteManager.SINA;
 	}
 
 	@Override
@@ -39,9 +35,9 @@ public class SinaSite extends Site {
 		
 		if (statusLine.getStatusCode()==401){  //Unauthorized
 			onError("用户未授权",parser);
+			logOut();
 			return;
 		}
-		isLoggedIn=true;
 		
 		if (parser!=null){
 			try {
