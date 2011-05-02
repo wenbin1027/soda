@@ -51,22 +51,35 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.TabHost; 
+import android.app.TabActivity;
 
 public class MainActivity extends Activity implements SiteListener {
 	private final String TAG = "MainActivity";
+	private final int BLOGCOUNTPERPAGE=10;
 	private final int AUTHREQUESTCODE = 0;
 	private final int SITEERROR = 0;
 	private final int TESTOK = 1;
-	private User user = new User();
+	private User sinauser = new User();
+	private User sohuuser = new User();
 	private Site site;
 	private int currentSite = SiteManager.SINA; // 测试时注意修改此处为要测的网站
 	private View lastClickedView;
-
+	private ListView SinalistView;
+	private ListView SohulistView;
+	private int blogPage=0;
+	private String SinaAccessToken=null;
+	private String SinaAccessSecret=null;
+	private String SohuAccessToken=null;
+	private String SohuAccessSecret=null;
+	
 	private ResponseHandler<String> handler = new ResponseHandler<String>() {
 
 		@Override
@@ -97,9 +110,8 @@ public class MainActivity extends Activity implements SiteListener {
 						.show();
 				Log.i(TAG, "测试成功");
 				Set<Blog> blogs = site.getBlogs();
-				for (Blog blog : blogs) {
-					System.out.println(blog);
-				}
+				SinalistView.setAdapter(new BlogAdapter(blogs,MainActivity.this));
+				SohulistView.setAdapter(new BlogAdapter(blogs,MainActivity.this));
 				break;
 			}
 			return false;
@@ -111,10 +123,43 @@ public class MainActivity extends Activity implements SiteListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
-		SiteManager.getInstance(this).loadSites();
-		site = SiteManager.getInstance(this).getSites().get(currentSite);
+		SinalistView=(ListView)findViewById(R.id.SinaList);
+		SohulistView=(ListView)findViewById(R.id.SohuList);
+		
+       	currentSite = SiteManager.SINA;
+    	SinalistView.setVisibility(View.GONE);
+    	SohulistView.setVisibility(View.VISIBLE);
+		SiteManager.getInstance().setContext(MainActivity.this);
+		SiteManager.getInstance(MainActivity.this).loadSites();
+		site = SiteManager.getInstance(MainActivity.this).getSites().get(currentSite);
 		site.addListener(MainActivity.this);
 
+		site.logIn(sinauser);
+		SinaAccessToken=sinauser.getAccessToken();
+		SinaAccessSecret=sinauser.getAccessSecret();
+		
+		blogPage=0;
+		site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
+//		LayoutInflater li=LayoutInflater.from(this);
+//		View headerView=li.inflate(R.layout.bloglistheader, null);
+//		headerView.setOnClickListener(new OnClickListener(){
+//			@Override
+//			public void onClick(View v) {
+//				blogPage=0;
+//				site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
+//			}			
+//		});
+//		View footerView=li.inflate(R.layout.bloglistfooter, null);
+//		footerView.setOnClickListener(new OnClickListener(){
+//			@Override
+//			public void onClick(View v) {
+//				blogPage++;
+//				site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
+//			}			
+//		});
+//		listView.addHeaderView(headerView);
+//		listView.addFooterView(footerView);
+		
 		findViewById(R.id.BtnWrite).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -154,80 +199,69 @@ public class MainActivity extends Activity implements SiteListener {
 */
 			}
 		});
-		findViewById(R.id.TextViewMsg01).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Intent intentRE = new Intent(MainActivity.this,
-								REandFWActivity.class);
-						MainActivity.this.startActivity(intentRE);
-					}
-				});
-		findViewById(R.id.TextViewMsg02).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Intent intentRE = new Intent(MainActivity.this,
-								REandFWActivity.class);
-						MainActivity.this.startActivity(intentRE);
-					}
-				});
-		findViewById(R.id.TextViewMsg03).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Intent intentRE = new Intent(MainActivity.this,
-								REandFWActivity.class);
-						MainActivity.this.startActivity(intentRE);
-					}
-				});
 
-		findViewById(R.id.TextViewMsg04).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						Intent intentRE = new Intent(MainActivity.this,
-								REandFWActivity.class);
-						MainActivity.this.startActivity(intentRE);
-					}
-				});
-		findViewById(R.id.BtnAllMsg).setOnClickListener(new OnClickListener() {
+		findViewById(R.id.BtnAboutMsg).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				// todo
-				findViewById(R.id.TableLayoutMsgAll)
-						.setVisibility(View.VISIBLE);
-				findViewById(R.id.TableLayoutMsgUser1).setVisibility(View.GONE);
-				findViewById(R.id.TableLayoutMsgUser2).setVisibility(View.GONE);
+                // todo
 			}
 
 		});
-		findViewById(R.id.BtnUser1Msg).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						// todo
-						findViewById(R.id.TableLayoutMsgAll).setVisibility(
-								View.GONE);
-						findViewById(R.id.TableLayoutMsgUser1).setVisibility(
-								View.VISIBLE);
-						findViewById(R.id.TableLayoutMsgUser2).setVisibility(
-								View.GONE);
-					}
-				});
-		findViewById(R.id.BtnUser2Msg).setOnClickListener(
-				new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						// todo
-						findViewById(R.id.TableLayoutMsgAll).setVisibility(
-								View.GONE);
-						findViewById(R.id.TableLayoutMsgUser1).setVisibility(
-								View.GONE);
-						findViewById(R.id.TableLayoutMsgUser2).setVisibility(
-								View.VISIBLE);
-					}
-				});
+
+        findViewById(R.id.BtnSinaMsg).setOnClickListener(
+                new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        	currentSite = SiteManager.SINA;
+                        	SinalistView.setVisibility(View.GONE);
+                        	SohulistView.setVisibility(View.VISIBLE);
+                    		SiteManager.getInstance().setContext(MainActivity.this);
+                    		SiteManager.getInstance(MainActivity.this).loadSites();
+                    		site = SiteManager.getInstance(MainActivity.this).getSites().get(currentSite);
+                    		site.addListener(MainActivity.this);
+                    		
+                    		if(SinaAccessToken==null){
+                    			site.logIn(sinauser);
+                    			SinaAccessToken=sinauser.getAccessToken();
+                    			SinaAccessSecret=sinauser.getAccessSecret();
+                    		}
+                    		else{
+                    			sinauser.setAccessToken(SinaAccessToken);
+                    			sinauser.setAccessSecret(SinaAccessSecret);
+                    			site.logIn(sinauser);
+                    		}
+                    		blogPage=0;
+                    		site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
+                        }
+                });
+        findViewById(R.id.BtnSohuMsg).setOnClickListener(
+                new OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                        	currentSite = SiteManager.SOHU;
+                        	SinalistView.setVisibility(View.VISIBLE);
+                        	SohulistView.setVisibility(View.GONE);
+                    		SiteManager.getInstance().setContext(MainActivity.this);
+                    		SiteManager.getInstance(MainActivity.this).loadSites();
+                    		site = SiteManager.getInstance(MainActivity.this).getSites().get(currentSite);
+                    		site.addListener(MainActivity.this);
+
+                    		if(SohuAccessToken==null){
+                    			site.logIn(sohuuser);
+                    			SohuAccessToken=sohuuser.getAccessToken();
+                    			SohuAccessSecret=sohuuser.getAccessSecret();
+                    		}
+                    		else{
+                    			sohuuser.setAccessToken(SohuAccessToken);
+                    			sohuuser.setAccessSecret(SohuAccessSecret);
+                    			site.logIn(sohuuser);
+                    		}
+                    		blogPage=0;
+                    		site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
+                        }
+                });
+
+		
 		findViewById(R.id.BtnSet).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -263,11 +297,23 @@ public class MainActivity extends Activity implements SiteListener {
 		if (requestCode == AUTHREQUESTCODE) {
 			if (resultCode == RESULT_OK) {
 				if (data.hasExtra("user")) {
-					user = (User) data.getSerializableExtra("user");
-					site.logIn(user);
-					if (lastClickedView != null) {
-						lastClickedView.performClick();
+					switch(currentSite){
+					case SiteManager.SINA:
+						sinauser = (User) data.getSerializableExtra("user");
+						site.logIn(sinauser);
+						if (lastClickedView != null) {
+							lastClickedView.performClick();
+						}
+						break;
+					case SiteManager.SOHU:
+						sohuuser = (User) data.getSerializableExtra("user");
+						site.logIn(sohuuser);
+						if (lastClickedView != null) {
+							lastClickedView.performClick();
+						}
+						break;
 					}
+
 				}
 			}
 			Toast.makeText(this,
