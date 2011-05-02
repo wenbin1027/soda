@@ -26,6 +26,8 @@ public class SiteManager {
 	public static final int SINA=1;
 	private static SiteManager instance=null;
 	private List<Site> sites;
+	private List<Site> sinasites;
+	private List<Site> sohusites;
 	private Context context;
 
 	private SiteManager(Context context){
