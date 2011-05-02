@@ -8,36 +8,28 @@ import com.ade.site.SiteListener;
 import com.ade.site.SiteManager;
 import com.ade.site.User;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
-import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
-/**本例供测试微博的好友列表功能，供参考
- * @author Administrator
- *
- */
-public class TestFriendsTimelineActivity extends Activity 
-implements SiteListener{
+public class BlogListView extends ListView implements SiteListener {
 	private final int BLOGCOUNTPERPAGE=10;
 	private final int BEGIN = 0;
 	private final int ERROR = 1;
 	private final int END = 2;
 	private User user = new User();
 	private Site site;
-	private int currentSite = SiteManager.SINA;
-	private ListView listView;
-	private Dialog progressDlg;
 	private int blogPage=0;
+	private Dialog progressDlg;
+
 	private Handler mainHandler = new Handler(new Handler.Callback() {
 		@Override
 		public boolean handleMessage(Message msg) {
@@ -45,7 +37,7 @@ implements SiteListener{
 			case BEGIN:
 				if (progressDlg==null){
 					progressDlg=ProgressDialog.show(
-							TestFriendsTimelineActivity.this, 
+							getContext(), 
 							getResources().getString(R.string.waitDialogTitle),
 							getResources().getString(R.string.waitDialogMessage),
 							true,true,
@@ -64,7 +56,7 @@ implements SiteListener{
 					progressDlg=null;
 				}
 				Set<Blog> blogs=site.getBlogs();
-				listView.setAdapter(new BlogAdapter(blogs,TestFriendsTimelineActivity.this));
+				setAdapter(new BlogAdapter(blogs,getContext()));
 				break;
 			case ERROR:
 				if (progressDlg!=null){
@@ -77,12 +69,22 @@ implements SiteListener{
 		}
 	});
 	
+	public BlogListView(Context context) {
+		super(context);
+	}
+
+	public BlogListView(Context context, AttributeSet attrs) {
+		super(context, attrs);
+	}
+
+	public BlogListView(Context context, AttributeSet attrs, int defStyle) {
+		super(context, attrs, defStyle);
+	}
+
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.testfriendstimeline);
-		listView=(ListView)findViewById(R.id.friendsTimelineList);
-		LayoutInflater li=LayoutInflater.from(this);
+	protected void onFinishInflate() {
+		super.onFinishInflate();
+		LayoutInflater li=LayoutInflater.from(getContext());
 		View headerView=li.inflate(R.layout.bloglistheader, null);
 		headerView.setOnClickListener(new OnClickListener(){
 			@Override
@@ -99,18 +101,17 @@ implements SiteListener{
 				site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
 			}			
 		});
-		listView.addHeaderView(headerView);
-		listView.addFooterView(footerView);
-			
-		SiteManager.getInstance().setContext(TestFriendsTimelineActivity.this);
-		site = SiteManager.getInstance().getSites().get(currentSite);
-		site.addListener(TestFriendsTimelineActivity.this);
-		//user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");  
-		//user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
+		addHeaderView(headerView);
+		addFooterView(footerView);
 		
-		//SINA token
-		user.setAccessToken("4207a6817f50785a07f456da1f4d20b7");  
-		user.setAccessSecret("751c76001bcef5b3c225dbd942c33eaa");
+		site = SiteManager.getInstance().getSite(SiteManager.SOHU);
+		site.addListener(this);
+		user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");  
+		user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
+		
+//		//SINA token
+//		user.setAccessToken("4207a6817f50785a07f456da1f4d20b7");  
+//		user.setAccessSecret("751c76001bcef5b3c225dbd942c33eaa");
 		
 		site.logIn(user);
 		blogPage=0;
@@ -131,5 +132,4 @@ implements SiteListener{
 	public void onResponsed() {
 		mainHandler.sendEmptyMessage(END);
 	}
-
 }

@@ -59,6 +59,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.TabHost; 
+import android.widget.TabHost.OnTabChangeListener;
 import android.app.TabActivity;
 
 public class MainActivity extends Activity implements SiteListener {
@@ -79,6 +80,7 @@ public class MainActivity extends Activity implements SiteListener {
 	private String SinaAccessSecret=null;
 	private String SohuAccessToken=null;
 	private String SohuAccessSecret=null;
+	private TabHost tabHost;
 	
 	private ResponseHandler<String> handler = new ResponseHandler<String>() {
 
@@ -122,44 +124,39 @@ public class MainActivity extends Activity implements SiteListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
+		
+       	currentSite = SiteManager.SINA;
+		
+        tabHost=(TabHost)findViewById(R.id.tabhost);
+        tabHost.setup();
+        tabHost.addTab(
+        		tabHost.newTabSpec("sina").setIndicator(
+        				SiteManager.getInstance().getSite(SiteManager.SINA).getName(), null)
+        				.setContent(R.id.tab_sina));   
+        tabHost.addTab(
+        		tabHost.newTabSpec("sohu").setIndicator(
+        				SiteManager.getInstance().getSite(SiteManager.SOHU).getName(), null)
+        				.setContent(R.id.tab_sohu));   
 
+        tabHost.setOnTabChangedListener(new OnTabChangeListener(){
+			@Override
+			public void onTabChanged(String tabId) {
+				if (tabId.equalsIgnoreCase("sina")){
+
+				}
+				else if (tabId.equalsIgnoreCase("sohu")){
+
+				}
+			}
+        });
+        
 		SinalistView=(ListView)findViewById(R.id.SinaList);
 		SohulistView=(ListView)findViewById(R.id.SohuList);
 		
        	currentSite = SiteManager.SINA;
-    	SinalistView.setVisibility(View.GONE);
-    	SohulistView.setVisibility(View.VISIBLE);
-		SiteManager.getInstance().setContext(MainActivity.this);
-		SiteManager.getInstance(MainActivity.this).loadSites();
 		site = SiteManager.getInstance(MainActivity.this).getSites().get(currentSite);
 		site.addListener(MainActivity.this);
 
-		site.logIn(sinauser);
-		SinaAccessToken=sinauser.getAccessToken();
-		SinaAccessSecret=sinauser.getAccessSecret();
-		
-		blogPage=0;
-		site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
-//		LayoutInflater li=LayoutInflater.from(this);
-//		View headerView=li.inflate(R.layout.bloglistheader, null);
-//		headerView.setOnClickListener(new OnClickListener(){
-//			@Override
-//			public void onClick(View v) {
-//				blogPage=0;
-//				site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
-//			}			
-//		});
-//		View footerView=li.inflate(R.layout.bloglistfooter, null);
-//		footerView.setOnClickListener(new OnClickListener(){
-//			@Override
-//			public void onClick(View v) {
-//				blogPage++;
-//				site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
-//			}			
-//		});
-//		listView.addHeaderView(headerView);
-//		listView.addFooterView(footerView);
-		
 		findViewById(R.id.BtnWrite).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -167,110 +164,48 @@ public class MainActivity extends Activity implements SiteListener {
 				Intent intentWrite = new Intent(MainActivity.this,WriteActivity.class);
 				intentWrite.putExtra("site", currentSite);
 				MainActivity.this.startActivity(intentWrite);
-
-/*				lastClickedView = v;
-				// 使用说明：通过如下代码可以进行发送微博的测试。首先会出现授权界面，授权后再点此按钮即可发送微博了。
-				site.updateText("微博测试nancy,third");
-				// 若嫌授权麻烦，则可在第一次授权后在LogCat中找到TOKEN和SECRET的日志：
-				// 04-19 03:38:52.266: INFO/OAuthActivity(1841):
-				// TOKEN=46b571ca341cfeb4737f419ed4ce0392
-				// SECRET=920143c011048ab9e4c8904440e7ed1a
-				// 然后使用如下代码.
-				// 注意这里的TOKEN和SECRET对不同的用户名是不一样的，请仔细使用
-				// user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");
-
-				// user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
-				site.logIn(user);
-				site.friendsTimeline(10, 1);
-
-				// site.updateText("上传微博");
-				// site.uploadImage("/data/data/com.ade.soda/10697.jpg","微博测试vv");
-				// 注意要先将欲上传的图片PUSH到模拟器对应的路径下
-
-				// site.updateText("上传微博");
-				// try {
-				// site.uploadImage("/data/data/com.ade.soda/10697.jpg","微博测试");
-				// } catch (Exception e) {
-				// // TODO Auto-generated catch block
-				// e.printStackTrace();
-				// Log.i(TAG,"pic file not found." );
-				// }
-				// 注意要先将欲上传的图片PUSH到模拟器对应的路径下
-*/
 			}
 		});
 
-		findViewById(R.id.BtnAboutMsg).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-                // todo
-			}
-
-		});
-
-        findViewById(R.id.BtnSinaMsg).setOnClickListener(
-                new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                        	currentSite = SiteManager.SINA;
-                        	SinalistView.setVisibility(View.GONE);
-                        	SohulistView.setVisibility(View.VISIBLE);
-                    		SiteManager.getInstance().setContext(MainActivity.this);
-                    		SiteManager.getInstance(MainActivity.this).loadSites();
-                    		site = SiteManager.getInstance(MainActivity.this).getSites().get(currentSite);
-                    		site.addListener(MainActivity.this);
-                    		
-                    		if(SinaAccessToken==null){
-                    			site.logIn(sinauser);
-                    			SinaAccessToken=sinauser.getAccessToken();
-                    			SinaAccessSecret=sinauser.getAccessSecret();
-                    		}
-                    		else{
-                    			sinauser.setAccessToken(SinaAccessToken);
-                    			sinauser.setAccessSecret(SinaAccessSecret);
-                    			site.logIn(sinauser);
-                    		}
-                    		blogPage=0;
-                    		site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
-                        }
-                });
-        findViewById(R.id.BtnSohuMsg).setOnClickListener(
-                new OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                        	currentSite = SiteManager.SOHU;
-                        	SinalistView.setVisibility(View.VISIBLE);
-                        	SohulistView.setVisibility(View.GONE);
-                    		SiteManager.getInstance().setContext(MainActivity.this);
-                    		SiteManager.getInstance(MainActivity.this).loadSites();
-                    		site = SiteManager.getInstance(MainActivity.this).getSites().get(currentSite);
-                    		site.addListener(MainActivity.this);
-
-                    		if(SohuAccessToken==null){
-                    			site.logIn(sohuuser);
-                    			SohuAccessToken=sohuuser.getAccessToken();
-                    			SohuAccessSecret=sohuuser.getAccessSecret();
-                    		}
-                    		else{
-                    			sohuuser.setAccessToken(SohuAccessToken);
-                    			sohuuser.setAccessSecret(SohuAccessSecret);
-                    			site.logIn(sohuuser);
-                    		}
-                    		blogPage=0;
-                    		site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
-                        }
-                });
+//
+//
+//        findViewById(R.id.BtnSinaMsg).setOnClickListener(
+//                new OnClickListener() {
+//                        @Override
+//                        public void onClick(View v) {
+//                        	currentSite = SiteManager.SINA;
+//                        	SinalistView.setVisibility(View.GONE);
+//                        	SohulistView.setVisibility(View.VISIBLE);
+//                    		SiteManager.getInstance().setContext(MainActivity.this);
+//                    		SiteManager.getInstance(MainActivity.this).loadSites();
+//                    		site = SiteManager.getInstance(MainActivity.this).getSites().get(currentSite);
+//                    		site.addListener(MainActivity.this);
+//                    		
+//                    		if(SinaAccessToken==null){
+//                    			site.logIn(sinauser);
+//                    			SinaAccessToken=sinauser.getAccessToken();
+//                    			SinaAccessSecret=sinauser.getAccessSecret();
+//                    		}
+//                    		else{
+//                    			sinauser.setAccessToken(SinaAccessToken);
+//                    			sinauser.setAccessSecret(SinaAccessSecret);
+//                    			site.logIn(sinauser);
+//                    		}
+//                    		blogPage=0;
+//                    		site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
+//                        }
+//                });
 
 		
-		findViewById(R.id.BtnSet).setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				Intent intentSet = new Intent(MainActivity.this,
-						SetActivity.class);
-				intentSet.putExtra("site", currentSite);
-				MainActivity.this.startActivity(intentSet);
-			}
-		});
+//		findViewById(R.id.BtnSet).setOnClickListener(new OnClickListener() {
+//			@Override
+//			public void onClick(View v) {
+//				Intent intentSet = new Intent(MainActivity.this,
+//						SetActivity.class);
+//				intentSet.putExtra("site", currentSite);
+//				MainActivity.this.startActivity(intentSet);
+//			}
+//		});
 	}
 
 	@Override
@@ -324,35 +259,3 @@ public class MainActivity extends Activity implements SiteListener {
 	}
 
 }
-/*
- * 标签制作，未完成 import android.widget.TabHost; import android.app.TabActivity;
- * 
- * public class MainActivity extends TabActivity implements SiteListener {
- * 
- * private TabHost myTabhost;
- * 
- * public void onCreate(Bundle savedInstanceState) {
- * super.onCreate(savedInstanceState); myTabhost = this.getTabHost();
- * LayoutInflater.from(this).inflate(R.layout.main,
- * myTabhost.getTabContentView(), false); myTabhost.addTab(
- * myTabhost.newTabSpec("All") .setIndicator("All")
- * .setContent(R.id.TableLayoutMsgAll) ); myTabhost.addTab(
- * myTabhost.newTabSpec("User1") .setIndicator("User1")
- * .setContent(R.id.TableLayoutMsgUser1) ); myTabhost.addTab(
- * myTabhost.newTabSpec("User2") .setIndicator("User2")
- * .setContent(R.id.TableLayoutMsgUser2) ); onlongtouchevent进入配置页面未完成
- * 
- * @Override public boolean onTouchEvent(MotionEvent event) {
- * switch(event.getAction()){ case MotionEvent.ACTION_DOWN:
- * 
- * break; case MotionEvent.ACTION_MOVE:
- * 
- * break; case MotionEvent.ACTION_UP:
- * 
- * break; } return super.onTouchEvent(event); }
- * 
- * 
- * 
- * 
- * } }
- */

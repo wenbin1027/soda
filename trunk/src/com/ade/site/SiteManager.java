@@ -33,10 +33,12 @@ public class SiteManager {
 	private SiteManager(Context context){
 		this.context=context;
 		sites=new ArrayList<Site>(2);
+		loadSites();
 	}
 	
 	private SiteManager(){
 		sites=new ArrayList<Site>(2);
+		loadSites();
 	}
 
 	public static SiteManager getInstance(){
@@ -72,7 +74,7 @@ public class SiteManager {
 		}
 	}
 
-	public boolean loadSites(){
+	private boolean loadSites(){
 		sites.add(SOHU, makeSite(SOHU));
 		sites.add(SINA, makeSite(SINA));
 		return true;
