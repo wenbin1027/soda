@@ -52,6 +52,9 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -62,7 +65,7 @@ import android.widget.TabHost;
 import android.widget.TabHost.OnTabChangeListener;
 import android.app.TabActivity;
 
-public class MainActivity extends Activity implements SiteListener {
+public class MainActivity extends Activity {
 	private final String TAG = "MainActivity";
 	private final int BLOGCOUNTPERPAGE=10;
 	private final int AUTHREQUESTCODE = 0;
@@ -73,16 +76,11 @@ public class MainActivity extends Activity implements SiteListener {
 	private Site site;
 	private int currentSite = SiteManager.SINA; // 测试时注意修改此处为要测的网站
 	private View lastClickedView;
-	private ListView SinalistView;
-	private ListView SohulistView;
-	private int blogPage=0;
-	private String SinaAccessToken=null;
-	private String SinaAccessSecret=null;
-	private String SohuAccessToken=null;
-	private String SohuAccessSecret=null;
+	private BlogListView sinaListView;
+	private BlogListView sohuListView;
 	private TabHost tabHost;
 	
-	private ResponseHandler<String> handler = new ResponseHandler<String>() {
+/*	private ResponseHandler<String> handler = new ResponseHandler<String>() {
 
 		@Override
 		public String handleResponse(HttpResponse response)
@@ -103,7 +101,7 @@ public class MainActivity extends Activity implements SiteListener {
 						Toast.LENGTH_LONG).show();
 				Intent intent = new Intent(MainActivity.this,
 						OAuthActivity.class);
-				intent.putExtra("site", currentSite);
+				intent.putExtra("siteID", currentSite);
 				intent.putExtra("user", new User());
 				startActivityForResult(intent, AUTHREQUESTCODE);
 				break;
@@ -112,21 +110,19 @@ public class MainActivity extends Activity implements SiteListener {
 						.show();
 				Log.i(TAG, "测试成功");
 				Set<Blog> blogs = site.getBlogs();
-				SinalistView.setAdapter(new BlogAdapter(blogs,MainActivity.this));
-				SohulistView.setAdapter(new BlogAdapter(blogs,MainActivity.this));
+				sinaListView.setAdapter(new BlogAdapter(blogs,MainActivity.this));
+				sohuListView.setAdapter(new BlogAdapter(blogs,MainActivity.this));
 				break;
 			}
 			return false;
 		}
-	});
+	});*/
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
-       	currentSite = SiteManager.SINA;
-		
+	
         tabHost=(TabHost)findViewById(R.id.tabhost);
         tabHost.setup();
         tabHost.addTab(
@@ -142,120 +138,89 @@ public class MainActivity extends Activity implements SiteListener {
 			@Override
 			public void onTabChanged(String tabId) {
 				if (tabId.equalsIgnoreCase("sina")){
-
+					currentSite=SiteManager.SINA;
 				}
 				else if (tabId.equalsIgnoreCase("sohu")){
-
+					currentSite=SiteManager.SOHU;
 				}
 			}
         });
+		tabHost.setCurrentTabByTag("sina");
         
-		SinalistView=(ListView)findViewById(R.id.SinaList);
-		SohulistView=(ListView)findViewById(R.id.SohuList);
+		sinaListView=(BlogListView)findViewById(R.id.SinaList);
+		sinaListView.setSite(SiteManager.getInstance().getSite(SiteManager.SINA));
+		sohuListView=(BlogListView)findViewById(R.id.SohuList);
+		sohuListView.setSite(SiteManager.getInstance().getSite(SiteManager.SOHU));
 		
        	currentSite = SiteManager.SINA;
 		site = SiteManager.getInstance(MainActivity.this).getSites().get(currentSite);
-		site.addListener(MainActivity.this);
 
+		sinaListView.refresh();
+		sohuListView.refresh();
+		
 		findViewById(R.id.BtnWrite).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-
 				Intent intentWrite = new Intent(MainActivity.this,WriteActivity.class);
 				intentWrite.putExtra("site", currentSite);
 				MainActivity.this.startActivity(intentWrite);
 			}
 		});
-
-//
-//
-//        findViewById(R.id.BtnSinaMsg).setOnClickListener(
-//                new OnClickListener() {
-//                        @Override
-//                        public void onClick(View v) {
-//                        	currentSite = SiteManager.SINA;
-//                        	SinalistView.setVisibility(View.GONE);
-//                        	SohulistView.setVisibility(View.VISIBLE);
-//                    		SiteManager.getInstance().setContext(MainActivity.this);
-//                    		SiteManager.getInstance(MainActivity.this).loadSites();
-//                    		site = SiteManager.getInstance(MainActivity.this).getSites().get(currentSite);
-//                    		site.addListener(MainActivity.this);
-//                    		
-//                    		if(SinaAccessToken==null){
-//                    			site.logIn(sinauser);
-//                    			SinaAccessToken=sinauser.getAccessToken();
-//                    			SinaAccessSecret=sinauser.getAccessSecret();
-//                    		}
-//                    		else{
-//                    			sinauser.setAccessToken(SinaAccessToken);
-//                    			sinauser.setAccessSecret(SinaAccessSecret);
-//                    			site.logIn(sinauser);
-//                    		}
-//                    		blogPage=0;
-//                    		site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
-//                        }
-//                });
-
-		
-//		findViewById(R.id.BtnSet).setOnClickListener(new OnClickListener() {
-//			@Override
-//			public void onClick(View v) {
-//				Intent intentSet = new Intent(MainActivity.this,
-//						SetActivity.class);
-//				intentSet.putExtra("site", currentSite);
-//				MainActivity.this.startActivity(intentSet);
-//			}
-//		});
 	}
 
 	@Override
-	public void onBeginRequest() {
-		// TODO Auto-generated method stub
-
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.mainmenu, menu);
+		return super.onCreateOptionsMenu(menu);
 	}
 
 	@Override
-	public void onError(String errorMessage) {
-		Message msg = new Message();
-		msg.what = SITEERROR;
-		msg.obj = errorMessage;
-		mainHandler.sendMessage(msg);
-	}
-
-	@Override
-	public void onResponsed() {
-		mainHandler.sendEmptyMessage(TESTOK);
-	}
-
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (requestCode == AUTHREQUESTCODE) {
-			if (resultCode == RESULT_OK) {
-				if (data.hasExtra("user")) {
-					switch(currentSite){
-					case SiteManager.SINA:
-						sinauser = (User) data.getSerializableExtra("user");
-						site.logIn(sinauser);
-						if (lastClickedView != null) {
-							lastClickedView.performClick();
-						}
-						break;
-					case SiteManager.SOHU:
-						sohuuser = (User) data.getSerializableExtra("user");
-						site.logIn(sohuuser);
-						if (lastClickedView != null) {
-							lastClickedView.performClick();
-						}
-						break;
-					}
-
-				}
-			}
-			Toast.makeText(this,
-					resultCode == RESULT_OK ? "Auth Success" : "Auth Fail",
-					Toast.LENGTH_LONG).show();
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.setmenu:
+			Intent intentSet = new Intent(MainActivity.this,
+			SetActivity.class);
+			intentSet.putExtra("site", currentSite);
+			MainActivity.this.startActivity(intentSet);
+			return true;
+		case R.id.aboutmenu:
+			//TODO: 
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
-		super.onActivityResult(requestCode, resultCode, data);
 	}
+//
+//	@Override
+//	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//		if (requestCode == AUTHREQUESTCODE) {
+//			if (resultCode == RESULT_OK) {
+//				if (data.hasExtra("user")) {
+//					switch(currentSite){
+//					case SiteManager.SINA:
+//						sinauser = (User) data.getSerializableExtra("user");
+//						site.logIn(sinauser);
+//						if (lastClickedView != null) {
+//							lastClickedView.performClick();
+//						}
+//						break;
+//					case SiteManager.SOHU:
+//						sohuuser = (User) data.getSerializableExtra("user");
+//						site.logIn(sohuuser);
+//						if (lastClickedView != null) {
+//							lastClickedView.performClick();
+//						}
+//						break;
+//					}
+//
+//				}
+//			}
+//			Toast.makeText(this,
+//					resultCode == RESULT_OK ? "Auth Success" : "Auth Fail",
+//					Toast.LENGTH_LONG).show();
+//		}
+//		super.onActivityResult(requestCode, resultCode, data);
+//	}
 
 }

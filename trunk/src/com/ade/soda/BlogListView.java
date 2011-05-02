@@ -1,6 +1,7 @@
 package com.ade.soda;
 
 import java.util.Set;
+import java.util.TreeSet;
 
 import com.ade.site.Blog;
 import com.ade.site.Site;
@@ -19,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class BlogListView extends ListView implements SiteListener {
 	private final int BLOGCOUNTPERPAGE=10;
@@ -27,7 +29,7 @@ public class BlogListView extends ListView implements SiteListener {
 	private final int END = 2;
 	private User user = new User();
 	private Site site;
-	private int blogPage=0;
+	private int blogPage=1;
 	private Dialog progressDlg;
 
 	private Handler mainHandler = new Handler(new Handler.Callback() {
@@ -63,6 +65,9 @@ public class BlogListView extends ListView implements SiteListener {
 					progressDlg.dismiss();
 					progressDlg=null;
 				}
+				if (msg.obj!=null){
+					Toast.makeText(getContext(), (String)msg.obj, Toast.LENGTH_SHORT).show();
+				}
 				break;
 			}
 			return false;
@@ -89,8 +94,8 @@ public class BlogListView extends ListView implements SiteListener {
 		headerView.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				blogPage=0;
-				site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
+				blogPage=1;
+				refresh();
 			}			
 		});
 		View footerView=li.inflate(R.layout.bloglistfooter, null);
@@ -98,26 +103,32 @@ public class BlogListView extends ListView implements SiteListener {
 			@Override
 			public void onClick(View v) {
 				blogPage++;
-				site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
+				refresh();
 			}			
 		});
 		addHeaderView(headerView);
 		addFooterView(footerView);
-		
-		site = SiteManager.getInstance().getSite(SiteManager.SOHU);
-		site.addListener(this);
-		user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");  
-		user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
-		
-//		//SINA token
-//		user.setAccessToken("4207a6817f50785a07f456da1f4d20b7");  
-//		user.setAccessSecret("751c76001bcef5b3c225dbd942c33eaa");
-		
-		site.logIn(user);
-		blogPage=0;
-		site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
 	}
 
+	public void refresh() {
+		site.addListener(this);
+
+		if (site.isLoggedIn()){
+			site.friendsTimeline(BLOGCOUNTPERPAGE,blogPage);
+		}
+		else{
+			Toast.makeText(getContext(), getContext().getText(R.string.unAuthTips), Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	public void setSite(Site site){
+		this.site=site;
+	}
+	
+	public Site getSite(){
+		return site;
+	}
+	
 	@Override
 	public void onBeginRequest() {
 		mainHandler.sendEmptyMessage(BEGIN);
@@ -125,7 +136,10 @@ public class BlogListView extends ListView implements SiteListener {
 
 	@Override
 	public void onError(String errorMessage) {
-		mainHandler.sendEmptyMessage(ERROR);
+		Message msg=new Message();
+		msg.what=ERROR;
+		msg.obj=errorMessage;
+		mainHandler.sendMessage(msg);
 	}
 
 	@Override

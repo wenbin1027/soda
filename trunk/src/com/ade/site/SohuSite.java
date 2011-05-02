@@ -16,11 +16,6 @@ import android.util.Log;
 
 import com.ade.parser.Parser;
 
-/**
- * @author Administrator
- * @version 1.0
- * @created 10-����-2011 ���� 08:33:53
- */
 public class SohuSite extends Site {
 
 	protected void onConstruct(){
@@ -31,6 +26,7 @@ public class SohuSite extends Site {
 		oauthRequestUrl="/oauth/request_token";
 		oauthUrl="/oauth/authorize";
 		oauthAccessUrl="/oauth/access_token";
+		siteID=SiteManager.SOHU;
 	}
 
 	@Override
@@ -44,9 +40,9 @@ public class SohuSite extends Site {
 		
 		if (statusLine.getStatusCode()==401){  //Unauthorized
 			onError("用户未授权",parser);
+			logOut();
 			return;
 		}
-		isLoggedIn=true;
 		if (parser!=null){
 			try {
 				BufferedReader reader = new BufferedReader(

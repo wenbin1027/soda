@@ -82,19 +82,28 @@ public class SiteManager {
 
 	private Site makeSite(int type){
 		Site site=null;
-
+		User user=null;
 		switch(type){
 		case SOHU:
 			site=new SohuSite();
 			site.setUpdateInterface(new SohuUpdate(new SohuUpdateParser()));
 			site.setUploadInterface(new SohuUpload(new SohuUploadParser()));
 			site.setFriendsTimeline(new SohuFriendsTimeline(new SohuFriendsTimelineParser()));
+			user=new User();
+			user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");
+			user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
+
+			site.logIn(user);
 			break;
 		case SINA:
 			site=new SinaSite();
 			site.setUpdateInterface(new SinaUpdate(new SinaUpdateParser()));
 			site.setUploadInterface(new SinaUpload(new SinaUpdateParser()));
 			site.setFriendsTimeline(new SinaFriendsTimeline(new SinaFriendsTimelineParser()));
+			user=new User();
+			user.setAccessToken("4207a6817f50785a07f456da1f4d20b7");
+			user.setAccessSecret("751c76001bcef5b3c225dbd942c33eaa");
+			site.logIn(user);
 			break;
 		}
 		

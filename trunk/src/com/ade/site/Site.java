@@ -33,17 +33,21 @@ public abstract class Site implements IHttpListener{
 	private UpdateInterface updateInterface;
 	private UploadInterface uploadInterface;
 	protected List<SiteListener> listeners;
-	protected boolean isLoggedIn=false;
 	protected String oauthRequestUrl;
 	protected String oauthUrl;
 	protected String oauthAccessUrl;
 	protected String proxyHost;
 	protected int proxyPort;
+	protected int siteID;
 	
 	public Site() {
 		onConstruct();
 	}
 	
+	public int getSiteID() {
+		return siteID;
+	}
+
 	protected abstract void onConstruct();
 	
 	public void addListener(SiteListener listener){
@@ -187,7 +191,7 @@ public abstract class Site implements IHttpListener{
 	}
 
 	public User getLoggedInUser(){
-		if (isLoggedIn)
+		if (isLoggedIn())
 			return loggedInUser;
 		else
 			return null;
@@ -202,7 +206,7 @@ public abstract class Site implements IHttpListener{
 	}
 
 	public boolean isLoggedIn(){
-		return isLoggedIn;
+		return loggedInUser!=null;
 	}
 
 	/**
@@ -212,6 +216,10 @@ public abstract class Site implements IHttpListener{
 	 */
 	public void logIn(User user){
 		this.loggedInUser=user;
+	}
+	
+	public void logOut(){
+		this.loggedInUser=null;
 	}
 
 	/**

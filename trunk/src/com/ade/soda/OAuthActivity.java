@@ -16,6 +16,7 @@ public class OAuthActivity extends Activity implements OAuthListener{
 	private Site site;
 	private User user;
 	private OAuth oauth;
+	private int siteID;
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -24,8 +25,9 @@ public class OAuthActivity extends Activity implements OAuthListener{
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.oauth);
 		Intent intent=getIntent();
-		if (intent.hasExtra("site")){
-			site=SiteManager.getInstance().getSites().get(intent.getIntExtra("site",0));
+		if (intent.hasExtra("siteID")){
+			siteID=intent.getIntExtra("siteID",SiteManager.SINA);
+			site=SiteManager.getInstance().getSites().get(siteID);
 		}
 		if (intent.hasExtra("user")){
 			user=(User) intent.getSerializableExtra("user");
@@ -51,6 +53,7 @@ public class OAuthActivity extends Activity implements OAuthListener{
 			}
 			Intent intent=new Intent();
 			intent.putExtra("user", user);
+			intent.putExtra("siteID", siteID);
 			setResult(RESULT_OK,intent);
 			finish();
 		}
