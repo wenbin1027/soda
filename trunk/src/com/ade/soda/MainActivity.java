@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
@@ -57,15 +58,17 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.TabHost; 
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TabHost.OnTabChangeListener;
 import android.app.TabActivity;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements OnItemClickListener {
 	private final String TAG = "MainActivity";
 	private final int BLOGCOUNTPERPAGE=10;
 	private final int AUTHREQUESTCODE = 0;
@@ -149,8 +152,12 @@ public class MainActivity extends Activity {
         
 		sinaListView=(BlogListView)findViewById(R.id.SinaList);
 		sinaListView.setSite(SiteManager.getInstance().getSite(SiteManager.SINA));
+		sinaListView.setOnItemClickListener(this);
+		sinaListView.setDescendantFocusability(ListView.FOCUS_BEFORE_DESCENDANTS);
 		sohuListView=(BlogListView)findViewById(R.id.SohuList);
 		sohuListView.setSite(SiteManager.getInstance().getSite(SiteManager.SOHU));
+		sohuListView.setOnItemClickListener(this);
+		sohuListView.setDescendantFocusability(ListView.FOCUS_BEFORE_DESCENDANTS);
 		
        	currentSite = SiteManager.SINA;
 		site = SiteManager.getInstance(MainActivity.this).getSites().get(currentSite);
@@ -222,5 +229,26 @@ public class MainActivity extends Activity {
 //		}
 //		super.onActivityResult(requestCode, resultCode, data);
 //	}
+
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
+		Site site=SiteManager.getInstance().getSite(currentSite);
+		Set<Blog> blogs=site.getBlogs();
+		Iterator<Blog> iterator=blogs.iterator();
+		int i=0;
+		while(iterator.hasNext()){
+			if (i==arg2){
+				Intent intentSet = new Intent(MainActivity.this,
+						REandFWActivity.class);
+				intentSet.putExtra("CurrentBlog", iterator.next());
+				MainActivity.this.startActivity(intentSet);
+				break;
+			}
+			else{
+				iterator.next();
+				i++;
+			}
+		}
+	}
 
 }

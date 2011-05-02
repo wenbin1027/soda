@@ -28,6 +28,7 @@ public class REandFWActivity extends Activity implements OnClickListener{
 			if (intent.hasExtra("CurrentBlog")){
 				//主界面会把Blog对象通过Intent传递到这里
 				blog=(Blog) intent.getSerializableExtra("CurrentBlog");
+				Log.i("REandFW", blog.toString());
 			}
 		}
 		else{//在开发时如果主界面还没开发完，可能传不过来Blog对象，可以使用这个else分支自己建一个Blog对象，但发布时不需要此else分支
