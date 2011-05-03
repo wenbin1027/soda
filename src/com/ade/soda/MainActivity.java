@@ -151,17 +151,14 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		tabHost.setCurrentTabByTag("sina");
         
 		sinaListView=(BlogListView)findViewById(R.id.SinaList);
-		sinaListView.setSite(SiteManager.getInstance().getSite(SiteManager.SINA));
 		sinaListView.setOnItemClickListener(this);
+		sinaListView.init(SiteManager.getInstance().getSite(SiteManager.SINA));
 
 		sohuListView=(BlogListView)findViewById(R.id.SohuList);
-		sohuListView.setSite(SiteManager.getInstance().getSite(SiteManager.SOHU));
 		sohuListView.setOnItemClickListener(this);
+		sohuListView.init(SiteManager.getInstance().getSite(SiteManager.SOHU));	
 		
 		site = SiteManager.getInstance(MainActivity.this).getSites().get(currentSite);
-
-		sinaListView.refresh();
-		sohuListView.refresh();
 		
 		findViewById(R.id.BtnWrite).setOnClickListener(new OnClickListener() {
 			@Override
@@ -169,6 +166,19 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				Intent intentWrite = new Intent(MainActivity.this,WriteActivity.class);
 				intentWrite.putExtra("site", currentSite);
 				MainActivity.this.startActivity(intentWrite);
+			}
+		});
+		
+		findViewById(R.id.BtnRefresh).setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				switch(currentSite){
+				case SiteManager.SINA:
+					sinaListView.refresh();
+					break;
+				case SiteManager.SOHU:
+					sohuListView.refresh();
+				}
 			}
 		});
 	}
