@@ -66,6 +66,7 @@ import android.widget.Toast;
 import android.widget.TabHost; 
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TabHost.OnTabChangeListener;
+import android.widget.TextView;
 import android.app.TabActivity;
 
 public class MainActivity extends Activity implements OnItemClickListener {
@@ -82,6 +83,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	private BlogListView sinaListView;
 	private BlogListView sohuListView;
 	private TabHost tabHost;
+	private TextView usernameTextview;
 	
 /*	private ResponseHandler<String> handler = new ResponseHandler<String>() {
 
@@ -126,12 +128,16 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 	
+		usernameTextview=(TextView)findViewById(R.id.TextViewUsername);
+		sinauser = SiteManager.getInstance().getSite(SiteManager.SINA).getLoggedInUser();
+		sohuuser = SiteManager.getInstance().getSite(SiteManager.SOHU).getLoggedInUser();
         tabHost=(TabHost)findViewById(R.id.tabhost);
         tabHost.setup();
         tabHost.addTab(
         		tabHost.newTabSpec("sina").setIndicator(
         				SiteManager.getInstance().getSite(SiteManager.SINA).getName(), null)
-        				.setContent(R.id.tab_sina));   
+        				.setContent(R.id.tab_sina));  
+        usernameTextview.setText(sinauser.getScreenName());
         tabHost.addTab(
         		tabHost.newTabSpec("sohu").setIndicator(
         				SiteManager.getInstance().getSite(SiteManager.SOHU).getName(), null)
@@ -142,9 +148,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			public void onTabChanged(String tabId) {
 				if (tabId.equalsIgnoreCase("sina")){
 					currentSite=SiteManager.SINA;
+			        usernameTextview.setText(sinauser.getScreenName());
 				}
 				else if (tabId.equalsIgnoreCase("sohu")){
 					currentSite=SiteManager.SOHU;
+					usernameTextview.setText(sohuuser.getScreenName());
 				}
 			}
         });
@@ -165,6 +173,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			public void onClick(View v) {
 				Intent intentWrite = new Intent(MainActivity.this,WriteActivity.class);
 				intentWrite.putExtra("site", currentSite);
+				
 				MainActivity.this.startActivity(intentWrite);
 			}
 		});
@@ -177,7 +186,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 					sinaListView.refresh();
 					break;
 				case SiteManager.SOHU:
-					sohuListView.refresh();
+					sohuListView.refresh();;
 				}
 			}
 		});

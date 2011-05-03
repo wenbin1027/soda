@@ -92,7 +92,9 @@ public class SiteManager {
 			user=new User();
 			user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");
 			user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
-
+	        user.setScreenName("张三");
+	        user.setID(123);
+	        
 			site.logIn(user);
 			break;
 		case SINA:
@@ -103,6 +105,9 @@ public class SiteManager {
 			user=new User();
 			user.setAccessToken("4207a6817f50785a07f456da1f4d20b7");
 			user.setAccessSecret("751c76001bcef5b3c225dbd942c33eaa");
+	        user.setScreenName("李四");
+	        user.setID(456);
+	        
 			site.logIn(user);
 			break;
 		}
