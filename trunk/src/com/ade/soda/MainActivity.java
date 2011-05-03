@@ -243,7 +243,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		Site site=SiteManager.getInstance().getSite(currentSite);
 		Set<Blog> blogs=site.getBlogs();
 		Iterator<Blog> iterator=blogs.iterator();
-		int i=0;
+		int i=1;
 		while(iterator.hasNext()){
 			if (i==arg2){
 				Intent intentSet = new Intent(MainActivity.this,
