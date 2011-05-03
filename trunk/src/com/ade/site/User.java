@@ -15,7 +15,7 @@ public class User implements Serializable{
 	private Date createdAt;
 	private String description;
 	private long followersCount;
-	private String gender;
+	private String gender="n";
 	private long ID;
 	private String location;
 	private String name;
@@ -25,6 +25,10 @@ public class User implements Serializable{
 	private boolean verified;
 	private String accessToken;
 	private String accessSecret;
+	private long friendsCount;
+	private long blogsCount;
+	private long favouritesCount;
+	private boolean following;
 	/**
 	 * @return the token
 	 */
@@ -63,13 +67,6 @@ public class User implements Serializable{
 
 	public List<Blog> getBlogs(){
 		return blogs;
-	}
-
-	public long getBlogsCount(){
-		if (blogs!=null)
-			return blogs.size();
-		else
-			return 0;
 	}
 
 	public Date getCreatedAt(){
@@ -174,6 +171,38 @@ public class User implements Serializable{
 				+ location + ", name=" + name + ", profileImageUrl="
 				+ profileImageUrl + ", screenName=" + screenName + ", url="
 				+ url + ", verified=" + verified + "]";
+	}
+
+	public void setFriendsCount(long friendsCount) {
+		this.friendsCount = friendsCount;
+	}
+
+	public long getFriendsCount() {
+		return friendsCount;
+	}
+
+	public void setBlogsCount(long blogsCount) {
+		this.blogsCount = blogsCount;
+	}
+
+	public long getBlogsCount() {
+		return blogsCount;
+	}
+
+	public void setFavouritesCount(long favouritesCount) {
+		this.favouritesCount = favouritesCount;
+	}
+
+	public long getFavouritesCount() {
+		return favouritesCount;
+	}
+
+	public void setFollowing(boolean following) {
+		this.following = following;
+	}
+
+	public boolean isFollowing() {
+		return following;
 	}
 
 }
