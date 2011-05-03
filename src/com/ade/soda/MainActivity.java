@@ -153,13 +153,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		sinaListView=(BlogListView)findViewById(R.id.SinaList);
 		sinaListView.setSite(SiteManager.getInstance().getSite(SiteManager.SINA));
 		sinaListView.setOnItemClickListener(this);
-		sinaListView.setDescendantFocusability(ListView.FOCUS_BEFORE_DESCENDANTS);
+
 		sohuListView=(BlogListView)findViewById(R.id.SohuList);
 		sohuListView.setSite(SiteManager.getInstance().getSite(SiteManager.SOHU));
 		sohuListView.setOnItemClickListener(this);
-		sohuListView.setDescendantFocusability(ListView.FOCUS_BEFORE_DESCENDANTS);
 		
-       	currentSite = SiteManager.SINA;
 		site = SiteManager.getInstance(MainActivity.this).getSites().get(currentSite);
 
 		sinaListView.refresh();
