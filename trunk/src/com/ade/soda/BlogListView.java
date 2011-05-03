@@ -53,24 +53,28 @@ public class BlogListView extends ListView implements SiteListener {
 				}
 				break;
 			case END:
-				if (progressDlg!=null){
-					progressDlg.dismiss();
-					progressDlg=null;
-				}
+				dismissDlg();
 				Set<Blog> blogs=site.getBlogs();
 				setAdapter(new BlogAdapter(blogs,getContext()));
 				break;
 			case ERROR:
-				if (progressDlg!=null){
-					progressDlg.dismiss();
-					progressDlg=null;
-				}
+				dismissDlg();
 				if (msg.obj!=null){
 					Toast.makeText(getContext(), (String)msg.obj, Toast.LENGTH_SHORT).show();
 				}
 				break;
 			}
 			return false;
+		}
+
+		/**
+		 * 
+		 */
+		private void dismissDlg() {
+			if (progressDlg!=null){
+				progressDlg.dismiss();
+				progressDlg=null;
+			}
 		}
 	});
 	
@@ -110,6 +114,13 @@ public class BlogListView extends ListView implements SiteListener {
 		addFooterView(footerView);
 	}
 
+	public void init(Site site){
+		this.site=site;
+		if (site!=null && site.getBlogsCount()>0){
+			setAdapter(new BlogAdapter(site.getBlogs(),getContext()));
+		}
+	}
+	
 	public void refresh() {
 		site.addListener(this);
 
@@ -121,10 +132,6 @@ public class BlogListView extends ListView implements SiteListener {
 		}
 	}
 
-	public void setSite(Site site){
-		this.site=site;
-	}
-	
 	public Site getSite(){
 		return site;
 	}
