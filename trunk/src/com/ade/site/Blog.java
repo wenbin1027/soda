@@ -70,7 +70,18 @@ public class Blog implements Serializable,Comparable<Blog>{
 	public User getUser(){
 		return user;
 	}
+	
+	public String getSmallPic(){
+		return SmallPic;
+	}
+	
+	public String getMiddlePic(){
+		return MiddlePic;
+	}
 
+	public String getOriginalPic(){
+		return OriginalPic;
+	}
 	public void setCreatedAt(Date createdAt) {
 		this.createdAt = createdAt;
 	}
