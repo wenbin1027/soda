@@ -1,14 +1,19 @@
 package com.ade.site;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
+import android.content.Context;
 import android.util.Log;
 import com.ade.restapi.FriendsTimelineInterface;
 import com.ade.net.HttpNet;
 import com.ade.net.IHttpListener;
+import com.ade.restapi.AccountVerifyInterface;
 import com.ade.restapi.UpdateInterface;
 import com.ade.restapi.UploadInterface;
 
@@ -39,6 +44,8 @@ public abstract class Site implements IHttpListener{
 	protected String proxyHost;
 	protected int proxyPort;
 	protected int siteID;
+	private AccountVerifyInterface accountInterface;
+	private String blogsOriginalData;
 	
 	public Site() {
 		onConstruct();
@@ -98,6 +105,10 @@ public abstract class Site implements IHttpListener{
 	 */
 	public void setFriendsTimeline(FriendsTimelineInterface friendsTimeline) {
 		this.friendsTimeline = friendsTimeline;
+	}
+	
+	public FriendsTimelineInterface getFriendsTimeline(){
+		return friendsTimeline;
 	}
 	
 	/**
@@ -290,5 +301,34 @@ public abstract class Site implements IHttpListener{
 		if (proxyHost!=null)
 			return true;
 		return false;
+	}
+
+	public void setAccountInterface(AccountVerifyInterface accountInterface) {
+		this.accountInterface = accountInterface;
+	}
+
+	public AccountVerifyInterface getAccountInterface() {
+		return accountInterface;
+	}
+	
+	public void accountVerify(){
+		if (accountInterface!=null){
+			httpNet=new HttpNet();
+			httpNet.setListener(this);
+			if (isProxy()){
+				httpNet.setProxy(proxyHost, proxyPort);
+			}
+			httpNet.request(accountInterface.getRequest(this),accountInterface.getParser());
+		}	
+	}
+
+	public void setBlogsOriginalData(String blogsOriginalData) {
+		this.blogsOriginalData = blogsOriginalData;
+	}
+	
+	public void saveBlogs(FileOutputStream out) throws IOException{
+		if (blogsOriginalData!=null && isLoggedIn()){
+			out.write(blogsOriginalData.getBytes());
+		}
 	}
 }

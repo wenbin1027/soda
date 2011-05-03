@@ -107,6 +107,7 @@ public class SinaFriendsTimelineParser extends Parser {
 		
 		JSONArray blogs=new JSONArray(in);
 		if (blogs!=null){
+			site.setBlogsOriginalData(in);
 			for(int i=0;i<blogs.length();i++){
 				JSONObject blog=blogs.getJSONObject(i);
 				if (blog!=null){
