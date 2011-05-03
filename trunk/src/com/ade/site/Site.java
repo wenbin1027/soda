@@ -215,7 +215,10 @@ public abstract class Site implements IHttpListener{
 	 * @param password
 	 */
 	public void logIn(User user){
-		this.loggedInUser=user;
+		if (user!=loggedInUser){
+			this.loggedInUser=user;
+			clearBlogs();
+		}
 	}
 	
 	public void logOut(){
