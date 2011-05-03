@@ -5,48 +5,48 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:gravity="left"
 	android:alwaysDrawnWithCache="false">
-	<TextView android:text="@string/Msg" android:id="@+id/TextViewMsg"
-		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:background="@color/red" android:textColor="@color/black"
-		android:layout_weight="1">
-	</TextView>
-	<LinearLayout android:id="@+id/LinearLayoutREandFWtop"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:orientation="horizontal" android:gravity="left">
+	
+    <RelativeLayout android:layout_width="fill_parent" 
+     	android:layout_height="fill_parent">
+ 	  <WebView android:id="@+id/refwImage"
+ 		android:layout_width="48dp"
+ 		android:layout_height="48dp"
+ 		android:scrollbars="none"
+ 		android:layout_alignParentLeft="true">
+ 	   </WebView>
+ 	 <RelativeLayout android:layout_alignParentRight="true"
+ 	  	android:layout_toRightOf="@+id/refwImage"
+ 		android:layout_width="fill_parent"
+ 		android:layout_height="fill_parent"
+ 		android:layout_marginLeft="10dp">
+ 		<TextView android:id="@+id/refwUsername" android:layout_width="fill_parent"
+ 			android:layout_height="wrap_content" android:layout_alignParentTop="true"
+ 			android:textColor="@color/red" 	
+ 			android:paddingBottom="5dp">
+ 		</TextView>
+ 		<TextView android:id="@+id/refwMsg" android:layout_width="fill_parent"
+ 			android:layout_height="wrap_content" 
+ 			android:layout_below="@+id/refwUsername">
+ 		</TextView>
+ 		<WebView android:id="@+id/refwPic"
+ 		    	 android:layout_width="80dp"
+ 		         android:layout_height="80dp"
+ 		         android:layout_below="@+id/refwMsg"
+ 		         android:visibility ="gone" >
+ 		</WebView>	
+ 		
+ 		  <TextView android:id="@+id/refwRetMsg" android:layout_width="fill_parent"
+ 		        	android:layout_height="wrap_content" android:textColor="@color/yellow"
+ 					android:layout_below="@+id/refwPic">
+ 	      </TextView>	
+ 		  <WebView android:id="@+id/refwRetPic"
+ 		    	    android:layout_width="80dp"
+ 		            android:layout_height="80dp"
+ 		            android:layout_below="@+id/refwRetMsg" 
+ 		            android:visibility ="gone">
+ 		  </WebView>	
+ 	</RelativeLayout>
+  </RelativeLayout>
+	
 
-		<Button android:text="@string/RE" android:id="@+id/BtnRE"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:layout_weight="1">
-		</Button>
-		<Button android:text="@string/FW" android:id="@+id/BtnFW"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:layout_weight="1">
-		</Button>
-		<Button android:text="@string/more" android:id="@+id/BtnMore"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:layout_weight="1">
-		</Button>
-	</LinearLayout>
-	<EditText android:hint="@string/writeMsg" android:id="@+id/MyMsg"
-		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:background="@color/green"
-		android:layout_weight="1">
-	</EditText>
-	<LinearLayout android:id="@+id/LinearLayoutREandFWbottom"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:orientation="horizontal" android:gravity="left">
-
-		<Button android:text="@string/face" android:id="@+id/BtnFace"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_weight="1">
-		</Button>
-		<Button android:text="@string/img" android:id="@+id/BtnImg"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_weight="1">
-		</Button>
-		<Button android:text="@string/sendMsg" android:id="@+id/BtnOK"
-			android:layout_width="wrap_content" android:layout_height="wrap_content"
-			android:layout_weight="1">
-		</Button>
-	</LinearLayout>
 </LinearLayout>
