@@ -50,6 +50,7 @@ public class OAuthActivity extends Activity implements OAuthListener{
 			if (user!=null){
 				user.setAccessToken(auth.getAccessToken().token);
 				user.setAccessSecret(auth.getAccessToken().secret);
+				site.logIn(user);
 			}
 			Intent intent=new Intent();
 			intent.putExtra("user", user);

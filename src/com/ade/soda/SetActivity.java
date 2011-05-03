@@ -120,13 +120,7 @@ public class SetActivity extends Activity {
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == AUTHREQUESTCODE) {
-			if (resultCode == RESULT_OK) {
-				if (data.hasExtra("user")) {
-					User user = (User) data.getSerializableExtra("user");
-					int siteID=data.getIntExtra("siteID",SiteManager.SINA);
-					SiteManager.getInstance().getSite(siteID).logIn(user);
-				}
-			}
+			loadListViewState();
 			Toast.makeText(this,
 					resultCode == RESULT_OK ? "Auth Success" : "Auth Fail",
 					Toast.LENGTH_LONG).show();
