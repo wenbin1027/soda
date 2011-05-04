@@ -37,7 +37,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		//siteMgr=SiteManager.getInstance(this);
 		
 		usernameTextview=(TextView)findViewById(R.id.TextViewUsername);
-        usernameTextview.setText(siteMgr.getSite(currentSite).getLoggedInUser().getScreenName());
+		updateUserNameTextView();
 
         tabHost=(TabHost)findViewById(R.id.tabhost);
         tabHost.setup();
@@ -55,14 +55,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			public void onTabChanged(String tabId) {
 				if (tabId.equalsIgnoreCase("sina")){
 					currentSite=SiteManager.SINA;
-					if (siteMgr.getSite(SiteManager.SINA).isLoggedIn())
-						usernameTextview.setText(siteMgr.getSite(SiteManager.SINA).getLoggedInUser().getScreenName());
-					
+					updateUserNameTextView();
 				}
 				else if (tabId.equalsIgnoreCase("sohu")){
 					currentSite=SiteManager.SOHU;
-					if (siteMgr.getSite(SiteManager.SOHU).isLoggedIn())
-						usernameTextview.setText(siteMgr.getSite(SiteManager.SOHU).getLoggedInUser().getScreenName());
+					updateUserNameTextView();
 				}
 			}
         });
@@ -98,6 +95,13 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				}
 			}
 		});
+	}
+
+	private void updateUserNameTextView() {
+		if (siteMgr.getSite(currentSite).isLoggedIn())
+			usernameTextview.setText(siteMgr.getSite(currentSite).getLoggedInUser().getScreenName());
+		else
+			usernameTextview.setText(R.string.unAuthUser);
 	}
 
 	@Override

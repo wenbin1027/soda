@@ -53,18 +53,20 @@ public class BlogListView extends ListView implements SiteListener {
 				}
 				break;
 			case END:
+				site.removeListener(BlogListView.this);
 				dismissDlg();
 				Set<Blog> blogs=site.getBlogs();
 				setAdapter(new BlogAdapter(blogs,getContext()));
 				break;
 			case ERROR:
+				site.removeListener(BlogListView.this);
 				dismissDlg();
 				if (msg.obj!=null){
 					Toast.makeText(getContext(), (String)msg.obj, Toast.LENGTH_SHORT).show();
 				}
 				break;
 			}
-			return false;
+			return true;
 		}
 
 		/**

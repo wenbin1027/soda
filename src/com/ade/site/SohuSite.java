@@ -51,7 +51,6 @@ public class SohuSite extends Site {
 				for (String line = null; (line = reader.readLine()) != null;) {
 					builder.append(line).append("\n"); 
 				} 
-				entity.consumeContent();
 				parser.parse(builder.toString(), this);
 				builder=null;
 				reader.close();
