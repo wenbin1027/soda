@@ -32,7 +32,9 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		siteMgr=SiteManager.getInstance(this);
+		siteMgr=SiteManager.getInstance();
+		siteMgr.loadSites(this);
+		//siteMgr=SiteManager.getInstance(this);
 		
 		usernameTextview=(TextView)findViewById(R.id.TextViewUsername);
         usernameTextview.setText(siteMgr.getSite(currentSite).getLoggedInUser().getScreenName());
@@ -141,9 +143,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	}
 
 	@Override
-	protected void onDestroy() {
-		siteMgr.saveSites();
-		super.onDestroy();
+	public void onBackPressed() {
+		siteMgr.saveSites(this);
+		super.onBackPressed();
 	}
-
 }
