@@ -1,14 +1,11 @@
 package com.ade.parser;
 
-import java.util.Date;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.ade.site.Site;
 import com.ade.site.User;
 
-public class SohuAccountVerifyParser extends Parser {
+public class SohuAccountVerifyParser extends SohuBasicParser {
 
 	@Override
 	protected boolean onParse(String in, Site site) throws JSONException {
@@ -43,21 +40,7 @@ public class SohuAccountVerifyParser extends Parser {
 
 		User blogUser=site.getLoggedInUser();
 		JSONObject user=new JSONObject(in);;
-		blogUser.setID(user.getLong("id"));
-		blogUser.setScreenName(user.getString("screen_name"));
-		blogUser.setName(user.getString("name"));
-		blogUser.setLocation(user.getString("location"));
-		blogUser.setDescription(user.getString("description"));
-		blogUser.setUrl(user.getString("url"));
-		blogUser.setProfileImageUrl(user.getString("profile_image_url"));
-		blogUser.setFollowersCount(user.getLong("followers_count"));
-		blogUser.setFriendsCount(user.getLong("friends_count"));
-		blogUser.setCreatedAt(new Date(user.getString("created_at")));
-		blogUser.setFavouritesCount(user.getLong("favourites_count"));
-		blogUser.setBlogsCount(user.getLong("statuses_count"));
-		blogUser.setFollowing(user.getBoolean("following"));
-		blogUser.setVerified(user.getBoolean("verified"));
-		return true;
+		return parseUser(user,blogUser);
 	}
 
 }

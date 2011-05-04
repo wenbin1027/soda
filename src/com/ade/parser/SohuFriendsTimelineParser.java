@@ -1,6 +1,5 @@
 package com.ade.parser;
 
-import java.util.Date;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -8,7 +7,7 @@ import com.ade.site.Blog;
 import com.ade.site.Site;
 import com.ade.site.User;
 
-public class SohuFriendsTimelineParser extends Parser {
+public class SohuFriendsTimelineParser extends SohuBasicParser {
 
 	@Override
 	protected boolean onParse(String in, Site site) throws JSONException {
@@ -63,29 +62,32 @@ public class SohuFriendsTimelineParser extends Parser {
 				JSONObject blog=blogs.getJSONObject(i);
 				if (blog!=null){
 					Blog newBlog=new Blog();
-					newBlog.setCreatedAt(new Date(blog.getString("created_at")));
-					newBlog.setID(blog.getLong("id"));
-					newBlog.setText(blog.getString("text"));
-					newBlog.setInReplyToStatusID(blog.optLong("in_reply_to_status_id"));
-					newBlog.setInReplyToUserID(blog.optLong("in_reply_to_user_id"));
-					newBlog.setInReplyToScreenName(blog.optString("in_reply_to_screen_name"));
-					newBlog.setInReplyToStatusText(blog.optString("in_reply_to_status_text"));
+					if (!parseBlog(blog,newBlog))
+						continue;
+					if (blog.has("in_reply_to_status_id")){
+						long inReplyToStatusID=blog.optLong("in_reply_to_status_id");
+						long inReplyToUserID=blog.optLong("in_reply_to_user_id");
+						String inReplyToScreenName=blog.optString("in_reply_to_screen_name");
+						String inReplyToStatusText=blog.optString("in_reply_to_status_text");
+
+						Blog replyBlog=new Blog();
+						replyBlog.setID(inReplyToStatusID);
+						replyBlog.setText(inReplyToStatusText);
+
+						User replyUser=new User();
+						replyUser.setID(inReplyToUserID);
+						replyUser.setScreenName(inReplyToScreenName);
+						replyBlog.setUser(replyUser);
+						
+						newBlog.setRetweetedBlog(replyBlog);
+					}
 					
 					//User数据部分
 					User blogUser=new User();
 					JSONObject user=blog.getJSONObject("user");
-					blogUser.setID(user.getLong("id"));
-					blogUser.setScreenName(user.getString("screen_name"));
-					blogUser.setName(user.getString("name"));
-					blogUser.setLocation(user.getString("location"));
-					blogUser.setDescription(user.getString("description"));
-					blogUser.setUrl(user.getString("url"));
-					blogUser.setProfileImageUrl(user.getString("profile_image_url"));
-					blogUser.setFollowersCount(user.getLong("followers_count"));
-					blogUser.setCreatedAt(new Date(user.getString("created_at")));
-					blogUser.setVerified(user.getBoolean("verified"));
+					if (!parseUser(user,blogUser))
+						continue;
 					newBlog.setUser(blogUser);
-					
 					site.addBlog(newBlog);
 				}
 			}

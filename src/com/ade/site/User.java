@@ -13,18 +13,18 @@ public class User implements Serializable{
 	private static final long serialVersionUID = 4621473305493545567L;
 	private List<Blog> blogs;
 	private Date createdAt;
-	private String description;
+	private String description="";
 	private long followersCount;
 	private String gender="n";
 	private long ID;
-	private String location;
-	private String name;
-	private String profileImageUrl;
-	private String screenName;
-	private String url;
+	private String location="";
+	private String name="";
+	private String profileImageUrl="";
+	private String screenName="";
+	private String url="";
 	private boolean verified;
-	private String accessToken;
-	private String accessSecret;
+	private String accessToken="";
+	private String accessSecret="";
 	private long friendsCount;
 	private long blogsCount;
 	private long favouritesCount;
@@ -164,13 +164,14 @@ public class User implements Serializable{
 	@Override
 	public String toString() {
 		return "User [ID=" + ID + ", accessSecret=" + accessSecret
-				+ ", accessToken=" + accessToken + ", blogs=" + blogs
+				+ ", accessToken=" + accessToken + ", blogsCount=" + blogsCount
 				+ ", createdAt=" + createdAt + ", description=" + description
-				+ ", followersCount=" + followersCount 
-				+ ", gender=" + gender + ", location="
-				+ location + ", name=" + name + ", profileImageUrl="
-				+ profileImageUrl + ", screenName=" + screenName + ", url="
-				+ url + ", verified=" + verified + "]";
+				+ ", favouritesCount=" + favouritesCount + ", followersCount="
+				+ followersCount + ", following=" + following
+				+ ", friendsCount=" + friendsCount + ", gender=" + gender
+				+ ", location=" + location + ", name=" + name
+				+ ", profileImageUrl=" + profileImageUrl + ", screenName="
+				+ screenName + ", url=" + url + ", verified=" + verified + "]";
 	}
 
 	public void setFriendsCount(long friendsCount) {
