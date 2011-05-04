@@ -1,14 +1,11 @@
 package com.ade.parser;
 
-import java.util.Date;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import com.ade.site.Site;
 import com.ade.site.User;
 
-public class SinaAccountVerifyParser extends Parser {
+public class SinaAccountVerifyParser extends SinaBasicParser {
 
 	@Override
 	protected boolean onParse(String in, Site site) throws JSONException {
@@ -36,22 +33,7 @@ public class SinaAccountVerifyParser extends Parser {
 		}*/
 		JSONObject retUser=new JSONObject(in);
 		User myRetUser=site.getLoggedInUser();
-		myRetUser.setID(retUser.getLong("id"));
-		myRetUser.setScreenName(retUser.getString("screen_name"));
-		myRetUser.setName(retUser.getString("name"));
-		myRetUser.setLocation(retUser.getString("location"));
-		myRetUser.setDescription(retUser.getString("description"));
-		myRetUser.setUrl(retUser.getString("url"));
-		myRetUser.setProfileImageUrl(retUser.getString("profile_image_url"));
-		myRetUser.setGender(retUser.getString("gender"));
-		myRetUser.setFollowersCount(retUser.getLong("followers_count"));
-		myRetUser.setFriendsCount(retUser.getLong("friends_count"));
-		myRetUser.setBlogsCount(retUser.getLong("statuses_count"));
-		myRetUser.setFavouritesCount(retUser.getLong("favourites_count"));
-		myRetUser.setCreatedAt(new Date(retUser.getString("created_at")));
-		myRetUser.setFollowing(retUser.getBoolean("following"));
-		myRetUser.setVerified(retUser.getBoolean("verified"));
-		return true;
+		return parseUser(retUser,myRetUser);
 	}
 
 }

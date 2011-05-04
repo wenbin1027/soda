@@ -16,25 +16,14 @@ public class Blog implements Serializable,Comparable<Blog>{
 	private long ID;
 	private Blog retweetedBlog;
 	private Site site;
-	private String text;
-	private long InReplyToStatusID;
-	private long InReplyToUserID;
-	private String InReplyToScreenName;
-	private String InReplyToStatusText;
-	private String SmallPic;
-	private String MiddlePic;
-	private String OriginalPic;
+	private String text="";
+	private String SmallPic="";
+	private String MiddlePic="";
+	private String OriginalPic="";
 	private User user;
+	private String source="";
 
 	public Blog(){
-
-	}
-
-	/**
-	 * 
-	 * @param site
-	 */
-	public Blog(Site site){
 
 	}
 
@@ -55,6 +44,10 @@ public class Blog implements Serializable,Comparable<Blog>{
 		return ID;
 	}
 
+	public boolean isHaveRetweetedBlog(){
+		return retweetedBlog!=null;
+	}
+	
 	public Blog getRetweetedBlog(){
 		return retweetedBlog;
 	}
@@ -102,19 +95,32 @@ public class Blog implements Serializable,Comparable<Blog>{
 		this.text = text;
 	}
 	
-	public void setInReplyToStatusID(long inReplyToStatusID){
-		InReplyToStatusID = inReplyToStatusID;
+	public long getInReplyBlogID(){
+		if (retweetedBlog!=null)
+			return retweetedBlog.getID();
+		else
+			return 0;
 	}	
-	public void setInReplyToUserID(long inReplyToUserID){
-		InReplyToUserID = inReplyToUserID;
+	
+	public long getInReplyUserID(){
+		if (retweetedBlog!=null && retweetedBlog.getUser()!=null)
+			return retweetedBlog.getUser().getID();
+		else
+			return 0;
 	}
 		
-	public void setInReplyToScreenName(String inReplyToScreenName){
-		this.InReplyToScreenName = inReplyToScreenName;
+	public String getInReplyUserScreenName(){
+		if (retweetedBlog!=null && retweetedBlog.getUser()!=null)
+			return retweetedBlog.getUser().getScreenName();
+		else
+			return "";		
 	}
 	
-	public void setInReplyToStatusText(String inReplyToStatusText){
-		this.InReplyToStatusText = inReplyToStatusText;
+	public String getInReplyBlogText(){
+		if (retweetedBlog!=null)
+			return retweetedBlog.getText();
+		else
+			return "";	
 	}
 	
 	public void setPic(String smallPic,String middlePic,String originalPic){
@@ -144,14 +150,16 @@ public class Blog implements Serializable,Comparable<Blog>{
 
 	@Override
 	public String toString() {
-		return "Blog [ID=" + ID + ", InReplyToScreenName="
-				+ InReplyToScreenName + ", InReplyToStatusID="
-				+ InReplyToStatusID + ", InReplyToStatusText="
-				+ InReplyToStatusText + ", InReplyToUserID=" + InReplyToUserID
-				+ ", MiddlePic=" + MiddlePic + ", OriginalPic=" + OriginalPic
-				+ ", SmallPic=" + SmallPic + ", createdAt=" + createdAt
-				+ ", retweetedBlog=" + retweetedBlog + ", site=" + site
-				+ ", text=" + text + ", user=" + user + "]";
+		return "Blog [ID=" + ID + ", SmallPic=" + SmallPic + ", createdAt="
+				+ createdAt + ", source=" + source + ", text=" + text + "]";
+	}
+
+	public void setSource(String source) {
+		this.source = source;
+	}
+
+	public String getSource() {
+		return source;
 	}
 
 }

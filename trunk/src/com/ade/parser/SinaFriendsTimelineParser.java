@@ -1,24 +1,17 @@
 package com.ade.parser;
 
-import java.util.Date;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import android.util.Log;
-import android.widget.Toast;
-
 import com.ade.site.Blog;
 import com.ade.site.Site;
 import com.ade.site.User;
 
 
-public class SinaFriendsTimelineParser extends Parser {
+public class SinaFriendsTimelineParser extends SinaBasicParser {
 
 	@Override
 	protected boolean onParse(String in, Site site) throws JSONException {
-		// TODO Auto-generated method stub
 		/*
 		[
 		    {
@@ -103,7 +96,6 @@ public class SinaFriendsTimelineParser extends Parser {
 		...
 		]
          */
-		Log.i("SINA",in);
 		
 		JSONArray blogs=new JSONArray(in);
 		if (blogs!=null){
@@ -112,66 +104,36 @@ public class SinaFriendsTimelineParser extends Parser {
 				JSONObject blog=blogs.getJSONObject(i);
 				if (blog!=null){
 					Blog newBlog=new Blog();
-					newBlog.setCreatedAt(new Date(blog.getString("created_at")));
-					newBlog.setID(blog.getLong("id"));
-					newBlog.setText(blog.getString("text"));
-					newBlog.setInReplyToStatusID(blog.optLong("in_reply_to_status_id"));
-					newBlog.setInReplyToUserID(blog.optLong("in_reply_to_user_id"));
-					newBlog.setInReplyToScreenName(blog.optString("in_reply_to_screen_name"));
-					//SINA doesn't have the below param
-					//newBlog.setInReplyToStatusText(blog.optString("in_reply_to_status_text"));
-					
-					//Get Retweeted BLOG. Retweeted Blog is optional for this response
+					if (!parseBlog(blog,newBlog))
+						continue;
+
 					boolean hasRetweeted ;
 					hasRetweeted = blog.has("retweeted_status");
 					if ( hasRetweeted ){
 						JSONObject retBlog;
 						retBlog = blog.getJSONObject("retweeted_status");
 						Blog myRetBlog = new Blog();
-						myRetBlog.setCreatedAt(new Date(retBlog.getString("created_at")));
-						myRetBlog.setID(retBlog.getLong("id"));
-						myRetBlog.setText(retBlog.getString("text"));
-						myRetBlog.setInReplyToStatusID(retBlog.optLong("in_reply_to_status_id"));
-						myRetBlog.setInReplyToUserID(retBlog.optLong("in_reply_to_user_id"));
-						myRetBlog.setInReplyToScreenName(retBlog.optString("in_reply_to_screen_name"));
+						if (!parseBlog(retBlog,myRetBlog))
+							continue;
 							
 						//retweeted user data
 						User myRetUser = new User();
 						JSONObject retUser=retBlog.getJSONObject("user");
-						myRetUser.setID(retUser.getLong("id"));
-						myRetUser.setScreenName(retUser.getString("screen_name"));
-						myRetUser.setName(retUser.getString("name"));
-						myRetUser.setLocation(retUser.getString("location"));
-						myRetUser.setDescription(retUser.getString("description"));
-						myRetUser.setUrl(retUser.getString("url"));
-						myRetUser.setProfileImageUrl(retUser.getString("profile_image_url"));
-						myRetUser.setFollowersCount(retUser.getLong("followers_count"));
-						myRetUser.setCreatedAt(new Date(retUser.getString("created_at")));
-						myRetUser.setVerified(retUser.getBoolean("verified"));
-							
-						myRetBlog.setUser(myRetUser);
+						if (parseUser(retUser,myRetUser))
+							myRetBlog.setUser(myRetUser);
+						else
+							continue;
 							
 						newBlog.setRetweetedBlog(myRetBlog);
-							
 					}
-					
-					
-					
 					
 					//User数据部分
 					User blogUser=new User();
 					JSONObject user=blog.getJSONObject("user");
-					blogUser.setID(user.getLong("id"));
-					blogUser.setScreenName(user.getString("screen_name"));
-					blogUser.setName(user.getString("name"));
-					blogUser.setLocation(user.getString("location"));
-					blogUser.setDescription(user.getString("description"));
-					blogUser.setUrl(user.getString("url"));
-					blogUser.setProfileImageUrl(user.getString("profile_image_url"));
-					blogUser.setFollowersCount(user.getLong("followers_count"));
-					blogUser.setCreatedAt(new Date(user.getString("created_at")));
-					blogUser.setVerified(user.getBoolean("verified"));
-					newBlog.setUser(blogUser);
+					if (parseUser(user,blogUser))
+						newBlog.setUser(blogUser);
+					else
+						continue;
 					
 					site.addBlog(newBlog);
 				}
