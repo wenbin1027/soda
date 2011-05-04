@@ -1,8 +1,14 @@
 package com.ade.site;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * @author Administrator
@@ -205,5 +211,9 @@ public class User implements Serializable{
 	public boolean isFollowing() {
 		return following;
 	}
-
+	
+	public void save(FileOutputStream out) throws IOException, JSONException{
+		ObjectOutputStream stream=new ObjectOutputStream(out);
+		stream.writeObject(this);
+	}
 }

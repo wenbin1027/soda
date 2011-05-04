@@ -4,6 +4,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,8 +72,13 @@ public class SiteManager {
 		sites.clear();
 		sites.add(SOHU, makeSite(SOHU));
 		sites.add(SINA, makeSite(SINA));
+		
+		loadUser(context,sites.get(0));
+		loadUser(context,sites.get(1));
+		
 		loadBlogs(context,sites.get(0));
 		loadBlogs(context,sites.get(1));
+
 		return true;
 	}
 
@@ -87,12 +93,12 @@ public class SiteManager {
 			site.setFriendsTimeline(new SohuFriendsTimeline(new SohuFriendsTimelineParser()));
 			site.setAccountInterface(new SohuAccountVerify(new SohuAccountVerifyParser()));
 
-			user=new User();
-			user.setScreenName("zhang");
-			user.setID(123);
-			user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");
-			user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
-			site.logIn(user);
+//			user=new User();
+//			user.setScreenName("zhang");
+//			user.setID(123);
+//			user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");
+//			user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
+//			site.logIn(user);
 			break;
 		case SINA:
 			site=new SinaSite();
@@ -100,12 +106,12 @@ public class SiteManager {
 			site.setUploadInterface(new SinaUpload(new SinaUpdateParser()));
 			site.setFriendsTimeline(new SinaFriendsTimeline(new SinaFriendsTimelineParser()));
 			site.setAccountInterface(new SinaAccountVerify(new SinaAccountVerifyParser()));
-			user=new User();
-			user.setScreenName("wang");
-			user.setID(456);
-			user.setAccessToken("4207a6817f50785a07f456da1f4d20b7");
-			user.setAccessSecret("751c76001bcef5b3c225dbd942c33eaa");
-			site.logIn(user);
+//			user=new User();
+//			user.setScreenName("wang");
+//			user.setID(456);
+//			user.setAccessToken("4207a6817f50785a07f456da1f4d20b7");
+//			user.setAccessSecret("751c76001bcef5b3c225dbd942c33eaa");
+//			site.logIn(user);
 			break;
 		}
 
@@ -144,7 +150,28 @@ public class SiteManager {
 			}
 		}
 	}
-
+	
+	private void loadUser(Context context,Site site) {
+		if (context!=null && !site.isLoggedIn()){
+			try {
+				FileInputStream in=context.openFileInput(site.getName()+".cfg");
+				ObjectInputStream stream=new ObjectInputStream(in);
+				User user=(User)stream.readObject();
+				stream.close();
+				in.close();
+				if (user!=null){
+					site.logIn(user);
+				}
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ClassNotFoundException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
 	public void saveSites(Context context){
 		for(Site site:sites){
 			if (context!=null && site.isLoggedIn()){
@@ -158,6 +185,19 @@ public class SiteManager {
 				} catch (FileNotFoundException e1) {
 					e1.printStackTrace();
 				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				try {
+					out = context.openFileOutput(
+									site.getName()+".cfg", 
+									Context.MODE_PRIVATE);
+					site.saveUser(out);
+					out.close();
+				} catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} catch (JSONException e) {
 					e.printStackTrace();
 				}
 			}

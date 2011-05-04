@@ -8,6 +8,9 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Context;
 import android.util.Log;
 import com.ade.restapi.FriendsTimelineInterface;
@@ -329,6 +332,12 @@ public abstract class Site implements IHttpListener{
 	public void saveBlogs(FileOutputStream out) throws IOException{
 		if (blogsOriginalData!=null && isLoggedIn()){
 			out.write(blogsOriginalData.getBytes());
+		}
+	}
+	
+	public void saveUser(FileOutputStream out) throws IOException, JSONException{
+		if (isLoggedIn()){
+			loggedInUser.save(out);
 		}
 	}
 }
