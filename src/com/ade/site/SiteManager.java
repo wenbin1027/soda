@@ -36,33 +36,15 @@ public class SiteManager {
 	public static final int SINA=1;
 	private static SiteManager instance=null;
 	private List<Site> sites;
-	private List<Site> sinasites;
-	private List<Site> sohusites;
-	private Context context;
-
-	private SiteManager(Context context){
-		this.context=context;
-		sites=new ArrayList<Site>(2);
-		loadSites();
-	}
 	
 	private SiteManager(){
 		sites=new ArrayList<Site>(2);
-		loadSites();
 	}
 
 	public static SiteManager getInstance(){
 		if (instance==null){
 			instance=new SiteManager();
 		}
-		return instance;
-	}
-	
-	public static SiteManager getInstance(Context context){
-		if (instance==null){
-			instance=new SiteManager(context);
-		}
-		instance.setContext(context);
 		return instance;
 	}
 	
@@ -85,9 +67,12 @@ public class SiteManager {
 		}
 	}
 
-	private boolean loadSites(){
+	public boolean loadSites(Context context){
+		sites.clear();
 		sites.add(SOHU, makeSite(SOHU));
 		sites.add(SINA, makeSite(SINA));
+		loadBlogs(context,sites.get(0));
+		loadBlogs(context,sites.get(1));
 		return true;
 	}
 
@@ -108,7 +93,6 @@ public class SiteManager {
 			user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");
 			user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
 			site.logIn(user);
-			loadBlogs(site);
 			break;
 		case SINA:
 			site=new SinaSite();
@@ -122,28 +106,19 @@ public class SiteManager {
 			user.setAccessToken("4207a6817f50785a07f456da1f4d20b7");
 			user.setAccessSecret("751c76001bcef5b3c225dbd942c33eaa");
 			site.logIn(user);
-			loadBlogs(site);
 			break;
 		}
-		
-		if (context!=null){
-			ConnectivityManager cm = (ConnectivityManager)context
-			.getSystemService(Context.CONNECTIVITY_SERVICE);
-			NetworkInfo netinfo = cm.getActiveNetworkInfo(); 
-			if(site!=null && netinfo!=null && netinfo.getType()!=ConnectivityManager.TYPE_WIFI){
-				site.setProxy(Proxy.getDefaultHost(), Proxy.getDefaultPort());
-			}
-		}
+
 		return site;
 	}
 
 	/**
 	 * @param site
 	 */
-	private void loadBlogs(Site site) {
+	private void loadBlogs(Context context,Site site) {
 		if (context!=null && site.isLoggedIn()){
 			try {
-				FileInputStream in=context.openFileInput(site.getName()+'_'+site.getLoggedInUser().getID());
+				FileInputStream in=context.openFileInput(site.getName()+"_"+site.getLoggedInUser().getID());
 				byte[] buffer=new byte[in.available()];
 				in.read(buffer);
 				in.close();
@@ -157,15 +132,26 @@ public class SiteManager {
 				e.printStackTrace();
 			}
 		}
+		if (context!=null){
+			ConnectivityManager cm = (ConnectivityManager)context
+			.getSystemService(Context.CONNECTIVITY_SERVICE);
+			NetworkInfo netinfo = cm.getActiveNetworkInfo(); 
+			if(site!=null && netinfo!=null){
+				if (netinfo.getType()!=ConnectivityManager.TYPE_WIFI
+						&& netinfo.getSubtypeName().toLowerCase().contains("wap")){
+					site.setProxy(Proxy.getDefaultHost(), Proxy.getDefaultPort());
+				}
+			}
+		}
 	}
 
-	public void saveSites(){
+	public void saveSites(Context context){
 		for(Site site:sites){
 			if (context!=null && site.isLoggedIn()){
 				FileOutputStream out;
 				try {
 					out = context.openFileOutput(
-									site.getName()+'-'+site.getLoggedInUser().getID(), 
+									site.getName()+"_"+site.getLoggedInUser().getID(), 
 									Context.MODE_PRIVATE);
 					site.saveBlogs(out);
 					out.close();
@@ -177,9 +163,4 @@ public class SiteManager {
 			}
 		}
 	}
-	
-	public void setContext(Context context){
-		this.context=context;
-	}
-
 }
