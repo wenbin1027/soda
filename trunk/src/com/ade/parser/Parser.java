@@ -37,8 +37,7 @@ public abstract class Parser {
 	 * @throws JSONException 
 	 */
 	public boolean parse(String in, Site site) throws JSONException{
-		onParse(in,site);
-		return false;
+		return onParse(in,site);
 	}
 
 }

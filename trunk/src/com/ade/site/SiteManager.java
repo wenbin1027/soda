@@ -1,5 +1,6 @@
 package com.ade.site;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -187,6 +188,7 @@ public class SiteManager {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+
 				try {
 					out = context.openFileOutput(
 									site.getName()+".cfg", 
@@ -200,6 +202,10 @@ public class SiteManager {
 				} catch (JSONException e) {
 					e.printStackTrace();
 				}
+			}
+			else if (context!=null && !site.isLoggedIn()){
+				File file=new File(context.getFilesDir().getAbsolutePath()+"/"+site.getName()+".cfg");
+				file.delete();
 			}
 		}
 	}

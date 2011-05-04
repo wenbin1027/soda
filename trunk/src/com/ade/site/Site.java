@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -40,7 +41,7 @@ public abstract class Site implements IHttpListener{
 	protected String source;
 	private UpdateInterface updateInterface;
 	private UploadInterface uploadInterface;
-	protected List<SiteListener> listeners;
+	protected Set<SiteListener> listeners;
 	protected String oauthRequestUrl;
 	protected String oauthUrl;
 	protected String oauthAccessUrl;
@@ -62,7 +63,7 @@ public abstract class Site implements IHttpListener{
 	
 	public void addListener(SiteListener listener){
 		if (listeners==null)
-			listeners=new ArrayList<SiteListener>();
+			listeners=new HashSet<SiteListener>();
 		listeners.add(listener);
 	}
 	
@@ -74,24 +75,27 @@ public abstract class Site implements IHttpListener{
 	
 	protected void notifyBegin(){
 		if (listeners!=null){
-			for(SiteListener listener:listeners){
-				listener.onBeginRequest();
+			Iterator<SiteListener> iterator=listeners.iterator();
+			while(iterator.hasNext()){
+				iterator.next().onBeginRequest();
 			}
 		}
 	}
 	
 	protected void notifyError(String errorMessage){
 		if (listeners!=null){
-			for(SiteListener listener:listeners){
-				listener.onError(errorMessage);
+			Iterator<SiteListener> iterator=listeners.iterator();
+			while(iterator.hasNext()){
+				iterator.next().onError(errorMessage);
 			}
 		}
 	}
 	
 	protected void notifyResponse(){
 		if (listeners!=null){
-			for(SiteListener listener:listeners){
-				listener.onResponsed();
+			Iterator<SiteListener> iterator=listeners.iterator();
+			while(iterator.hasNext()){
+				iterator.next().onResponsed();
 			}
 		}
 	}

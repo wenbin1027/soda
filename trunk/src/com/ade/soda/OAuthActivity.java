@@ -38,11 +38,10 @@ public class OAuthActivity extends Activity implements OAuthListener,SiteListene
 		public boolean handleMessage(Message msg) {
 			switch (msg.what) {
 			case AUTHSUCCESS:
-				site.addListener(OAuthActivity.this);
 				site.accountVerify();
 				break;
 			case AUTHFAIL:
-				finishActivity(RESULT_CANCELED);
+				finish();
 				break;
 			case VERIFYBEGIN:
 				if (progressDlg==null){
@@ -70,15 +69,18 @@ public class OAuthActivity extends Activity implements OAuthListener,SiteListene
 				break;
 			case VERIFYERROR:
 				dismissDlg();
+				Toast.makeText(OAuthActivity.this, (String)msg.obj, Toast.LENGTH_SHORT).show();
+				finish();
 				break;
 			}
-			return false;
+			return true;
 		}
 
 		/**
 		 * 
 		 */
 		private void dismissDlg() {
+			//site.removeListener(OAuthActivity.this);
 			if (progressDlg!=null){
 				progressDlg.dismiss();
 				progressDlg=null;
@@ -97,6 +99,7 @@ public class OAuthActivity extends Activity implements OAuthListener,SiteListene
 		if (intent.hasExtra("siteID")){
 			siteID=intent.getIntExtra("siteID",SiteManager.SINA);
 			site=SiteManager.getInstance().getSites().get(siteID);
+			site.addListener(this);
 		}
 		if (intent.hasExtra("user")){
 			user=(User) intent.getSerializableExtra("user");
@@ -106,6 +109,12 @@ public class OAuthActivity extends Activity implements OAuthListener,SiteListene
 		}
 	}
 	
+	@Override
+	protected void onDestroy() {
+		site.removeListener(this);
+		super.onDestroy();
+	}
+
 	private void doAuth(){
 		oauth=new OAuth(site.getOauthRequestUrl(),site.getOauthUrl(),
 				site.getOauthAccessUrl(),(WebView)findViewById(R.id.webViewOauth));
@@ -136,11 +145,15 @@ public class OAuthActivity extends Activity implements OAuthListener,SiteListene
 
 	@Override
 	public void onError(String errorMessage) {
-		mainHandler.sendEmptyMessage(VERIFYERROR);
+		Message msg=new Message();
+		msg.what=VERIFYERROR;
+		msg.obj=errorMessage;
+		mainHandler.sendMessage(msg);
 	}
 
 	@Override
 	public void onResponsed() {
 		mainHandler.sendEmptyMessage(VERIFYEND);
 	}
+
 }
