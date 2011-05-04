@@ -55,11 +55,14 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			public void onTabChanged(String tabId) {
 				if (tabId.equalsIgnoreCase("sina")){
 					currentSite=SiteManager.SINA;
-			        usernameTextview.setText(siteMgr.getSite(SiteManager.SINA).getLoggedInUser().getScreenName());
+					if (siteMgr.getSite(SiteManager.SINA).isLoggedIn())
+						usernameTextview.setText(siteMgr.getSite(SiteManager.SINA).getLoggedInUser().getScreenName());
+					
 				}
 				else if (tabId.equalsIgnoreCase("sohu")){
 					currentSite=SiteManager.SOHU;
-			        usernameTextview.setText(siteMgr.getSite(SiteManager.SOHU).getLoggedInUser().getScreenName());
+					if (siteMgr.getSite(SiteManager.SOHU).isLoggedIn())
+						usernameTextview.setText(siteMgr.getSite(SiteManager.SOHU).getLoggedInUser().getScreenName());
 				}
 			}
         });
