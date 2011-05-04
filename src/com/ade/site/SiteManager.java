@@ -138,7 +138,7 @@ public class SiteManager {
 			NetworkInfo netinfo = cm.getActiveNetworkInfo(); 
 			if(site!=null && netinfo!=null){
 				if (netinfo.getType()!=ConnectivityManager.TYPE_WIFI
-						&& netinfo.getSubtypeName().toLowerCase().contains("wap")){
+						&& netinfo.getExtraInfo().toLowerCase().contains("wap")){
 					site.setProxy(Proxy.getDefaultHost(), Proxy.getDefaultPort());
 				}
 			}
