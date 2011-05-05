@@ -43,11 +43,13 @@ public class MainActivity extends Activity implements OnItemClickListener {
         tabHost.setup();
         tabHost.addTab(
         		tabHost.newTabSpec("sina").setIndicator(
-        				siteMgr.getSiteByID(SiteManager.SINA).getName(), null)
+        				null, 
+        				getResources().getDrawable(R.drawable.sina))
         				.setContent(R.id.tab_sina));   
         tabHost.addTab(
         		tabHost.newTabSpec("sohu").setIndicator(
-        				siteMgr.getSiteByID(SiteManager.SOHU).getName(), null)
+        				null, 
+        				getResources().getDrawable(R.drawable.sohu))
         				.setContent(R.id.tab_sohu));   
 
         tabHost.setOnTabChangedListener(new OnTabChangeListener(){
