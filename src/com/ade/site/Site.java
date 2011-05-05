@@ -1,18 +1,13 @@
 package com.ade.site;
-import java.io.FileNotFoundException;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
-
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import android.content.Context;
 import android.util.Log;
 import com.ade.restapi.FriendsTimelineInterface;
 import com.ade.net.HttpNet;
@@ -22,11 +17,6 @@ import com.ade.restapi.UpdateInterface;
 import com.ade.restapi.UploadInterface;
 
 
-/**
- * @author Administrator
- * @version 1.0
- * @created 10-����-2011 ���� 08:33:51
- */
 public abstract class Site implements IHttpListener{
 	
 	protected String appKey;
@@ -41,7 +31,7 @@ public abstract class Site implements IHttpListener{
 	protected String source;
 	private UpdateInterface updateInterface;
 	private UploadInterface uploadInterface;
-	protected Set<SiteListener> listeners;
+	protected List<SiteListenerNode> listeners;
 	protected String oauthRequestUrl;
 	protected String oauthUrl;
 	protected String oauthAccessUrl;
@@ -50,6 +40,11 @@ public abstract class Site implements IHttpListener{
 	protected int siteID;
 	private AccountVerifyInterface accountInterface;
 	private String blogsOriginalData;
+	
+	private class SiteListenerNode{
+		public SiteListener listener=null;
+		public boolean isRemoved=false;
+	}
 	
 	public Site() {
 		onConstruct();
@@ -63,39 +58,54 @@ public abstract class Site implements IHttpListener{
 	
 	public void addListener(SiteListener listener){
 		if (listeners==null)
-			listeners=new HashSet<SiteListener>();
-		listeners.add(listener);
+			listeners=new ArrayList<SiteListenerNode>();
+		SiteListenerNode node=new SiteListenerNode();
+		node.listener=listener;
+		node.isRemoved=false;
+		listeners.add(node);
 	}
 	
 	public void removeListener(SiteListener listener){
 		if (listener !=null && listeners!=null){
 			listeners.remove(listener);
+			Iterator<SiteListenerNode> iterator=listeners.iterator();
+			while(iterator.hasNext()){
+				SiteListenerNode temp=iterator.next();
+				if (temp.listener.equals(listener))
+					temp.isRemoved=true;
+			}
 		}
 	}
 	
 	protected void notifyBegin(){
 		if (listeners!=null){
-			Iterator<SiteListener> iterator=listeners.iterator();
+			Iterator<SiteListenerNode> iterator=listeners.iterator();
 			while(iterator.hasNext()){
-				iterator.next().onBeginRequest();
+				SiteListenerNode temp=iterator.next();
+				if (!temp.isRemoved)
+					temp.listener.onBeginRequest();
 			}
 		}
 	}
 	
 	protected void notifyError(String errorMessage){
 		if (listeners!=null){
-			Iterator<SiteListener> iterator=listeners.iterator();
+			Iterator<SiteListenerNode> iterator=listeners.iterator();
 			while(iterator.hasNext()){
-				iterator.next().onError(errorMessage);
+				SiteListenerNode temp=iterator.next();
+				if (!temp.isRemoved)
+					temp.listener.onError(errorMessage);
 			}
 		}
 	}
 	
 	protected void notifyResponse(){
 		if (listeners!=null){
-			Iterator<SiteListener> iterator=listeners.iterator();
+			Iterator<SiteListenerNode> iterator=listeners.iterator();
 			while(iterator.hasNext()){
-				iterator.next().onResponsed();
+				SiteListenerNode temp=iterator.next();
+				if (!temp.isRemoved)
+					temp.listener.onResponsed();
 			}
 		}
 	}

@@ -91,7 +91,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 					sinaListView.refresh();
 					break;
 				case SiteManager.SOHU:
-					sohuListView.refresh();;
+					sohuListView.refresh();
 				}
 			}
 		});
