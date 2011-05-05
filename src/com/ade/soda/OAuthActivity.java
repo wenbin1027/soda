@@ -98,7 +98,7 @@ public class OAuthActivity extends Activity implements OAuthListener,SiteListene
 		Intent intent=getIntent();
 		if (intent.hasExtra("siteID")){
 			siteID=intent.getIntExtra("siteID",SiteManager.SINA);
-			site=SiteManager.getInstance().getSites().get(siteID);
+			site=SiteManager.getInstance().getSiteByID(siteID);
 			site.addListener(this);
 		}
 		if (intent.hasExtra("user")){
