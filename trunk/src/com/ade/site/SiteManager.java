@@ -50,35 +50,33 @@ public class SiteManager {
 		return instance;
 	}
 	
-	public List<Site> getSites(){
+	public final List<Site> getSites(){
 		return sites;
 	}
 	
-	public Site getSite(int siteType){
+	public Site getSiteByID(int siteID){
 		if (sites.isEmpty()){
 			return null;
 		}
-		if (siteType==SOHU){
-			return sites.get(SOHU);
+		
+		for(int i=0;i<sites.size();i++){
+			if (sites.get(i).getSiteID()==siteID)
+				return sites.get(i);
 		}
-		else if (siteType==SINA){
-			return sites.get(SINA);
-		}
-		else{
-			return null;
-		}
+		
+		return null;
 	}
 
 	public boolean loadSites(Context context){
 		sites.clear();
-		sites.add(SOHU, makeSite(SOHU));
-		sites.add(SINA, makeSite(SINA));
+		sites.add(makeSite(SINA));
+		sites.add(makeSite(SOHU));
 		
-		loadUser(context,sites.get(0));
-		loadUser(context,sites.get(1));
+		loadUser(context,sites.get(SINA));
+		loadUser(context,sites.get(SOHU));
 		
-		loadBlogs(context,sites.get(0));
-		loadBlogs(context,sites.get(1));
+		loadBlogs(context,sites.get(SINA));
+		loadBlogs(context,sites.get(SOHU));
 
 		return true;
 	}

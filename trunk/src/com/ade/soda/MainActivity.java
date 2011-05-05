@@ -21,7 +21,7 @@ import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnItemClickListener {
 	private final String TAG = "MainActivity";
-	private int currentSite = SiteManager.SINA; // 测试时注意修改此处为要测的网站
+	private int currentSite = SiteManager.SINA;
 	private BlogListView sinaListView;
 	private BlogListView sohuListView;
 	private TabHost tabHost;
@@ -43,11 +43,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
         tabHost.setup();
         tabHost.addTab(
         		tabHost.newTabSpec("sina").setIndicator(
-        				siteMgr.getSite(SiteManager.SINA).getName(), null)
+        				siteMgr.getSiteByID(SiteManager.SINA).getName(), null)
         				.setContent(R.id.tab_sina));   
         tabHost.addTab(
         		tabHost.newTabSpec("sohu").setIndicator(
-        				siteMgr.getSite(SiteManager.SOHU).getName(), null)
+        				siteMgr.getSiteByID(SiteManager.SOHU).getName(), null)
         				.setContent(R.id.tab_sohu));   
 
         tabHost.setOnTabChangedListener(new OnTabChangeListener(){
@@ -67,11 +67,11 @@ public class MainActivity extends Activity implements OnItemClickListener {
         
 		sinaListView=(BlogListView)findViewById(R.id.SinaList);
 		sinaListView.setOnItemClickListener(this);
-		sinaListView.init(siteMgr.getSite(SiteManager.SINA));
+		sinaListView.init(siteMgr.getSiteByID(SiteManager.SINA));
 
 		sohuListView=(BlogListView)findViewById(R.id.SohuList);
 		sohuListView.setOnItemClickListener(this);
-		sohuListView.init(siteMgr.getSite(SiteManager.SOHU));	
+		sohuListView.init(siteMgr.getSiteByID(SiteManager.SOHU));	
 		
 		findViewById(R.id.BtnWrite).setOnClickListener(new OnClickListener() {
 			@Override
@@ -98,8 +98,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	}
 
 	private void updateUserNameTextView() {
-		if (siteMgr.getSite(currentSite).isLoggedIn())
-			usernameTextview.setText(siteMgr.getSite(currentSite).getLoggedInUser().getScreenName());
+		if (siteMgr.getSiteByID(currentSite).isLoggedIn())
+			usernameTextview.setText(siteMgr.getSiteByID(currentSite).getLoggedInUser().getScreenName());
 		else
 			usernameTextview.setText(R.string.unAuthUser);
 	}
@@ -130,7 +130,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		Site site=siteMgr.getSite(currentSite);
+		Site site=siteMgr.getSiteByID(currentSite);
 		Set<Blog> blogs=site.getBlogs();
 		Iterator<Blog> iterator=blogs.iterator();
 		int i=1;

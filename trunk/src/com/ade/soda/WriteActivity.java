@@ -27,7 +27,7 @@ public class WriteActivity extends Activity implements OnClickListener {
 		Intent intent = getIntent();
 		if (intent != null) {
 			if (intent.hasExtra("site")) {
-				site = SiteManager.getInstance().getSite(
+				site = SiteManager.getInstance().getSiteByID(
 						intent.getIntExtra("site", -1));
 			}
 		}
