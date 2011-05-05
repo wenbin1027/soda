@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.webkit.WebView;
 import android.widget.Adapter;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
@@ -76,16 +77,25 @@ public class BlogAdapter implements ListAdapter {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		LayoutInflater li=LayoutInflater.from(context);
-		View view=li.inflate(R.layout.blogview, null);
+		View view=null;
+		if (convertView==null){
+			LayoutInflater li=LayoutInflater.from(context);
+			view=li.inflate(R.layout.blogview, null);
+		}
+		else{
+			view=convertView;
+		}
 		TextView userName=(TextView)view.findViewById(R.id.userName);
 		TextView blogText=(TextView)view.findViewById(R.id.blogText);
 		WebView profileImage=(WebView)view.findViewById(R.id.profileImage);
+		ImageView vImage=(ImageView)view.findViewById(R.id.vImage);
 		Blog blog=getItem(position);
 		if (blog!=null){
 			userName.setText(blog.getUser().getScreenName());
 			blogText.setText(blog.getText());
 			profileImage.loadUrl(blog.getUser().getProfileImageUrl());
+			if (!blog.getUser().isVerified())
+				vImage.setVisibility(View.INVISIBLE);
 		}
 		return view;
 	}
