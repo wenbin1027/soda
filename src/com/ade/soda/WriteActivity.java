@@ -115,9 +115,6 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 	}
 
 	private void sendMsg(Site site) {
-	
-		site.addListener(this);
-		
 		EditText mEditText = (EditText) findViewById(R.id.EditText);		
 		String s = mEditText.getText().toString();
 		boolean flag = false;
@@ -136,7 +133,6 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 		else {
 			site.addListener(this);
 			site.updateText(s);			
-			//Toast.makeText(WriteActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
 			WriteActivity.this.finish();
 		}
 		
