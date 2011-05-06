@@ -34,4 +34,9 @@
 	
 	<string name="unAuthTips">还未授权，请到设置菜单中授权后使用！</string>
 	<string name="unAuthUser">未授权用户</string>
+	<string name="authenticationSucceeded">身份验证成功</string>
+	<string name="authenticationFailed">身份验证失败</string>
+	<string name="dialogCancel">取消</string>
+	<string name="dialogOK">确定</string>
+	<string name="dialogConfirmInvalidateAuthentication">确定禁用&quot;%s&quot;帐户吗?再次启用需要重验证。</string>
 </resources>

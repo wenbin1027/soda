@@ -30,35 +30,36 @@ public class SetActivity extends Activity {
 		setContentView(R.layout.set);
 		
 		// Initialize ListView
-		sites=SiteManager.getInstance().getSites();
-		siteNames=new String[sites.size()];
-		for(int i=0;i<sites.size();i++){
-			siteNames[i]=sites.get(i).getName();
+		this.mListView = (ListView) findViewById(R.id.ListView01);
+		sites = SiteManager.getInstance().getSites();
+		siteNames = new String[sites.size()];
+		for(int i = 0; i < sites.size(); i++){
+			siteNames[i] = sites.get(i).getName();
 		}
 		
-		mListView = (ListView) findViewById(R.id.ListView01);
-		mListView.setAdapter(
+		this.mListView.setAdapter(
 			new ArrayAdapter<String>(
 				this, 
-				android.R.layout.simple_list_item_multiple_choice, siteNames
+				android.R.layout.simple_list_item_multiple_choice, 
+				siteNames
 			)
 		);
-		mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
-		mListView.setOnItemClickListener(this.mListCheckListener);
+		this.mListView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+		this.mListView.setOnItemClickListener(this.mListCheckListener);
 		
-		loadListViewState();
+		loadListViewCheckState();
 	}
 	
-	// helper method	
+	// Helper method	
 	// Load ListView state
-	private void loadListViewState() {
+	private void loadListViewCheckState() {
 		for(int i = 0; i < mListView.getCount(); i++){
 			mListView.setItemChecked(i, siteAuthenticated(sites.get(i)));
 		}
 	}
 	
-	// helper method
-	// Check if a site has an access key.
+	// Helper method
+	// Check if a site is logged in.
 	private Boolean siteAuthenticated(Site site){
 		Boolean result = false;
 
@@ -84,45 +85,41 @@ public class SetActivity extends Activity {
 					intent.putExtra("siteID", sites.get(arg2).getSiteID());
 					intent.putExtra("user", new User());
 					startActivityForResult(intent, AUTHREQUESTCODE);
-				
-					loadListViewState();
 				}
 			} else {
 				// Confirm to invalidate the access key
 				AlertDialog.Builder bld = new AlertDialog.Builder(SetActivity.this);
-				
-				// TODO Move the strings to resource
-				bld.setTitle(String.format("确定禁用\"%s\"帐户吗?再次启用需要重新验证。", sites.get(arg2).getName()));
-				bld.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+				bld.setMessage(String.format(getString(R.string.dialogConfirmInvalidateAuthentication), sites.get(arg2).getName()));
+				bld.setPositiveButton(getString(R.string.dialogOK), new DialogInterface.OnClickListener() {
 		            public void onClick(DialogInterface dialog, int whichButton) {
-		            	invalidateAuthentication(sites.get(arg2));
+		            	Site site = sites.get(arg2);
+		            	if(site != null)
+		            	{
+		            		site.logOut();
+		            	}
 		            }
 		        });
-		        bld.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+		        bld.setNegativeButton(getString(R.string.dialogCancel), new DialogInterface.OnClickListener() {
 		            public void onClick(DialogInterface dialog, int whichButton) {
-		            	Toast.makeText(SetActivity.this, "取消", Toast.LENGTH_SHORT).show();
+		            	Toast.makeText(SetActivity.this, getString(R.string.dialogCancel), Toast.LENGTH_SHORT).show();
 		            }
 		        });
 		        
 				bld.show();
 			}
+			
+			loadListViewCheckState();
 		}
 	};
-	
-	// helper method
-	// Invalidate the authentication for selected site
-	private void invalidateAuthentication(Site site) {
-		site.logOut();
-		//TODO:
-		Toast.makeText(SetActivity.this, "TODO: Invalidate access key " + site.getName(), Toast.LENGTH_SHORT).show();
-	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == AUTHREQUESTCODE) {
-			loadListViewState();
+			loadListViewCheckState();
 			Toast.makeText(this,
-					resultCode == RESULT_OK ? "Auth Success" : "Auth Fail",
+					resultCode == RESULT_OK ? 
+							getString(R.string.authenticationSucceeded) : 
+							getString(R.string.authenticationFailed),
 					Toast.LENGTH_LONG).show();
 		}
 		super.onActivityResult(requestCode, resultCode, data);
