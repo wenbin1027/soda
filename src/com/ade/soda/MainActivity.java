@@ -15,11 +15,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.TabHost; 
+import android.widget.TabWidget;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
 
 public class MainActivity extends Activity implements OnItemClickListener {
+	private static final String SOHU = "sohu";
+	private static final String SINA = "sina";
 	private final String TAG = "MainActivity";
 	private int currentSite = SiteManager.SINA;
 	private BlogListView sinaListView;
@@ -42,12 +45,12 @@ public class MainActivity extends Activity implements OnItemClickListener {
         tabHost=(TabHost)findViewById(R.id.tabhost);
         tabHost.setup();
         tabHost.addTab(
-        		tabHost.newTabSpec("sina").setIndicator(
+        		tabHost.newTabSpec(SINA).setIndicator(
         				null, 
         				getResources().getDrawable(R.drawable.sina))
         				.setContent(R.id.tab_sina));   
         tabHost.addTab(
-        		tabHost.newTabSpec("sohu").setIndicator(
+        		tabHost.newTabSpec(SOHU).setIndicator(
         				null, 
         				getResources().getDrawable(R.drawable.sohu))
         				.setContent(R.id.tab_sohu));   
@@ -55,17 +58,19 @@ public class MainActivity extends Activity implements OnItemClickListener {
         tabHost.setOnTabChangedListener(new OnTabChangeListener(){
 			@Override
 			public void onTabChanged(String tabId) {
-				if (tabId.equalsIgnoreCase("sina")){
+				if (tabId.equalsIgnoreCase(SINA)){
 					currentSite=SiteManager.SINA;
 					updateUserNameTextView();
 				}
-				else if (tabId.equalsIgnoreCase("sohu")){
+				else if (tabId.equalsIgnoreCase(SOHU)){
 					currentSite=SiteManager.SOHU;
 					updateUserNameTextView();
 				}
 			}
         });
-		tabHost.setCurrentTabByTag("sina");
+		tabHost.setCurrentTabByTag(SINA);
+		
+		//tabHost.getCurrentTabView().setBackgroundResource(R.drawable.maintab_toolbar_bg);
         
 		sinaListView=(BlogListView)findViewById(R.id.SinaList);
 		sinaListView.setOnItemClickListener(this);
