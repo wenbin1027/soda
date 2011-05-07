@@ -70,13 +70,14 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 			case END:
 				site.removeListener(WriteActivity.this);
 				dismissDlg();
-				Toast.makeText(WriteActivity.this, "发送成功", Toast.LENGTH_SHORT).show();
+				Toast.makeText(WriteActivity.this, getResources().getString(R.string.SendSuccess), Toast.LENGTH_SHORT).show();
+				WriteActivity.this.finish();//这句话的位置是否合适，程序运行无错，但我不确定这里是否合适。
 				break;
 			case ERROR:
 				site.removeListener(WriteActivity.this);
 				dismissDlg();
 				if (msg.obj!=null){
-					Toast.makeText(WriteActivity.this, "对不起，发送失败，请重新发送", Toast.LENGTH_SHORT).show();
+					Toast.makeText(WriteActivity.this, getResources().getString(R.string.SendError), Toast.LENGTH_SHORT).show();
 				}
 				break;
 			}
@@ -107,7 +108,6 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 		case R.id.BtnSendMsg:
 			// todo
 			sendMsg(site);
-
 			break;
 		default:
 			break;
@@ -115,6 +115,7 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 	}
 
 	private void sendMsg(Site site) {
+		site.addListener(this);
 		EditText mEditText = (EditText) findViewById(R.id.EditText);		
 		String s = mEditText.getText().toString();
 		boolean flag = false;
@@ -128,12 +129,10 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 			}
 		}
 		if (s == null || !flag)
-			Toast.makeText(WriteActivity.this, "请输入信息后再发送", Toast.LENGTH_SHORT)
+			Toast.makeText(WriteActivity.this, getResources().getString(R.string.PleaseWrite), Toast.LENGTH_SHORT)
 					.show();
 		else {
-			site.addListener(this);
 			site.updateText(s);			
-			WriteActivity.this.finish();
 		}
 		
 	}
