@@ -55,20 +55,61 @@ public class REandFWActivity extends Activity implements OnClickListener{
 		tvUsrname.setText( blogName );
 		wvProfileImage.loadUrl(blog.getUser().getProfileImageUrl());
 		
-		if (blog.getOriginalPic()!=null){
+		//middlePic has higher priority, picType is used to set picture size
+		String pic=""; 
+		String picType="";
+		
+		//this is used to set webview data string with respective size
+		String data="";
+		
+		if (blog.getMiddlePic() !=null && ! "".equals(blog.getMiddlePic()) ){
+			pic=blog.getMiddlePic();
+			picType="msize"; //middle size picture
+		}else if (blog.getOriginalPic() != null && ! "".equals(blog.getOriginalPic())){
+			pic=blog.getOriginalPic();
+			picType="osize"; //orignal size picture
+		}
+		
+		if ( ! "".equals(pic)){
 			wvBlogPic.setVisibility(0);	
-			Log.i("REandFW",blog.getOriginalPic());
-			wvBlogPic.loadUrl(blog.getOriginalPic());
+			
+			Log.i("REandFW",pic+" "+ picType);
+			if ("msize".equals(picType)){
+			   data="<IMG HEIGHT=\"180px\" WIDTH=\"200px\" SRC="+pic+">";
+			}else{
+			   data="<IMG HEIGHT=\"250px\" WIDTH=\"300px\" SRC="+pic+">";
+			}
+			wvBlogPic.loadData(data, "text/html", "UTF-8");
+			//wvBlogPic.loadUrl(pic);
+			Log.i("REandFW","data is "+ data);
 		}
 		
 		//retweeted msg
 		Blog retBlog = blog.getRetweetedBlog();
 		if (retBlog != null){
 			tvRetMsg.setText(" \nRE:" + retBlog.getUser().getName() + "\n" + retBlog.getText());
-			if (retBlog.getOriginalPic() !=null){
+			
+			pic="";
+			picType="";
+			
+			if (retBlog.getMiddlePic() !=null && ! "".equals(retBlog.getMiddlePic()) ){
+				pic=retBlog.getMiddlePic();
+				picType="msize"; //middle size picture
+			}else if (retBlog.getOriginalPic() != null && ! "".equals(retBlog.getOriginalPic())){
+				pic=retBlog.getOriginalPic();
+				picType="osize"; //orignal size picture
+			}
+			
+			if ( ! "".equals(pic)){
 				wvRetPic.setVisibility(0);
-				Log.i("REandFW",retBlog.getOriginalPic());
-				wvRetPic.loadUrl(retBlog.getOriginalPic());
+				
+				if ("msize".equals(picType)){
+					data="<IMG HEIGHT=\"180px\" WIDTH=\"200px\" SRC="+pic+">";
+				}else{
+					data="<IMG HEIGHT=\"250px\" WIDTH=\"300px\" SRC="+pic+">";
+				}
+				
+				wvRetPic.loadData(data, "text/html", "UTF-8");;
 			}
 		}
 		
