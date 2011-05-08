@@ -31,6 +31,8 @@
 	<string name="waitDialogMessage">正在获取微博信息...</string>
 	<string name="waitSendMessage">正在发送信息...</string>
 	
+	<string name="writetitle">新信息</string>
+	<string name="back">返回</string>
 	<string name="PleaseWrite">	请输入信息后再发送</string>
 	<string name="SendSuccess">发送成功</string>
 	<string name="SendError">对不起，发送失败，请重新发送</string>
