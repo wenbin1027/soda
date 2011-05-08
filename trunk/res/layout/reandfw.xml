@@ -4,6 +4,9 @@
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:gravity="left"
+	android:scrollbars="vertical"
+	android:padding="10dp"
+	android:background="@color/white"
 	android:alwaysDrawnWithCache="false">
 	
     <RelativeLayout android:layout_width="fill_parent" 
@@ -14,6 +17,7 @@
  		android:scrollbars="none"
  		android:layout_alignParentLeft="true">
  	   </WebView>
+ 	
  	 <RelativeLayout android:layout_alignParentRight="true"
  	  	android:layout_toRightOf="@+id/refwImage"
  		android:layout_width="fill_parent"
@@ -26,22 +30,24 @@
  		</TextView>
  		<TextView android:id="@+id/refwMsg" android:layout_width="fill_parent"
  			android:layout_height="wrap_content" 
+ 			android:textColor="@color/black"
  			android:layout_below="@+id/refwUsername">
  		</TextView>
  		<WebView android:id="@+id/refwPic"
- 		    	 android:layout_width="80dp"
- 		         android:layout_height="80dp"
+ 		    	 android:layout_width="wrap_content"
+ 		         android:layout_height="wrap_content"
  		         android:layout_below="@+id/refwMsg"
  		         android:visibility ="gone" >
  		</WebView>	
  		
+ 		 		
  		  <TextView android:id="@+id/refwRetMsg" android:layout_width="fill_parent"
  		        	android:layout_height="wrap_content" android:textColor="@color/yellow"
  					android:layout_below="@+id/refwPic">
  	      </TextView>	
  		  <WebView android:id="@+id/refwRetPic"
- 		    	    android:layout_width="80dp"
- 		            android:layout_height="80dp"
+ 		    	    android:layout_width="wrap_content"
+ 		            android:layout_height="wrap_content"
  		            android:layout_below="@+id/refwRetMsg" 
  		            android:visibility ="gone">
  		  </WebView>	
