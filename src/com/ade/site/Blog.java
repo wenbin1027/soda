@@ -136,12 +136,17 @@ public class Blog implements Serializable,Comparable<Blog>{
 	public int compareTo(Blog another) {
 		if (another instanceof Blog || another==null){
 			Blog blog=(Blog)another;
-			if (this.ID>blog.ID)
-				return -1;
-			else if (this.ID<blog.ID)
-				return 1;
-			else
-				return 0;
+			if (this.createdAt.equals(another.createdAt)){
+				if (this.ID>blog.ID)
+					return -1;
+				else if (this.ID<blog.ID)
+					return 1;
+				else
+					return 0;				
+			}
+			else{
+				return this.createdAt.compareTo(another.createdAt);
+			}
 		}
 		else{
 			return 0;

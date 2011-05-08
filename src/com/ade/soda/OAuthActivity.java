@@ -13,8 +13,12 @@ import com.ade.site.User;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.Proxy;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -119,6 +123,14 @@ public class OAuthActivity extends Activity implements OAuthListener,SiteListene
 		oauth=new OAuth(site.getOauthRequestUrl(),site.getOauthUrl(),
 				site.getOauthAccessUrl(),(WebView)findViewById(R.id.webViewOauth));
 		oauth.setListener(this);
+		ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo netinfo = cm.getActiveNetworkInfo(); 
+		if(netinfo!=null){
+			if (netinfo.getType()!=ConnectivityManager.TYPE_WIFI
+					&& netinfo.getExtraInfo().toLowerCase().contains("wap")){
+				oauth.setProxy(Proxy.getDefaultHost(), Proxy.getDefaultPort());
+			}
+		}
 		oauth.requestAccessToken(site.getAppKey(), site.getAppSecret());
 	}
 

@@ -96,19 +96,20 @@ public class SetActivity extends Activity {
 		            	if(site != null)
 		            	{
 		            		site.logOut();
+		            		setResult(RESULT_OK);
+		            		loadListViewCheckState();
 		            	}
 		            }
 		        });
 		        bld.setNegativeButton(getString(R.string.dialogCancel), new DialogInterface.OnClickListener() {
 		            public void onClick(DialogInterface dialog, int whichButton) {
-		            	Toast.makeText(SetActivity.this, getString(R.string.dialogCancel), Toast.LENGTH_SHORT).show();
+		            	//Toast.makeText(SetActivity.this, getString(R.string.dialogCancel), Toast.LENGTH_SHORT).show();
+						loadListViewCheckState();
 		            }
 		        });
 		        
 				bld.show();
 			}
-			
-			loadListViewCheckState();
 		}
 	};
 	
@@ -121,6 +122,8 @@ public class SetActivity extends Activity {
 							getString(R.string.authenticationSucceeded) : 
 							getString(R.string.authenticationFailed),
 					Toast.LENGTH_LONG).show();
+			if (resultCode==RESULT_OK)
+				setResult(RESULT_OK);
 		}
 		super.onActivityResult(requestCode, resultCode, data);
 	}
