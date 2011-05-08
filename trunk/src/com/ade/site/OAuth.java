@@ -47,7 +47,9 @@ public class OAuth implements IHttpListener{
  	private OAuthListener listener;
  	private HttpNet httpnet=new HttpNet(this);
  	private int currentStep=REQUESTTOKEN;  //当前进行到哪一个环节
-
+	private String proxyHost;
+	private int proxyPort;
+	
  	//用户授权后的处理，用于获取accessToken
 	private Handler authorizeHandler=new Handler(new Handler.Callback() {
 		
@@ -94,6 +96,8 @@ public class OAuth implements IHttpListener{
 		        currentStep=ACCESSTOKEN;
 		        
 		        request.addHeader(OAuthUtil.AUTHORIZATION, header.toString());
+		        if (isProxy())
+		        	httpnet.setProxy(proxyHost, proxyPort);
 		        httpnet.request(request);	
 			}
 			return false;
@@ -149,6 +153,8 @@ public class OAuth implements IHttpListener{
         currentStep=REQUESTTOKEN;
         
         request.addHeader(OAuthUtil.AUTHORIZATION, header.toString());
+        if (isProxy())
+        	httpnet.setProxy(proxyHost, proxyPort);
         httpnet.request(request);	
 	}
  	
@@ -163,6 +169,17 @@ public class OAuth implements IHttpListener{
 		return isSuccess;
 	}
 
+	public void setProxy(String proxyHost,int port){
+		this.proxyHost=proxyHost;
+		this.proxyPort=port;
+	}
+	
+	private boolean isProxy(){
+		if (proxyHost!=null)
+			return true;
+		return false;
+	}
+	
 	/**
 	 * 
 	 */

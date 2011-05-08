@@ -91,13 +91,6 @@ public class SiteManager {
 			site.setUploadInterface(new SohuUpload(new SohuUploadParser()));
 			site.setFriendsTimeline(new SohuFriendsTimeline(new SohuFriendsTimelineParser()));
 			site.setAccountInterface(new SohuAccountVerify(new SohuAccountVerifyParser()));
-
-//			user=new User();
-//			user.setScreenName("zhang");
-//			user.setID(123);
-//			user.setAccessToken("46b571ca341cfeb4737f419ed4ce0392");
-//			user.setAccessSecret("920143c011048ab9e4c8904440e7ed1a");
-//			site.logIn(user);
 			break;
 		case SINA:
 			site=new SinaSite();
@@ -105,12 +98,6 @@ public class SiteManager {
 			site.setUploadInterface(new SinaUpload(new SinaUpdateParser()));
 			site.setFriendsTimeline(new SinaFriendsTimeline(new SinaFriendsTimelineParser()));
 			site.setAccountInterface(new SinaAccountVerify(new SinaAccountVerifyParser()));
-//			user=new User();
-//			user.setScreenName("wang");
-//			user.setID(456);
-//			user.setAccessToken("4207a6817f50785a07f456da1f4d20b7");
-//			user.setAccessSecret("751c76001bcef5b3c225dbd942c33eaa");
-//			site.logIn(user);
 			break;
 		}
 
@@ -172,21 +159,32 @@ public class SiteManager {
 	}
 	
 	public void saveSites(Context context){
+		if (context==null)
+			return;
 		for(Site site:sites){
-			if (context!=null && site.isLoggedIn()){
-				FileOutputStream out;
-				try {
-					out = context.openFileOutput(
-									site.getName()+"_"+site.getLoggedInUser().getID(), 
-									Context.MODE_PRIVATE);
-					site.saveBlogs(out);
-					out.close();
-				} catch (FileNotFoundException e1) {
-					e1.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+			if (site.isLoggedIn()){
+				if (site.getBlogsCount()==0){
+					File file=new File(
+							context.getFilesDir().getAbsolutePath()+
+							"/"+site.getName()+
+							"_"+site.getLoggedInUser().getID());
+					file.delete();
 				}
-
+				else{
+					FileOutputStream out;
+					try {
+						out = context.openFileOutput(
+										site.getName()+"_"+site.getLoggedInUser().getID(), 
+										Context.MODE_PRIVATE);
+						site.saveBlogs(out);
+						out.close();
+					} catch (FileNotFoundException e1) {
+						e1.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}	
+				FileOutputStream out;
 				try {
 					out = context.openFileOutput(
 									site.getName()+".cfg", 
@@ -201,7 +199,7 @@ public class SiteManager {
 					e.printStackTrace();
 				}
 			}
-			else if (context!=null && !site.isLoggedIn()){
+			else{
 				File file=new File(context.getFilesDir().getAbsolutePath()+"/"+site.getName()+".cfg");
 				file.delete();
 			}

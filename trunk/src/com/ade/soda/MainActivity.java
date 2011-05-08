@@ -23,6 +23,8 @@ import android.widget.TextView;
 public class MainActivity extends Activity implements OnItemClickListener {
 	private static final String SOHU = "sohu";
 	private static final String SINA = "sina";
+	private static final int WRITEREQUEST=1;
+	private static final int SETREQUEST=2;
 	private final String TAG = "MainActivity";
 	private int currentSite = SiteManager.SINA;
 	private BlogListView sinaListView;
@@ -69,8 +71,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			}
         });
 		tabHost.setCurrentTabByTag(SINA);
-		
-		//tabHost.getCurrentTabView().setBackgroundResource(R.drawable.maintab_toolbar_bg);
         
 		sinaListView=(BlogListView)findViewById(R.id.SinaList);
 		sinaListView.setOnItemClickListener(this);
@@ -86,20 +86,14 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				Intent intentWrite = new Intent(MainActivity.this,WriteActivity.class);
 				intentWrite.putExtra("site", currentSite);
 				
-				MainActivity.this.startActivity(intentWrite);
+				MainActivity.this.startActivityForResult(intentWrite, WRITEREQUEST);
 			}
 		});
 		
 		findViewById(R.id.BtnRefresh).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				switch(currentSite){
-				case SiteManager.SINA:
-					sinaListView.refresh();
-					break;
-				case SiteManager.SOHU:
-					sohuListView.refresh();
-				}
+				refreshBlogList();
 			}
 		});
 	}
@@ -125,7 +119,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			Intent intentSet = new Intent(MainActivity.this,
 			SetActivity.class);
 			intentSet.putExtra("site", currentSite);
-			MainActivity.this.startActivity(intentSet);
+			MainActivity.this.startActivityForResult(intentSet,SETREQUEST);
 			return true;
 		case R.id.aboutmenu:
 			//TODO: 
@@ -157,8 +151,39 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	}
 
 	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		switch(requestCode){
+		case WRITEREQUEST:
+			if (resultCode==RESULT_OK){
+				refreshBlogList();
+			}
+			break;
+		case SETREQUEST:
+			if (resultCode==RESULT_OK){
+				updateUserNameTextView();
+				refreshBlogList();
+			}
+			break;
+		}
+		super.onActivityResult(requestCode, resultCode, data);
+	}
+
+	@Override
 	public void onBackPressed() {
 		siteMgr.saveSites(this);
 		super.onBackPressed();
+	}
+
+	/**
+	 * 
+	 */
+	private void refreshBlogList() {
+		switch(currentSite){
+		case SiteManager.SINA:
+			sinaListView.refresh();
+			break;
+		case SiteManager.SOHU:
+			sohuListView.refresh();
+		}
 	}
 }
