@@ -4,18 +4,37 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:gravity="left">
 
+	<RelativeLayout android:id="@+id/LinearLayoutWriteTop"
+		android:layout_width="fill_parent" android:layout_height="44dp"
+		android:background="@drawable/titlebar_lightgray_bg"
+		android:orientation="horizontal">
+		<ImageButton android:id="@+id/writeback"
+			android:layout_width="wrap_content" android:layout_height="fill_parent"
+			android:layout_alignParentLeft="true" android:background="@android:color/transparent"
+			android:src="@drawable/back_button">
+		</ImageButton>
+		<TextView android:text="@string/writetitle" android:id="@+id/TextViewUsername"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:textColor="@color/black" android:gravity="center"
+			android:textSize="18sp">
+		</TextView>
+		<ImageButton android:text="@string/sendMsg" android:id="@+id/BtnSendMsg"
+			android:layout_width="wrap_content" android:layout_height="fill_parent"
+			android:layout_alignParentRight="true" android:background="@android:color/transparent"
+			android:src="@drawable/send_button">
+		</ImageButton>
+	</RelativeLayout>
 
 	<EditText android:text="@string/writeMsg" android:id="@+id/EditText"
 		android:layout_width="fill_parent" android:layout_height="fill_parent"
-		android:layout_centerInParent="true" android:background="@color/green"
-		android:textColor="@color/black" android:layout_margin="4px"
-		android:layout_weight="1">
+		android:textColor="@color/white" android:background="@color/black"
+		android:layout_margin="4px" android:gravity="top|left"
+		android:singleLine="false" android:layout_weight="1" android:autoText="true">
 	</EditText>
 
 	<LinearLayout android:id="@+id/LinearLayoutWriteBottom"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:orientation="horizontal" android:gravity="left"
-		android:background="@color/white">
+		android:orientation="horizontal" android:gravity="left">
 		<Button android:text="@string/img" android:id="@+id/BtnImg"
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
 			android:layout_weight="1">
@@ -24,9 +43,6 @@
 			android:layout_width="fill_parent" android:layout_height="wrap_content"
 			android:layout_weight="1">
 		</Button>
-		<Button android:text="@string/sendMsg" android:id="@+id/BtnSendMsg"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:layout_weight="1">
-		</Button>
+
 	</LinearLayout>
 </LinearLayout>
