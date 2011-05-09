@@ -37,6 +37,8 @@
 	<string name="PleaseWrite">	请输入信息后再发送</string>
 	<string name="SendSuccess">发送成功</string>
 	<string name="SendError">对不起，发送失败，请重新发送</string>
+	<string name="photo">拍照</string>
+	<string name="album">相册</string>
 	
 	
 	<string name="unAuthTips">还未授权，请到设置菜单中授权后使用！</string>

@@ -8,18 +8,18 @@
 		android:layout_width="fill_parent" android:layout_height="44dp"
 		android:background="@drawable/titlebar_lightgray_bg"
 		android:orientation="horizontal">
-		<ImageButton android:id="@+id/writeback"
+		<ImageButton android:id="@+id/Btnwriteback"
 			android:layout_width="wrap_content" android:layout_height="fill_parent"
 			android:layout_alignParentLeft="true" android:background="@android:color/transparent"
 			android:src="@drawable/back_button">
 		</ImageButton>
-		<TextView android:text="@string/writetitle" android:id="@+id/TextViewUsername"
+		<TextView android:text="@string/writetitle" android:id="@+id/TextViewwritetitle"
 			android:layout_width="fill_parent" android:layout_height="fill_parent"
 			android:textColor="@color/black" android:gravity="center"
 			android:textSize="18sp">
 		</TextView>
 		<ImageButton android:text="@string/sendMsg" android:id="@+id/BtnSendMsg"
-			android:layout_width="wrap_content" android:layout_height="fill_parent"
+			android:layout_width="50dp" android:layout_height="fill_parent"
 			android:layout_alignParentRight="true" android:background="@android:color/transparent"
 			android:src="@drawable/send_button">
 		</ImageButton>
@@ -32,17 +32,22 @@
 		android:singleLine="false" android:layout_weight="1" android:autoText="true">
 	</EditText>
 
-	<LinearLayout android:id="@+id/LinearLayoutWriteBottom"
-		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:orientation="horizontal" android:gravity="left">
-		<Button android:text="@string/img" android:id="@+id/BtnImg"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:layout_weight="1">
-		</Button>
-		<Button android:text="@string/face" android:id="@+id/BtnFace"
-			android:layout_width="fill_parent" android:layout_height="wrap_content"
-			android:layout_weight="1">
-		</Button>
+	<RelativeLayout android:id="@+id/LinearLayoutWriteBottom"
+		android:layout_width="fill_parent" android:layout_height="44dp"
+		android:background="@drawable/titlebar_lightgray_bg"
+		android:orientation="horizontal" >
 
-	</LinearLayout>
+
+		<ImageButton android:text="@string/img" android:id="@+id/BtnImg"
+			android:layout_width="wrap_content" android:layout_height="fill_parent"
+			android:layout_alignParentLeft="true" android:background="@android:color/transparent"
+			android:src="@drawable/pic_button">
+		</ImageButton>
+		<ImageButton android:text="@string/face" android:id="@+id/BtnFace"
+			android:layout_width="50dp" android:layout_height="fill_parent"
+			android:layout_alignParentRight="true" android:background="@android:color/transparent"
+			android:src="@drawable/face_button" >
+		</ImageButton>
+
+	</RelativeLayout>
 </LinearLayout>
