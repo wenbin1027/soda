@@ -1,6 +1,8 @@
 package com.ade.soda;
 
 import com.ade.site.Blog;
+import com.ade.site.Site;
+import com.ade.site.SiteManager;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -21,6 +23,7 @@ import android.widget.Toast;
 
 public class REandFWActivity extends Activity implements OnClickListener{
 	private Blog blog;
+	private Site site;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -32,18 +35,21 @@ public class REandFWActivity extends Activity implements OnClickListener{
 				blog=(Blog) intent.getSerializableExtra("CurrentBlog");
 				Log.i("REandFW", blog.toString());
 			}
+			if (intent.hasExtra("siteID")){
+				site=SiteManager.getInstance().getSiteByID(
+						intent.getIntExtra("siteID",SiteManager.SINA));
+			}
 		}
 		
 		//display blog content 
 		WebView wvProfileImage=(WebView)findViewById(R.id.refwImage);
 		WebView wvBlogPic =(WebView) findViewById(R.id.refwPic);
 		WebView wvRetPic =(WebView) findViewById(R.id.refwRetPic);
-		TextView tvMsg = (TextView)findViewById(R.id.refwMsg); 
+		BlogTextView tvMsg = (BlogTextView)findViewById(R.id.refwMsg); 
 		TextView tvUsrname = (TextView)findViewById(R.id.refwUsername);
-		TextView tvRetMsg = (TextView) findViewById(R.id.refwRetMsg);
+		BlogTextView tvRetMsg = (BlogTextView) findViewById(R.id.refwRetMsg);
 		
-		
-		tvMsg.setText(blog.getText());
+		tvMsg.setText(blog.getText(),site.getFaceMap());
 		
 		//sohu blog uses ScreenName instead of username
 		String blogName;
@@ -87,7 +93,8 @@ public class REandFWActivity extends Activity implements OnClickListener{
 		//retweeted msg
 		Blog retBlog = blog.getRetweetedBlog();
 		if (retBlog != null){
-			tvRetMsg.setText(" \nRE:" + retBlog.getUser().getName() + "\n" + retBlog.getText());
+			tvRetMsg.setText(" \nRE:" + retBlog.getUser().getName() + "\n" + retBlog.getText(),
+					site.getFaceMap());
 			
 			pic="";
 			picType="";

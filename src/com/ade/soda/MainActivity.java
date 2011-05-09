@@ -140,6 +140,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				Intent intentSet = new Intent(MainActivity.this,
 						REandFWActivity.class);
 				intentSet.putExtra("CurrentBlog", iterator.next());
+				intentSet.putExtra("siteID", currentSite);
 				MainActivity.this.startActivity(intentSet);
 				break;
 			}
