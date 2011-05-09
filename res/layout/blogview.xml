@@ -33,12 +33,12 @@
  			android:textSize="15sp"
  			android:paddingBottom="5dp">
  		</TextView>
- 		<TextView android:id="@+id/blogText" android:layout_width="fill_parent"
+ 		<com.ade.soda.BlogTextView android:id="@+id/blogText" android:layout_width="fill_parent"
  			android:layout_height="wrap_content"
  			android:layout_below="@+id/userName"
  			android:textColor="@color/black"
  			android:textSize="15sp">
- 		</TextView>		
+ 		</com.ade.soda.BlogTextView>		
  	</RelativeLayout>
   </RelativeLayout>
 </LinearLayout>
