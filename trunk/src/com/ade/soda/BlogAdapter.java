@@ -4,6 +4,7 @@ import java.util.Iterator;
 import java.util.Set;
 
 import com.ade.site.Blog;
+import com.ade.site.Site;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -19,10 +20,12 @@ import android.widget.TextView;
 
 public class BlogAdapter implements ListAdapter {
 	private Set<Blog> blogs;
+	private Site site;
 	private Context context;
 	
-	public BlogAdapter(Set<Blog> blogs,Context context){
-		this.blogs=blogs;
+	public BlogAdapter(Site site,Context context){
+		this.site=site;
+		this.blogs=site.getBlogs();
 		this.context=context;
 	}
 
@@ -86,13 +89,13 @@ public class BlogAdapter implements ListAdapter {
 			view=convertView;
 		}
 		TextView userName=(TextView)view.findViewById(R.id.userName);
-		TextView blogText=(TextView)view.findViewById(R.id.blogText);
+		BlogTextView blogText=(BlogTextView)view.findViewById(R.id.blogText);
 		WebView profileImage=(WebView)view.findViewById(R.id.profileImage);
 		ImageView vImage=(ImageView)view.findViewById(R.id.vImage);
 		Blog blog=getItem(position);
 		if (blog!=null){
 			userName.setText(blog.getUser().getScreenName());
-			blogText.setText(blog.getText());
+			blogText.setText(blog.getText(),site.getFaceMap());
 			profileImage.loadUrl(blog.getUser().getProfileImageUrl());
 			if (!blog.getUser().isVerified())
 				vImage.setVisibility(View.INVISIBLE);

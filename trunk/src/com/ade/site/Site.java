@@ -3,8 +3,10 @@ package com.ade.site;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 import org.json.JSONException;
@@ -40,7 +42,12 @@ public abstract class Site implements IHttpListener{
 	protected int siteID;
 	private AccountVerifyInterface accountInterface;
 	private String blogsOriginalData;
+	protected Map<String,String> faceMap=new HashMap<String,String>();
 	
+	public Map<String, String> getFaceMap() {
+		return faceMap;
+	}
+
 	private class SiteListenerNode{
 		public SiteListener listener=null;
 		public boolean isRemoved=false;

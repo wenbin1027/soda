@@ -1,5 +1,8 @@
 package com.ade.soda;
 
+import java.util.Map;
+import java.util.Set;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.text.Html;
@@ -9,7 +12,10 @@ import android.util.AttributeSet;
 import android.widget.TextView;
 
 public class BlogTextView extends TextView {
-	ImageGetter imageGetter = new Html.ImageGetter() {
+	private static final int NAMELENGTH=15; //假设昵称不超过15个字符
+	private Map<String,String> faceMap;
+	
+	private ImageGetter imageGetter = new Html.ImageGetter() {
         @Override
         public Drawable getDrawable(String source) {
               Drawable drawable = null;
@@ -41,28 +47,43 @@ public class BlogTextView extends TextView {
 		super(context, attrs, defStyle);
 		setAutoLinkMask(Linkify.ALL);
 	}
+	
+	public void setText(CharSequence text,Map<String,String> faceMap){
+		this.faceMap=faceMap;
+		setText(text);
+	}
 
 	@Override
 	public void setText(CharSequence text, BufferType type) {
 		String cs=text.toString();
+		
+		//找以'@'开头以':'或' '结尾的子串，将其使用font标记进行修饰
 		int start=cs.indexOf('@');
 		if (start<cs.length() && start>0){
 			int end=cs.indexOf(' ',start);
-			if (end<cs.length() && end>0 && end-start<=10){
+			if (end<cs.length() && end>0 && end-start<=NAMELENGTH){
 				CharSequence subcs=new String(cs.subSequence(start, end).toString());
 				cs=cs.replace(subcs,"<font color=#339966>"+subcs+"</font>" );
 			}
 			else{
 				end=cs.indexOf(':',start);
-				if (end<cs.length() && end>0 && end-start<=10){
+				if (end<cs.length() && end>0 && end-start<=NAMELENGTH){
 					CharSequence subcs=new String(cs.subSequence(start, end).toString());
 					cs=cs.replace(subcs,"<font color=#339966>"+subcs+"</font>" );
 				}
 			}
 		}
-		StringBuilder sb=new StringBuilder(cs);
-		//sb.append("<img src=\"portrait\"/>");
+		
+		if (faceMap!=null){
+			//对表情符以img标记进行修饰，改用drawable显示出来
+			Set<String> keys=faceMap.keySet();
+			for(String key:keys){
+				if (cs.contains(key)){
+					cs=cs.replace(key, "<img src='"+faceMap.get(key)+"'>");
+				}
+			}
+		}
 	
-		super.setText(Html.fromHtml(sb.toString(),imageGetter,null), type);
+		super.setText(Html.fromHtml(cs,imageGetter,null), type);
 	}
 }

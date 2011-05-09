@@ -1,14 +1,7 @@
 package com.ade.soda;
 
-import java.util.Set;
-import java.util.TreeSet;
-
-import com.ade.site.Blog;
 import com.ade.site.Site;
 import com.ade.site.SiteListener;
-import com.ade.site.SiteManager;
-import com.ade.site.User;
-
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -18,7 +11,6 @@ import android.os.Message;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -27,7 +19,6 @@ public class BlogListView extends ListView implements SiteListener {
 	private final int BEGIN = 0;
 	private final int ERROR = 1;
 	private final int END = 2;
-	private User user = new User();
 	private Site site;
 	private int blogPage=1;
 	private Dialog progressDlg;
@@ -55,8 +46,7 @@ public class BlogListView extends ListView implements SiteListener {
 			case END:
 				site.removeListener(BlogListView.this);
 				dismissDlg();
-				Set<Blog> blogs=site.getBlogs();
-				setAdapter(new BlogAdapter(blogs,getContext()));
+				setAdapter(new BlogAdapter(site,getContext()));
 				break;
 			case ERROR:
 				site.removeListener(BlogListView.this);
@@ -119,7 +109,7 @@ public class BlogListView extends ListView implements SiteListener {
 	public void init(Site site){
 		this.site=site;
 		if (site!=null && site.getBlogsCount()>0){
-			setAdapter(new BlogAdapter(site.getBlogs(),getContext()));
+			setAdapter(new BlogAdapter(site,getContext()));
 		}
 	}
 	

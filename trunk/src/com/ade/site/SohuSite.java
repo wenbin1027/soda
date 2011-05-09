@@ -2,18 +2,11 @@ package com.ade.site;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.CharBuffer;
-import java.nio.charset.Charset;
-
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.StatusLine;
 import org.json.JSONException;
-
-import android.util.Log;
-
 import com.ade.parser.Parser;
 
 public class SohuSite extends Site {
@@ -27,6 +20,42 @@ public class SohuSite extends Site {
 		oauthUrl="/oauth/authorize";
 		oauthAccessUrl="/oauth/access_token";
 		siteID=SiteManager.SOHU;
+		initFaceMap();
+	}
+
+	private void initFaceMap(){
+		faceMap.put("[微笑]", "hehe");
+		faceMap.put("[色]", "huaxin");	
+		faceMap.put("[呲牙]", "xixi");
+		faceMap.put("[偷笑]", "touxiao");
+		faceMap.put("[害羞]", "haixiu");
+		
+		faceMap.put("[大哭]", "zhuakuang");
+		faceMap.put("[哭]", "lei");
+		faceMap.put("[酷]", "ku");
+		faceMap.put("[发火]", "numa");
+		faceMap.put("[怒]", "nu");
+		
+		faceMap.put("[调皮]", "zuoguilian");
+		faceMap.put("[睡觉]", "shuijiao");
+		faceMap.put("[困]", "dahaqi");
+		faceMap.put("[汗]", "han");
+		faceMap.put("[嘘]", "xu");
+		
+		faceMap.put("[吐]", "tu");
+		faceMap.put("[馋]", "chanzui");
+		faceMap.put("[鄙视]", "bishi");
+		faceMap.put("[讽刺]", "heng");
+		faceMap.put("[晕]", "yun");
+		
+		faceMap.put("[衰]", "shuai");
+		faceMap.put("[闭嘴]", "bizui");
+		faceMap.put("[握手]", "woshou");
+		faceMap.put("[猪]", "zhutou");
+		faceMap.put("[顶]", "zan");
+		
+		faceMap.put("[胜利]", "ye");
+		faceMap.put("[蛋糕]", "dangao");
 	}
 
 	@Override

@@ -4,18 +4,12 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-/**
- * @author 中文注释
- * @version 1.0
- * @created 10-����-2011 ���� 08:33:49 
- */
 public class Blog implements Serializable,Comparable<Blog>{
 
 	private static final long serialVersionUID = 1595610101629159577L;
 	private Date createdAt;
 	private long ID;
 	private Blog retweetedBlog;
-	private Site site;
 	private String text="";
 	private String SmallPic="";
 	private String MiddlePic="";
@@ -52,9 +46,6 @@ public class Blog implements Serializable,Comparable<Blog>{
 		return retweetedBlog;
 	}
 
-	public Site getSite(){
-		return site;
-	}
 
 	public String getText(){
 		return text;
@@ -85,10 +76,6 @@ public class Blog implements Serializable,Comparable<Blog>{
 
 	public void setRetweetedBlog(Blog retweetedBlog) {
 		this.retweetedBlog = retweetedBlog;
-	}
-
-	public void setSite(Site site) {
-		this.site = site;
 	}
 
 	public void setText(String text) {
