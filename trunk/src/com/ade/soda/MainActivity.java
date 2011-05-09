@@ -6,11 +6,15 @@ import com.ade.site.Blog;
 import com.ade.site.SiteManager;
 import com.ade.site.Site;
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -122,13 +126,36 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			MainActivity.this.startActivityForResult(intentSet,SETREQUEST);
 			return true;
 		case R.id.aboutmenu:
-			//TODO: 
+			MainActivity.this.startActivity(new Intent(MainActivity.this,AboutActivity.class));
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
 	}
-
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
+			alertDialog.setTitle("退出提示").setMessage("确定要退出苏打微博吗？")
+			.setPositiveButton("确定",new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog,int which) {
+					 finish();   
+				}
+				})
+				.setNegativeButton("取消",new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog,int which) {
+					}})
+					.setCancelable(false).create().show();
+			return true;
+		}
+		else {     
+			return super.onKeyDown(keyCode, event);     
+			}     
+	}
+	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
 		Site site=siteMgr.getSiteByID(currentSite);
