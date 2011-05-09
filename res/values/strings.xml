@@ -10,6 +10,7 @@
 
 	<string name="all">全部</string>
 	<string name="about">关于</string>
+	<string name="abouttext">苏打微博1.0，由ADE小组倾情打造。</string>
 	<string name="set">设置</string>
 
 	<string name="writeMsg">请在此写信息</string>
@@ -45,4 +46,7 @@
 	<string name="dialogCancel">取消</string>
 	<string name="dialogOK">确定</string>
 	<string name="dialogConfirmInvalidateAuthentication">确定禁用&quot;%s&quot;帐户吗?再次启用需要重验证。</string>
+	
+	<string name="confirmtitle">退出提示</string>
+	<string name="confirmmessage">确定要退出苏打微博吗？</string>
 </resources>
