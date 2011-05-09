@@ -1,7 +1,6 @@
 package com.ade.soda;
 
 import java.util.Set;
-
 import com.ade.restapi.UpdateInterface;
 import com.ade.site.Blog;
 import com.ade.site.Site;
@@ -10,14 +9,17 @@ import com.ade.site.SiteManager;
 
 import android.R.bool;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.util.LogPrinter;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -32,6 +34,7 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 	private final int ERROR = 1;
 	private final int END = 2;
 	private Dialog progressDlg;
+	final int LIST_DIALOG = 2;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,6 +49,7 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 		findViewById(R.id.BtnImg).setOnClickListener(this);
 		findViewById(R.id.BtnFace).setOnClickListener(this);
 		findViewById(R.id.BtnSendMsg).setOnClickListener(this);
+		findViewById(R.id.Btnwriteback).setOnClickListener(this);
 	}
 	private Handler mainHandler = new Handler(new Handler.Callback() {
 		@Override
@@ -71,7 +75,8 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 				site.removeListener(WriteActivity.this);
 				dismissDlg();
 				Toast.makeText(WriteActivity.this, getResources().getString(R.string.SendSuccess), Toast.LENGTH_SHORT).show();
-				WriteActivity.this.finish();//这句话的位置是否合适，程序运行无错，但我不确定这里是否合适。
+				setResult(RESULT_OK);
+				WriteActivity.this.finish();
 				break;
 			case ERROR:
 				site.removeListener(WriteActivity.this);
@@ -101,9 +106,14 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 		switch (v.getId()) {
 		case R.id.BtnImg:
 			// todo
+			showDialog(LIST_DIALOG);
 			break;
 		case R.id.BtnFace:
 			// todo
+			break;
+		case R.id.Btnwriteback:
+			// todo
+			WriteActivity.this.finish();
 			break;
 		case R.id.BtnSendMsg:
 			// todo
@@ -115,23 +125,13 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 	}
 
 	private void sendMsg(Site site) {
-		site.addListener(this);
 		EditText mEditText = (EditText) findViewById(R.id.EditText);		
-		String s = mEditText.getText().toString();
-		boolean flag = false;
-		char ch[] = s.toCharArray();
-		for(int i=0;i<s.length();i++){
-			if(ch[i] != ' '){
-				flag = true;
-				break;
-			}else{
-				flag = false;
-			}
-		}
-		if (s == null || !flag)
+		String s = mEditText.getText().toString().trim();	
+		if (s.length()<=0)
 			Toast.makeText(WriteActivity.this, getResources().getString(R.string.PleaseWrite), Toast.LENGTH_SHORT)
 					.show();
 		else {
+			site.addListener(this);
 			site.updateText(s);			
 		}
 		
@@ -154,4 +154,36 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 	public void onResponsed() {
 		mainHandler.sendEmptyMessage(END);
 	}
+	protected Dialog onCreateDialog(int id) {		
+		Dialog dialog = null;
+		Builder b = new AlertDialog.Builder(this);	
+		b.setIcon(R.drawable.photo);					
+		b.setTitle(R.string.img);		
+		b.setItems(										
+				R.array.msa, 							
+				new DialogInterface.OnClickListener() {	
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						switch (which) {
+						case 0:
+							// todo	
+							break;
+						case 1:
+							// todo
+							break;
+						default:
+							break;
+						}
+					
+					}
+				});		
+	dialog=b.create();							
+	return dialog;
+	}
+	
+	
+	
+	
 }
+    
+
