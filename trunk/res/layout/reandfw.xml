@@ -28,11 +28,11 @@
  			android:textColor="@color/red" 	
  			android:paddingBottom="5dp">
  		</TextView>
- 		<TextView android:id="@+id/refwMsg" android:layout_width="fill_parent"
+ 		<com.ade.soda.BlogTextView android:id="@+id/refwMsg" android:layout_width="fill_parent"
  			android:layout_height="wrap_content" 
  			android:textColor="@color/black"
  			android:layout_below="@+id/refwUsername">
- 		</TextView>
+ 		</com.ade.soda.BlogTextView>
  		<WebView android:id="@+id/refwPic"
  		    	 android:layout_width="wrap_content"
  		         android:layout_height="wrap_content"
@@ -41,10 +41,10 @@
  		</WebView>	
  		
  		 		
- 		  <TextView android:id="@+id/refwRetMsg" android:layout_width="fill_parent"
+ 		  <com.ade.soda.BlogTextView android:id="@+id/refwRetMsg" android:layout_width="fill_parent"
  		        	android:layout_height="wrap_content" android:textColor="@color/yellow"
  					android:layout_below="@+id/refwPic">
- 	      </TextView>	
+ 	      </com.ade.soda.BlogTextView>	
  		  <WebView android:id="@+id/refwRetPic"
  		    	    android:layout_width="wrap_content"
  		            android:layout_height="wrap_content"
