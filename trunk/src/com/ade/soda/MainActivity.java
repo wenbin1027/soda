@@ -40,6 +40,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		MainActivity.this.startActivity(new Intent(MainActivity.this,WelcomeActivity.class));
 		setContentView(R.layout.main);
 		siteMgr=SiteManager.getInstance();
 		siteMgr.loadSites(this);
@@ -136,6 +137,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+			//字符串封装后会有异常，改进中
 			AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
 			alertDialog.setTitle("退出提示").setMessage("确定要退出苏打微博吗？")
 			.setPositiveButton("确定",new DialogInterface.OnClickListener() {
