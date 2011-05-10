@@ -7,8 +7,8 @@
 	>									
 	<SurfaceView
 		android:id="@+id/svCamera"
-		android:layout_width="320px"
-		android:layout_height="250px"
+		android:layout_width="fill_parent"
+		android:layout_height="436dp"
 		/>								
 	<RelativeLayout
 		android:orientation="horizontal"
