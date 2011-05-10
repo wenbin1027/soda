@@ -16,6 +16,7 @@ public class Blog implements Serializable,Comparable<Blog>{
 	private String OriginalPic="";
 	private User user;
 	private String source="";
+	private int siteID;
 
 	public Blog(){
 
@@ -136,7 +137,12 @@ public class Blog implements Serializable,Comparable<Blog>{
 				}
 			}
 			else{
-				ret=this.createdAt.compareTo(another.createdAt);
+				if (this.createdAt.compareTo(another.createdAt)<0){
+					ret=1;
+				}
+				else{
+					ret=-1;
+				}
 			}
 		}
 
@@ -155,6 +161,14 @@ public class Blog implements Serializable,Comparable<Blog>{
 
 	public String getSource() {
 		return source;
+	}
+
+	public void setSiteID(int siteID) {
+		this.siteID = siteID;
+	}
+
+	public int getSiteID() {
+		return siteID;
 	}
 
 }

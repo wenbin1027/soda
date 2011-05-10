@@ -61,6 +61,7 @@ public class SinaUpdateParser extends SinaBasicParser {
 				JSONObject user=blog.getJSONObject("user");	
 				if (parseUser(user,blogUser)){
 					newBlog.setUser(blogUser);
+					newBlog.setSiteID(site.getSiteID());
 					site.addBlog(newBlog);
 				}
 			}

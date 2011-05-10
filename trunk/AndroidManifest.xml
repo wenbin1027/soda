@@ -19,7 +19,7 @@
 		</activity>
 		<activity android:name=".REandFWActivity" android:label="@string/app_name">
 		</activity>
-		<activity android:name=".TestFriendsTimelineActivity"
+		<activity android:name=".AboutActivity"
 			android:label="@string/app_name">
 		</activity>
 	</application>

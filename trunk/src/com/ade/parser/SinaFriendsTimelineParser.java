@@ -135,6 +135,7 @@ public class SinaFriendsTimelineParser extends SinaBasicParser {
 					else
 						continue;
 					
+					newBlog.setSiteID(site.getSiteID());
 					site.addBlog(newBlog);
 				}
 			}

@@ -88,6 +88,7 @@ public class SohuFriendsTimelineParser extends SohuBasicParser {
 					if (!parseUser(user,blogUser))
 						continue;
 					newBlog.setUser(blogUser);
+					newBlog.setSiteID(site.getSiteID());
 					site.addBlog(newBlog);
 				}
 			}
