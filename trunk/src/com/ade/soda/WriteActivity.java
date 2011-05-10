@@ -102,21 +102,20 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 	
 	@Override
 	public void onClick(View v) {
-		// TODO Auto-generated method stub
+
 		switch (v.getId()) {
 		case R.id.BtnImg:
-			// todo
 			showDialog(LIST_DIALOG);
 			break;
 		case R.id.BtnFace:
-			// todo
+			// todo invoke face
 			break;
 		case R.id.Btnwriteback:
-			// todo
+		
 			WriteActivity.this.finish();
 			break;
 		case R.id.BtnSendMsg:
-			// todo
+		
 			sendMsg(site);
 			break;
 		default:
@@ -166,10 +165,12 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
 						case 0:
-							// todo	
+
+							Intent intentS = new Intent(WriteActivity.this,ShootActivity.class);
+							WriteActivity.this.startActivity(intentS);
 							break;
 						case 1:
-							// todo
+							// todo  invoke album
 							break;
 						default:
 							break;
