@@ -56,21 +56,32 @@ public class BlogTextView extends TextView {
 	@Override
 	public void setText(CharSequence text, BufferType type) {
 		String cs=text.toString();
+		String font1="<font color=#339966>";
+		String font2="</font>";
 		
 		//找以'@'开头以':'或' '结尾的子串，将其使用font标记进行修饰
-		int start=cs.indexOf('@');
-		if (start<cs.length() && start>0){
-			int end=cs.indexOf(' ',start);
-			if (end<cs.length() && end>0 && end-start<=NAMELENGTH){
-				CharSequence subcs=new String(cs.subSequence(start, end).toString());
-				cs=cs.replace(subcs,"<font color=#339966>"+subcs+"</font>" );
-			}
-			else{
-				end=cs.indexOf(':',start);
+		int start=0;
+		while(true){
+			start=cs.indexOf('@',start);
+			if (start<cs.length() && start>=0){
+				int end=cs.indexOf(' ',start);
 				if (end<cs.length() && end>0 && end-start<=NAMELENGTH){
 					CharSequence subcs=new String(cs.subSequence(start, end).toString());
-					cs=cs.replace(subcs,"<font color=#339966>"+subcs+"</font>" );
+					cs=cs.replace(subcs,font1+subcs+font2 );
+					start+=font1.length()+subcs.length()+font2.length();
 				}
+				else{
+					end=cs.indexOf(':',start);
+					if (end<cs.length() && end>0 && end-start<=NAMELENGTH){
+						CharSequence subcs=new String(cs.subSequence(start, end).toString());
+						cs=cs.replace(subcs,font1+subcs+font2 );
+						start+=font1.length()+subcs.length()+font2.length();
+					}
+				}
+				start+=1;
+			}
+			else{
+				break;
 			}
 		}
 		

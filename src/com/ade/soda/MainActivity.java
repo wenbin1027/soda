@@ -141,6 +141,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			.setPositiveButton("确定",new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog,int which) {
+					siteMgr.saveSites(MainActivity.this);
 					 finish();   
 				}
 				})
@@ -194,12 +195,6 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			break;
 		}
 		super.onActivityResult(requestCode, resultCode, data);
-	}
-
-	@Override
-	public void onBackPressed() {
-		siteMgr.saveSites(this);
-		super.onBackPressed();
 	}
 
 	/**
