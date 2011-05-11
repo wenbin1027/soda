@@ -1,13 +1,9 @@
 ﻿package com.ade.soda;
 
-import java.util.Iterator;
-import java.util.Set;
 import com.ade.site.Blog;
 import com.ade.site.SiteManager;
-import com.ade.site.Site;
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -19,7 +15,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.TabHost; 
-import android.widget.TabWidget;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
@@ -27,12 +22,12 @@ import android.widget.TextView;
 public class MainActivity extends Activity implements OnItemClickListener {
 	private static final String SOHU = "sohu";
 	private static final String SINA = "sina";
+	private static final String ALL = "all";
 	private static final int WRITEREQUEST=1;
 	private static final int SETREQUEST=2;
-	private final String TAG = "MainActivity";
-	private int currentSite = SiteManager.SINA;
 	private BlogListView sinaListView;
 	private BlogListView sohuListView;
+	private MixBlogListView allListView;
 	private TabHost tabHost;
 	private SiteManager siteMgr;
 	private TextView usernameTextview;
@@ -44,18 +39,21 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		setContentView(R.layout.main);
 		siteMgr=SiteManager.getInstance();
 		siteMgr.loadSites(this);
-		//siteMgr=SiteManager.getInstance(this);
 		
 		usernameTextview=(TextView)findViewById(R.id.TextViewUsername);
-		updateUserNameTextView();
 
         tabHost=(TabHost)findViewById(R.id.tabhost);
         tabHost.setup();
         tabHost.addTab(
+        		tabHost.newTabSpec(ALL).setIndicator(
+        				null, 
+        				getResources().getDrawable(R.drawable.soda))
+        				.setContent(R.id.tab_mix));   
+        tabHost.addTab(
         		tabHost.newTabSpec(SINA).setIndicator(
         				null, 
         				getResources().getDrawable(R.drawable.sina))
-        				.setContent(R.id.tab_sina));   
+        				.setContent(R.id.tab_sina));  
         tabHost.addTab(
         		tabHost.newTabSpec(SOHU).setIndicator(
         				null, 
@@ -65,14 +63,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
         tabHost.setOnTabChangedListener(new OnTabChangeListener(){
 			@Override
 			public void onTabChanged(String tabId) {
-				if (tabId.equalsIgnoreCase(SINA)){
-					currentSite=SiteManager.SINA;
-					updateUserNameTextView();
-				}
-				else if (tabId.equalsIgnoreCase(SOHU)){
-					currentSite=SiteManager.SOHU;
-					updateUserNameTextView();
-				}
+				updateUserNameTextView();
 			}
         });
 		tabHost.setCurrentTabByTag(SINA);
@@ -83,13 +74,23 @@ public class MainActivity extends Activity implements OnItemClickListener {
 
 		sohuListView=(BlogListView)findViewById(R.id.SohuList);
 		sohuListView.setOnItemClickListener(this);
-		sohuListView.init(siteMgr.getSiteByID(SiteManager.SOHU));	
+		sohuListView.init(siteMgr.getSiteByID(SiteManager.SOHU));
+		
+		allListView=(MixBlogListView)findViewById(R.id.AllList);
+		allListView.setOnItemClickListener(this);
+		allListView.addBlogListView(sinaListView);
+		allListView.addBlogListView(sohuListView);
+		allListView.init();
 		
 		findViewById(R.id.BtnWrite).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				String tab=tabHost.getCurrentTabTag();
 				Intent intentWrite = new Intent(MainActivity.this,WriteActivity.class);
-				intentWrite.putExtra("site", currentSite);
+				if (tab==SINA)
+					intentWrite.putExtra("site", SiteManager.SINA);
+				else if (tab==SOHU)
+					intentWrite.putExtra("site", SiteManager.SOHU);
 				
 				MainActivity.this.startActivityForResult(intentWrite, WRITEREQUEST);
 			}
@@ -101,13 +102,31 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				refreshBlogList();
 			}
 		});
+		
+		updateUserNameTextView();
 	}
 
 	private void updateUserNameTextView() {
-		if (siteMgr.getSiteByID(currentSite).isLoggedIn())
-			usernameTextview.setText(siteMgr.getSiteByID(currentSite).getLoggedInUser().getScreenName());
-		else
-			usernameTextview.setText(R.string.unAuthUser);
+		String tab=tabHost.getCurrentTabTag();
+		if (tab==SINA){
+			if (siteMgr.getSiteByID(SiteManager.SINA).isLoggedIn()){
+				usernameTextview.setText(siteMgr.getSiteByID(SiteManager.SINA).getLoggedInUser().getScreenName());
+			}
+			else{
+				usernameTextview.setText(R.string.unAuthUser);
+			}
+		}
+		else if (tab==SOHU){
+			if (siteMgr.getSiteByID(SiteManager.SOHU).isLoggedIn()){
+				usernameTextview.setText(siteMgr.getSiteByID(SiteManager.SOHU).getLoggedInUser().getScreenName());
+			}
+			else{
+				usernameTextview.setText(R.string.unAuthUser);
+			}
+		}
+		else{
+			usernameTextview.setText(null);
+		}
 	}
 
 	@Override
@@ -122,8 +141,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 		switch (item.getItemId()) {
 		case R.id.setmenu:
 			Intent intentSet = new Intent(MainActivity.this,
-			SetActivity.class);
-			intentSet.putExtra("site", currentSite);
+					SetActivity.class);
 			MainActivity.this.startActivityForResult(intentSet,SETREQUEST);
 			return true;
 		case R.id.aboutmenu:
@@ -161,24 +179,10 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	
 	@Override
 	public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3) {
-		Site site=siteMgr.getSiteByID(currentSite);
-		Set<Blog> blogs=site.getBlogs();
-		Iterator<Blog> iterator=blogs.iterator();
-		int i=1;
-		while(iterator.hasNext()){
-			if (i==arg2){
-				Intent intentSet = new Intent(MainActivity.this,
-						REandFWActivity.class);
-				intentSet.putExtra("CurrentBlog", iterator.next());
-				intentSet.putExtra("siteID", currentSite);
-				MainActivity.this.startActivity(intentSet);
-				break;
-			}
-			else{
-				iterator.next();
-				i++;
-			}
-		}
+		Intent intentSet = new Intent(MainActivity.this,
+				REandFWActivity.class);
+		intentSet.putExtra("CurrentBlog", (Blog)arg1.getTag());
+		MainActivity.this.startActivity(intentSet);
 	}
 
 	@Override
@@ -203,13 +207,16 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	 * 
 	 */
 	private void refreshBlogList() {
-		switch(currentSite){
-		case SiteManager.SINA:
+		String tab=tabHost.getCurrentTabTag();
+		if (tab==SINA){
 			sinaListView.refresh();
-			break;
-		case SiteManager.SOHU:
-			sohuListView.refresh();
-			break;
 		}
+		else if (tab==SOHU){
+			sohuListView.refresh();
+		}
+		else{
+			sinaListView.refresh();
+			sohuListView.refresh();
+		}		
 	}
 }

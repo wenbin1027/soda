@@ -5,6 +5,7 @@ import java.util.Set;
 
 import com.ade.site.Blog;
 import com.ade.site.Site;
+import com.ade.site.SiteManager;
 
 import android.content.Context;
 import android.database.DataSetObserver;
@@ -20,12 +21,10 @@ import android.widget.TextView;
 
 public class BlogAdapter implements ListAdapter {
 	private Set<Blog> blogs;
-	private Site site;
 	private Context context;
 	
-	public BlogAdapter(Site site,Context context){
-		this.site=site;
-		this.blogs=site.getBlogs();
+	public BlogAdapter(Set<Blog> blogs,Context context){
+		this.blogs=blogs;
 		this.context=context;
 	}
 
@@ -95,11 +94,13 @@ public class BlogAdapter implements ListAdapter {
 		Blog blog=getItem(position);
 		if (blog!=null){
 			userName.setText(blog.getUser().getScreenName());
-			blogText.setText(blog.getText(),site.getFaceMap());
+			blogText.setText(blog.getText(),
+					SiteManager.getInstance().getSiteByID(blog.getSiteID()).getFaceMap());
 			profileImage.loadUrl(blog.getUser().getProfileImageUrl());
 			if (!blog.getUser().isVerified())
 				vImage.setVisibility(View.INVISIBLE);
 		}
+		view.setTag(blog);
 		return view;
 	}
 
