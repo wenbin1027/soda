@@ -7,6 +7,7 @@
 	android:scrollbars="vertical"
 	android:padding="10dp"
 	android:background="@color/white"
+	android:descendantFocusability="blocksDescendants"
 	android:alwaysDrawnWithCache="false">
 	
     <RelativeLayout android:layout_width="fill_parent" 
@@ -17,6 +18,13 @@
  		android:scrollbars="none"
  		android:layout_alignParentLeft="true">
  	   </WebView>
+ 	  <ImageView android:id="@+id/refwvImage"
+ 		android:layout_width="wrap_content"
+ 		android:layout_height="wrap_content"
+ 		android:layout_alignRight="@+id/refwImage"
+ 		android:layout_alignBottom="@+id/refwImage"
+ 		android:src="@drawable/v">
+ 	  </ImageView>
  	
  	 <RelativeLayout android:layout_alignParentRight="true"
  	  	android:layout_toRightOf="@+id/refwImage"
@@ -25,7 +33,7 @@
  		android:layout_marginLeft="10dp">
  		<TextView android:id="@+id/refwUsername" android:layout_width="fill_parent"
  			android:layout_height="wrap_content" android:layout_alignParentTop="true"
- 			android:textColor="@color/red" 	
+ 			android:textColor="@color/red"  android:textSize="15sp"	
  			android:paddingBottom="5dp">
  		</TextView>
  		<com.ade.soda.BlogTextView android:id="@+id/refwMsg" android:layout_width="fill_parent"
@@ -33,24 +41,35 @@
  			android:textColor="@color/black"
  			android:layout_below="@+id/refwUsername">
  		</com.ade.soda.BlogTextView>
- 		<WebView android:id="@+id/refwPic"
- 		    	 android:layout_width="wrap_content"
- 		         android:layout_height="wrap_content"
+ 		<com.ade.soda.PictureWebView android:id="@+id/refwPic"
+ 		    	 android:layout_width="100dp"
+	 		     android:layout_height="100dp"
+	 		     android:scrollbars="none"
  		         android:layout_below="@+id/refwMsg"
- 		         android:visibility ="gone" >
- 		</WebView>	
- 		
+ 		         android:background="@drawable/portrait">
+ 		</com.ade.soda.PictureWebView>	
+ 		<RelativeLayout android:layout_width="fill_parent" 
+ 			android:layout_height="wrap_content"
+ 			android:layout_below="@+id/refwPic"
+ 			android:background="@drawable/popup"
+ 			android:paddingTop="10dp"
+ 			android:paddingBottom="5dp"
+ 			android:paddingLeft="5dp"
+ 			android:paddingRight="5dp"
+ 			android:id="@+id/refwReBlog">
  		 		
  		  <com.ade.soda.BlogTextView android:id="@+id/refwRetMsg" android:layout_width="fill_parent"
- 		        	android:layout_height="wrap_content" android:textColor="@color/yellow"
- 					android:layout_below="@+id/refwPic">
+ 		        	android:layout_height="wrap_content" android:textColor="@color/black"
+ 					android:layout_below="@+id/refwPic" android:textSize="15sp" >
  	      </com.ade.soda.BlogTextView>	
- 		  <WebView android:id="@+id/refwRetPic"
- 		    	    android:layout_width="wrap_content"
- 		            android:layout_height="wrap_content"
- 		            android:layout_below="@+id/refwRetMsg" 
- 		            android:visibility ="gone">
- 		  </WebView>	
+ 		  <com.ade.soda.PictureWebView android:id="@+id/refwRetPic"
+ 		            android:layout_width="100dp"
+		 		    android:layout_height="100dp"
+ 		    	    android:scrollbars="none"
+ 		    	    android:background="@drawable/portrait"
+ 		    	    android:layout_below="@+id/refwRetMsg" >
+ 		  </com.ade.soda.PictureWebView>
+ 		</RelativeLayout>	
  	</RelativeLayout>
   </RelativeLayout>
 	
