@@ -91,14 +91,54 @@ public class BlogAdapter implements ListAdapter {
 		BlogTextView blogText=(BlogTextView)view.findViewById(R.id.blogText);
 		WebView profileImage=(WebView)view.findViewById(R.id.profileImage);
 		ImageView vImage=(ImageView)view.findViewById(R.id.vImage);
+		WebView smallImage=(WebView)view.findViewById(R.id.smallImage);
 		Blog blog=getItem(position);
 		if (blog!=null){
 			userName.setText(blog.getUser().getScreenName());
+			
 			blogText.setText(blog.getText(),
 					SiteManager.getInstance().getSiteByID(blog.getSiteID()).getFaceMap());
+			
 			profileImage.loadUrl(blog.getUser().getProfileImageUrl());
+			
 			if (!blog.getUser().isVerified())
 				vImage.setVisibility(View.INVISIBLE);
+			if (blog.getSmallPic().length()>0){
+				smallImage.loadUrl(blog.getSmallPic());
+			}
+			else{
+				smallImage.setVisibility(View.GONE);
+			}
+			
+			if (blog.isHaveRetweetedBlog()&& blog.getInReplyBlogText().length()>0){
+				BlogTextView reBlogText=(BlogTextView)view.findViewById(R.id.reBlogText);
+				WebView reImage=(WebView)view.findViewById(R.id.reImage);
+				
+				if (blog.getInReplyBlogText().length()>0){
+					if (blog.getInReplyUserScreenName().length()>0){
+						reBlogText.setText("@"+blog.getInReplyUserScreenName()+": "+blog.getInReplyBlogText(),
+							SiteManager.getInstance().getSiteByID(blog.getSiteID()).getFaceMap());
+					}
+					else{
+						reBlogText.setText(blog.getInReplyBlogText(),
+							SiteManager.getInstance().getSiteByID(blog.getSiteID()).getFaceMap());
+					}
+				}
+				else{
+					reBlogText.setVisibility(View.GONE);
+				}
+				
+				if (blog.getRetweetedBlog().getSmallPic().length()>0){
+					reImage.loadUrl(blog.getRetweetedBlog().getSmallPic());
+				}
+				else{
+					reImage.setVisibility(View.GONE);
+				}
+			}
+			else{
+				view.findViewById(R.id.reBlog).setVisibility(View.GONE);
+				view.findViewById(R.id.reImage).setVisibility(View.GONE);
+			}
 		}
 		view.setTag(blog);
 		return view;

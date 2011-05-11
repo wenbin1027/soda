@@ -38,7 +38,37 @@
  			android:layout_below="@+id/userName"
  			android:textColor="@color/black"
  			android:textSize="15sp">
- 		</com.ade.soda.BlogTextView>		
+ 		</com.ade.soda.BlogTextView>
+ 		<com.ade.soda.PictureWebView android:id="@+id/smallImage"
+	 		android:layout_width="50dp"
+	 		android:layout_height="50dp"
+	 		android:scrollbars="none"
+	 		android:layout_below="@+id/blogText"
+	 		android:background="@drawable/portrait">
+	 	</com.ade.soda.PictureWebView>	
+		<RelativeLayout android:layout_width="fill_parent" 
+ 			android:layout_height="wrap_content"
+ 			android:layout_below="@+id/smallImage"
+ 			android:background="@drawable/popup"
+ 			android:paddingTop="10dp"
+ 			android:paddingBottom="5dp"
+ 			android:paddingLeft="5dp"
+ 			android:paddingRight="5dp"
+ 			android:id="@+id/reBlog">
+	 		<com.ade.soda.BlogTextView android:id="@+id/reBlogText" android:layout_width="fill_parent"
+	 			android:layout_height="wrap_content"
+	 			android:layout_below="@+id/reUserName"
+	 			android:textColor="@color/black"
+	 			android:textSize="15sp">
+	 		</com.ade.soda.BlogTextView> 	
+	 		<com.ade.soda.PictureWebView android:id="@+id/reImage"
+		 		android:layout_width="50dp"
+		 		android:layout_height="50dp"
+		 		android:scrollbars="none"
+		 		android:layout_below="@+id/reBlogText"
+		 		android:background="@drawable/portrait">
+		 	</com.ade.soda.PictureWebView>		
+ 		</RelativeLayout>		
  	</RelativeLayout>
   </RelativeLayout>
 </LinearLayout>
