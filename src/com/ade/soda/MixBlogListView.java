@@ -81,7 +81,7 @@ public class MixBlogListView extends ListView implements BlogListViewListener {
 	
 	public void refresh() {
 		for(BlogListView view:views){
-			if (view!=null){
+			if (view!=null && view.getSite().isLoggedIn()){
 				view.refresh();
 			}
 		}
@@ -89,7 +89,7 @@ public class MixBlogListView extends ListView implements BlogListViewListener {
 	
 	public void more() {
 		for(BlogListView view:views){
-			if (view!=null){
+			if (view!=null && view.getSite().isLoggedIn()){
 				view.more();
 			}
 		}

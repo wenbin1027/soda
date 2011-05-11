@@ -66,7 +66,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				updateUserNameTextView();
 			}
         });
-		tabHost.setCurrentTabByTag(SINA);
+		tabHost.setCurrentTabByTag(ALL);
         
 		sinaListView=(BlogListView)findViewById(R.id.SinaList);
 		sinaListView.setOnItemClickListener(this);
