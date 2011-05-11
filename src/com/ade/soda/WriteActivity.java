@@ -1,5 +1,8 @@
 package com.ade.soda;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Set;
 import com.ade.restapi.UpdateInterface;
 import com.ade.site.Blog;
@@ -7,14 +10,19 @@ import com.ade.site.Site;
 import com.ade.site.SiteListener;
 import com.ade.site.SiteManager;
 
+
 import android.R.bool;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -24,6 +32,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import android.widget.Toast;
@@ -35,6 +44,9 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 	private final int END = 2;
 	private Dialog progressDlg;
 	final int LIST_DIALOG = 2;
+	Bitmap myBitmap;
+	private byte[] mContent;
+	private ImageView imageView;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -46,6 +58,7 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 						intent.getIntExtra("site", -1));
 			}
 		}
+		imageView = (ImageView) findViewById(R.id.shrinkPic);
 		findViewById(R.id.BtnImg).setOnClickListener(this);
 		findViewById(R.id.BtnFace).setOnClickListener(this);
 		findViewById(R.id.BtnSendMsg).setOnClickListener(this);
@@ -125,13 +138,21 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 
 	private void sendMsg(Site site) {
 		EditText mEditText = (EditText) findViewById(R.id.EditText);		
-		String s = mEditText.getText().toString().trim();	
+		String s = mEditText.getText().toString().trim();
+		String text = mContent.toString();
+		String fileName = null;//此处尚未得到文件名。
+		
 		if (s.length()<=0)
 			Toast.makeText(WriteActivity.this, getResources().getString(R.string.PleaseWrite), Toast.LENGTH_SHORT)
 					.show();
 		else {
 			site.addListener(this);
-			site.updateText(s);			
+			site.updateText(s);
+			try {
+				site.uploadImage(fileName, text);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -165,12 +186,15 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 					public void onClick(DialogInterface dialog, int which) {
 						switch (which) {
 						case 0:
+							Intent getImageByCamera= new Intent("android.media.action.IMAGE_CAPTURE");   
+							startActivityForResult(getImageByCamera, 1);  
 
-							Intent intentS = new Intent(WriteActivity.this,ShootActivity.class);
-							WriteActivity.this.startActivity(intentS);
 							break;
 						case 1:
-							// todo  invoke album
+							Intent getImage = new Intent(Intent.ACTION_GET_CONTENT); 
+					        getImage.addCategory(Intent.CATEGORY_OPENABLE); 
+					        getImage.setType("image/jpeg"); 
+					        startActivityForResult(getImage, 0); 
 							break;
 						default:
 							break;
@@ -181,7 +205,66 @@ public class WriteActivity extends Activity implements OnClickListener, SiteList
 	dialog=b.create();							
 	return dialog;
 	}
-	
+	@Override 
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) { 
+        
+        ContentResolver resolver = getContentResolver(); 
+
+        if (requestCode == 0) { 
+            try { 
+                
+                Uri originalUri = data.getData(); 
+   
+                mContent=readStream(resolver.openInputStream(Uri.parse(originalUri.toString())));
+    
+                myBitmap = getPicFromBytes(mContent, null); 
+ 
+                imageView.setImageBitmap(myBitmap);
+    			imageView.setVisibility(View.VISIBLE);
+            } catch (Exception e) { 
+                System.out.println(e.getMessage()); 
+            } 
+
+        }else if(requestCode ==1){
+        	try {
+	        	super.onActivityResult(requestCode, resultCode, data);
+		    	Bundle extras = data.getExtras();
+		    	myBitmap = (Bitmap) extras.get("data");
+		    	ByteArrayOutputStream baos = new ByteArrayOutputStream();     
+		    	myBitmap.compress(Bitmap.CompressFormat.JPEG , 100, baos);     
+				mContent=baos.toByteArray();
+			} catch (Exception e) {
+
+				e.printStackTrace();
+			}
+			imageView.setImageBitmap(myBitmap);
+			imageView.setVisibility(View.VISIBLE);
+        }
+
+    } 
+
+    public static Bitmap getPicFromBytes(byte[] bytes, BitmapFactory.Options opts) { 
+        if (bytes != null) 
+            if (opts != null) 
+                return BitmapFactory.decodeByteArray(bytes, 0, bytes.length,opts); 
+            else 
+                return BitmapFactory.decodeByteArray(bytes, 0, bytes.length); 
+        return null; 
+    } 
+    
+    public static byte[] readStream(InputStream inStream) throws Exception {
+        byte[] buffer = new byte[1024];
+        int len = -1;
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        while ((len = inStream.read(buffer)) != -1) {
+                 outStream.write(buffer, 0, len);
+        }
+        byte[] data = outStream.toByteArray();
+        outStream.close();
+        inStream.close();
+        return data;
+
+   }
 	
 	
 	
