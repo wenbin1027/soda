@@ -35,10 +35,7 @@ public class REandFWActivity extends Activity implements OnClickListener{
 				blog=(Blog) intent.getSerializableExtra("CurrentBlog");
 				Log.i("REandFW", blog.toString());
 			}
-			if (intent.hasExtra("siteID")){
-				site=SiteManager.getInstance().getSiteByID(
-						intent.getIntExtra("siteID",SiteManager.SINA));
-			}
+			site=SiteManager.getInstance().getSiteByID(blog.getSiteID());
 		}
 		
 		//display blog content 

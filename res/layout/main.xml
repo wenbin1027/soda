@@ -32,6 +32,14 @@
 				android:layout_width="fill_parent" android:layout_height="fill_parent"
 				android:layout_above="@android:id/tabs">
 				<RelativeLayout
+					android:id="@+id/tab_mix" android:orientation="vertical"
+					android:layout_width="fill_parent" android:layout_height="fill_parent">
+					<com.ade.soda.MixBlogListView android:id="@+id/AllList" android:layout_width="fill_parent"
+						android:layout_height="fill_parent" android:clickable="true">
+					</com.ade.soda.MixBlogListView>
+				</RelativeLayout>
+				
+				<RelativeLayout
 					android:id="@+id/tab_sina" android:orientation="vertical"
 					android:layout_width="fill_parent" android:layout_height="fill_parent">
 					<com.ade.soda.BlogListView android:id="@+id/SinaList" android:layout_width="fill_parent"

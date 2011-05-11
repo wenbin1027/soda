@@ -22,6 +22,7 @@ public class BlogListView extends ListView implements SiteListener {
 	private Site site;
 	private int blogPage=1;
 	private Dialog progressDlg;
+	private BlogListViewListener listener;
 
 	private Handler mainHandler = new Handler(new Handler.Callback() {
 		@Override
@@ -46,7 +47,10 @@ public class BlogListView extends ListView implements SiteListener {
 			case END:
 				site.removeListener(BlogListView.this);
 				dismissDlg();
-				setAdapter(new BlogAdapter(site,getContext()));
+				setAdapter(new BlogAdapter(site.getBlogs(),getContext()));
+				if (listener!=null){
+					listener.onChanged(site);
+				}
 				break;
 			case ERROR:
 				site.removeListener(BlogListView.this);
@@ -90,7 +94,6 @@ public class BlogListView extends ListView implements SiteListener {
 		headerView.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				blogPage=1;
 				refresh();
 			}			
 		});
@@ -98,8 +101,7 @@ public class BlogListView extends ListView implements SiteListener {
 		footerView.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
-				blogPage++;
-				refresh();
+				more();
 			}			
 		});
 		addHeaderView(headerView);
@@ -109,11 +111,19 @@ public class BlogListView extends ListView implements SiteListener {
 	public void init(Site site){
 		this.site=site;
 		if (site!=null && site.getBlogsCount()>0){
-			setAdapter(new BlogAdapter(site,getContext()));
+			setAdapter(new BlogAdapter(site.getBlogs(),getContext()));
 		}
 	}
 	
 	public void refresh() {
+		blogPage=1;
+		friendsTimeline();
+	}
+
+	/**
+	 * 
+	 */
+	private void friendsTimeline() {
 		site.addListener(this);
 
 		if (site.isLoggedIn()){
@@ -122,6 +132,11 @@ public class BlogListView extends ListView implements SiteListener {
 		else{
 			Toast.makeText(getContext(), getContext().getText(R.string.unAuthTips), Toast.LENGTH_SHORT).show();
 		}
+	}
+	
+	public void more(){
+		blogPage++;
+		friendsTimeline();		
 	}
 
 	public Site getSite(){
@@ -144,5 +159,13 @@ public class BlogListView extends ListView implements SiteListener {
 	@Override
 	public void onResponsed() {
 		mainHandler.sendEmptyMessage(END);
+	}
+	
+	public void setListener(BlogListViewListener listener){
+		this.listener=listener;
+	}
+	
+	public void clearListener(){
+		this.listener=null;
 	}
 }
