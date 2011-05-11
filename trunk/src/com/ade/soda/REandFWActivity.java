@@ -15,6 +15,7 @@ import android.view.View.OnClickListener;
 import android.webkit.WebView;
 import android.widget.Button;	
 import android.widget.EditText;	
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,80 +42,72 @@ public class REandFWActivity extends Activity implements OnClickListener{
 		//display blog content 
 		WebView wvProfileImage=(WebView)findViewById(R.id.refwImage);
 		WebView wvBlogPic =(WebView) findViewById(R.id.refwPic);
-		WebView wvRetPic =(WebView) findViewById(R.id.refwRetPic);
+		ImageView vImage=(ImageView) findViewById(R.id.refwvImage);
 		BlogTextView tvMsg = (BlogTextView)findViewById(R.id.refwMsg); 
 		TextView tvUsrname = (TextView)findViewById(R.id.refwUsername);
-		BlogTextView tvRetMsg = (BlogTextView) findViewById(R.id.refwRetMsg);
 		
+		
+		//write blog
+		tvUsrname.setText( blog.getUser().getScreenName() );
 		tvMsg.setText(blog.getText(),site.getFaceMap());
-		
-		//sohu blog uses ScreenName instead of username
-		String blogName;
-		blogName=blog.getUser().getName();
-		if (blogName.equals("")){
-			blogName=blog.getUser().getScreenName();
-		}
-		
-		tvUsrname.setText( blogName );
 		wvProfileImage.loadUrl(blog.getUser().getProfileImageUrl());
 		
-		//middlePic has higher priority, picType is used to set picture size
-		String pic=""; 
-		String picType="";
+		if (!blog.getUser().isVerified())
+			vImage.setVisibility(View.INVISIBLE);
 		
-		//this is used to set webview data string with respective size
-		String data="";
+		String pic ="" ; 
 		
-		if (blog.getMiddlePic() !=null && ! "".equals(blog.getMiddlePic()) ){
+		if (blog.getMiddlePic().length()>0 ){
 			pic=blog.getMiddlePic();
-			picType="msize"; //middle size picture
-		}else if (blog.getOriginalPic() != null && ! "".equals(blog.getOriginalPic())){
+		}else if (blog.getOriginalPic().length()>0)  {
 			pic=blog.getOriginalPic();
-			picType="osize"; //orignal size picture
 		}
 		
-		if ( ! "".equals(pic)){
-			wvBlogPic.setVisibility(0);	
-			
-			Log.i("REandFW",pic+" "+ picType);
-			if ("msize".equals(picType)){
-			   data="<IMG HEIGHT=\"180px\" WIDTH=\"200px\" SRC="+pic+">";
-			}else{
-			   data="<IMG HEIGHT=\"250px\" WIDTH=\"300px\" SRC="+pic+">";
-			}
-			wvBlogPic.loadData(data, "text/html", "UTF-8");
-			//wvBlogPic.loadUrl(pic);
-			Log.i("REandFW","data is "+ data);
+		if ( pic.length()>0 ){
+			wvBlogPic.getSettings().setSupportZoom(false);
+			wvBlogPic.loadUrl(pic);
+		}else{
+			wvBlogPic.setVisibility(View.GONE);
 		}
+		
 		
 		//retweeted msg
-		Blog retBlog = blog.getRetweetedBlog();
-		if (retBlog != null){
-			tvRetMsg.setText(" \nRE:" + retBlog.getUser().getName() + "\n" + retBlog.getText(),
-					site.getFaceMap());
+		Blog retBlog =blog.getRetweetedBlog();
+		if ( retBlog !=null && blog.isHaveRetweetedBlog()&& blog.getInReplyBlogText().length()>0){
+			BlogTextView tvRetMsg = (BlogTextView) findViewById(R.id.refwRetMsg);
+			WebView wvRetPic =(WebView) findViewById(R.id.refwRetPic);
+			String retPic="";
 			
-			pic="";
-			picType="";
-			
-			if (retBlog.getMiddlePic() !=null && ! "".equals(retBlog.getMiddlePic()) ){
-				pic=retBlog.getMiddlePic();
-				picType="msize"; //middle size picture
-			}else if (retBlog.getOriginalPic() != null && ! "".equals(retBlog.getOriginalPic())){
-				pic=retBlog.getOriginalPic();
-				picType="osize"; //orignal size picture
-			}
-			
-			if ( ! "".equals(pic)){
-				wvRetPic.setVisibility(0);
-				
-				if ("msize".equals(picType)){
-					data="<IMG HEIGHT=\"180px\" WIDTH=\"200px\" SRC="+pic+">";
-				}else{
-					data="<IMG HEIGHT=\"250px\" WIDTH=\"300px\" SRC="+pic+">";
+			if (blog.getInReplyBlogText().length()>0){
+				if (blog.getInReplyUserScreenName().length()>0){
+					tvRetMsg.setText("@"+retBlog.getUser().getScreenName()+": "+retBlog.getText(),
+						SiteManager.getInstance().getSiteByID(blog.getSiteID()).getFaceMap());
 				}
-				
-				wvRetPic.loadData(data, "text/html", "UTF-8");;
+				else{
+					tvRetMsg.setText(retBlog.getText(),
+						SiteManager.getInstance().getSiteByID(blog.getSiteID()).getFaceMap());
+				}
+			}else{
+				tvRetMsg.setVisibility(View.GONE);
 			}
+			
+			if (retBlog.getMiddlePic().length() >0 ){
+				retPic=retBlog.getMiddlePic();
+			}else if (retBlog.getOriginalPic().length()>0){
+				retPic=retBlog.getOriginalPic();
+			}
+			
+			if (retPic.length()>0){
+				wvRetPic.getSettings().setSupportZoom(false);
+				wvRetPic.loadUrl(retPic);
+			}
+			else{
+				wvRetPic.setVisibility(View.GONE);
+			}
+			
+		}else{
+			findViewById(R.id.refwReBlog).setVisibility(View.GONE);
+			findViewById(R.id.refwRetPic).setVisibility(View.GONE);
 		}
 		
 		
