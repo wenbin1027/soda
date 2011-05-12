@@ -145,7 +145,13 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			MainActivity.this.startActivityForResult(intentSet,SETREQUEST);
 			return true;
 		case R.id.aboutmenu:
-			MainActivity.this.startActivity(new Intent(MainActivity.this,AboutActivity.class));
+			//字符串封装后会有异常，改进中
+			AlertDialog.Builder aboutAlertDialog = new AlertDialog.Builder(this);
+			aboutAlertDialog.setTitle("关于我们").setMessage("苏打微博1.0， 由ADE小组倾情打造，谢谢支持！")
+			.setPositiveButton("确定",new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog,int which) { 
+				}}).setCancelable(false).create().show();
 			return true;
 		default:
 			return super.onOptionsItemSelected(item);
@@ -156,8 +162,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
 			//字符串封装后会有异常，改进中
-			AlertDialog.Builder alertDialog = new AlertDialog.Builder(this);
-			alertDialog.setTitle("退出提示").setMessage("确定要退出苏打微博吗？")
+			AlertDialog.Builder exitAlertDialog = new AlertDialog.Builder(this);
+			exitAlertDialog.setTitle("退出提示").setMessage("确定要退出苏打微博吗？")
 			.setPositiveButton("确定",new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog,int which) {

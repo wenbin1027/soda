@@ -27,17 +27,22 @@
  		android:layout_width="fill_parent"
  		android:layout_height="fill_parent"
  		android:layout_marginLeft="10dp">
- 		<TextView android:id="@+id/userName" android:layout_width="fill_parent"
- 			android:layout_height="wrap_content" android:layout_alignParentTop="true"
+ 		<TextView android:id="@+id/userName" android:layout_height="wrap_content" android:layout_alignParentTop="true"
  			android:textColor="@color/red"
  			android:textSize="15sp"
- 			android:paddingBottom="5dp">
+ 			android:paddingBottom="5dp" android:layout_width="fill_parent">
  		</TextView>
- 		<com.ade.soda.BlogTextView android:id="@+id/blogText" android:layout_width="fill_parent"
- 			android:layout_height="wrap_content"
+ 		<TextView android:id="@+id/creatAtText" android:layout_height="wrap_content"
  			android:layout_below="@+id/userName"
+ 			android:layout_alignParentRight="true"
  			android:textColor="@color/black"
- 			android:textSize="15sp">
+ 			android:textSize="5sp"
+ 			android:paddingBottom="5dp" android:layout_width="wrap_content">
+ 		</TextView>
+ 		<com.ade.soda.BlogTextView android:id="@+id/blogText" android:layout_height="wrap_content"
+ 			android:layout_below="@+id/creatAtText"
+ 			android:textColor="@color/black"
+ 			android:textSize="15sp" android:layout_width="wrap_content">
  		</com.ade.soda.BlogTextView>
  		<com.ade.soda.PictureWebView android:id="@+id/smallImage"
 	 		android:layout_width="50dp"
@@ -68,7 +73,15 @@
 		 		android:layout_below="@+id/reBlogText"
 		 		android:background="@drawable/portrait">
 		 	</com.ade.soda.PictureWebView>		
- 		</RelativeLayout>		
+ 		</RelativeLayout>	
+ 		<TextView android:id="@+id/sourceText" android:layout_width="fill_parent"
+ 			android:layout_height="wrap_content" 
+ 			android:layout_alignLeft="@+id/userName"
+ 			android:layout_below="@+id/reBlog"
+ 			android:textColor="@color/blue"
+ 			android:textSize="10sp"
+ 			android:paddingBottom="5dp">
+ 		</TextView>	
  	</RelativeLayout>
   </RelativeLayout>
 </LinearLayout>
