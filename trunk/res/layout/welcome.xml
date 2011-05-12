@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:id="@+id/WelcomeLinearLayout"
-    android:orientation="vertical"
- 	android:gravity="center"
     android:layout_width="fill_parent"
 	android:layout_height="fill_parent"
 	xmlns:android="http://schemas.android.com/apk/res/android" >
 	<ImageView android:id="@+id/welcomeimageview"
-	     android:layout_width="wrap_content"
 	     android:src="@drawable/welcome" 
-	     android:layout_height="wrap_content">
+	     android:layout_height="fill_parent" 
+	     android:layout_width="fill_parent">
 	</ImageView>
-	<TextView android:layout_height="fill_parent" 
-     	android:id="@+id/welcometextView" 
-    	android:layout_width="fill_parent" 
-    	android:layout_gravity="center"
-	    android:text="@string/welcometext">
-	</TextView>
 </LinearLayout>

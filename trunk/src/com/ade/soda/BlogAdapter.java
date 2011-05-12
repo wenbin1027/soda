@@ -88,13 +88,19 @@ public class BlogAdapter implements ListAdapter {
 			view=convertView;
 		}
 		TextView userName=(TextView)view.findViewById(R.id.userName);
+		TextView creatAtText=(TextView)view.findViewById(R.id.creatAtText);
 		BlogTextView blogText=(BlogTextView)view.findViewById(R.id.blogText);
 		WebView profileImage=(WebView)view.findViewById(R.id.profileImage);
 		ImageView vImage=(ImageView)view.findViewById(R.id.vImage);
 		WebView smallImage=(WebView)view.findViewById(R.id.smallImage);
+		TextView sourceText=(TextView)view.findViewById(R.id.sourceText);
 		Blog blog=getItem(position);
 		if (blog!=null){
 			userName.setText(blog.getUser().getScreenName());
+			
+			creatAtText.setText(blog.getCreatedAt().toString());
+			
+			sourceText.setText("来自"+blog.getSource());//未能去掉多余字符，正在继续改进
 			
 			blogText.setText(blog.getText(),
 					SiteManager.getInstance().getSiteByID(blog.getSiteID()).getFaceMap());

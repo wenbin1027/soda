@@ -51,6 +51,4 @@
 	
 	<string name="confirmtitle">退出提示</string>
 	<string name="confirmmessage">确定要退出苏打微博吗？</string>
-	
-	<string name="welcometext">欢迎使用苏打微博，点击继续</string>
 </resources>
