@@ -87,59 +87,13 @@ public class BlogAdapter implements ListAdapter {
 		else{
 			view=convertView;
 		}
-		TextView userName=(TextView)view.findViewById(R.id.userName);
-		TextView creatAtText=(TextView)view.findViewById(R.id.creatAtText);
-		BlogTextView blogText=(BlogTextView)view.findViewById(R.id.blogText);
-		WebView profileImage=(WebView)view.findViewById(R.id.profileImage);
-		ImageView vImage=(ImageView)view.findViewById(R.id.vImage);
-		WebView smallImage=(WebView)view.findViewById(R.id.smallImage);
-		TextView sourceText=(TextView)view.findViewById(R.id.sourceText);
+
 		Blog blog=getItem(position);
 		if (blog!=null){
-			userName.setText(blog.getUser().getScreenName());
-			
-			creatAtText.setText(blog.getCreatedAt().toString());
-			
-			sourceText.setText("来自"+blog.getSource());//未能去掉多余字符，正在继续改进
-			
-			blogText.setText(blog.getText(),
-					SiteManager.getInstance().getSiteByID(blog.getSiteID()).getFaceMap());
-			
-			profileImage.loadUrl(blog.getUser().getProfileImageUrl());
-			
-			if (!blog.getUser().isVerified())
-				vImage.setVisibility(View.INVISIBLE);
-			if (blog.getSmallPic().length()>0){
-				smallImage.loadUrl(blog.getSmallPic());
-			}
-			else{
-				smallImage.setVisibility(View.GONE);
-			}
+			updateBlogView(view, blog);
 			
 			if (blog.isHaveRetweetedBlog()&& blog.getInReplyBlogText().length()>0){
-				BlogTextView reBlogText=(BlogTextView)view.findViewById(R.id.reBlogText);
-				WebView reImage=(WebView)view.findViewById(R.id.reImage);
-				
-				if (blog.getInReplyBlogText().length()>0){
-					if (blog.getInReplyUserScreenName().length()>0){
-						reBlogText.setText("@"+blog.getInReplyUserScreenName()+": "+blog.getInReplyBlogText(),
-							SiteManager.getInstance().getSiteByID(blog.getSiteID()).getFaceMap());
-					}
-					else{
-						reBlogText.setText(blog.getInReplyBlogText(),
-							SiteManager.getInstance().getSiteByID(blog.getSiteID()).getFaceMap());
-					}
-				}
-				else{
-					reBlogText.setVisibility(View.GONE);
-				}
-				
-				if (blog.getRetweetedBlog().getSmallPic().length()>0){
-					reImage.loadUrl(blog.getRetweetedBlog().getSmallPic());
-				}
-				else{
-					reImage.setVisibility(View.GONE);
-				}
+				updateRetweeteBlogView(view, blog);
 			}
 			else{
 				view.findViewById(R.id.reBlog).setVisibility(View.GONE);
@@ -150,9 +104,70 @@ public class BlogAdapter implements ListAdapter {
 		return view;
 	}
 
+	/**
+	 * @param view
+	 * @param blog
+	 */
+	private void updateBlogView(View view, Blog blog) {
+		TextView userName=(TextView)view.findViewById(R.id.userName);
+		TextView creatAtText=(TextView)view.findViewById(R.id.creatAtText);
+		BlogTextView blogText=(BlogTextView)view.findViewById(R.id.blogText);
+		WebView profileImage=(WebView)view.findViewById(R.id.profileImage);
+		ImageView vImage=(ImageView)view.findViewById(R.id.vImage);
+		WebView smallImage=(WebView)view.findViewById(R.id.smallImage);
+		TextView sourceText=(TextView)view.findViewById(R.id.sourceText);
+
+		userName.setText(blog.getUser().getScreenName());
+		creatAtText.setText(blog.getCreatedAt().toString());
+		sourceText.setText(context.getString(R.string.from)+blog.getSource());
+			
+		blogText.setText(blog.getText(),
+				SiteManager.getInstance().getSiteByID(blog.getSiteID()).getFaceMap());
+		profileImage.loadUrl(blog.getUser().getProfileImageUrl());
+		
+		if (!blog.getUser().isVerified())
+			vImage.setVisibility(View.INVISIBLE);
+		if (blog.getSmallPic().length()>0){
+			smallImage.loadUrl(blog.getSmallPic());
+		}
+		else{
+			smallImage.setVisibility(View.GONE);
+		}
+	}
+
+	/**
+	 * @param view
+	 * @param blog
+	 */
+	private void updateRetweeteBlogView(View view, Blog blog) {
+		BlogTextView reBlogText=(BlogTextView)view.findViewById(R.id.reBlogText);
+		WebView reImage=(WebView)view.findViewById(R.id.reImage);
+		
+		if (blog.getInReplyBlogText().length()>0){
+			if (blog.getInReplyUserScreenName().length()>0){
+				reBlogText.setText("@"+blog.getInReplyUserScreenName()+": "+blog.getInReplyBlogText(),
+					SiteManager.getInstance().getSiteByID(blog.getSiteID()).getFaceMap());
+			}
+			else{
+				reBlogText.setText(blog.getInReplyBlogText(),
+					SiteManager.getInstance().getSiteByID(blog.getSiteID()).getFaceMap());
+			}
+		}
+		else{
+			reBlogText.setVisibility(View.GONE);
+		}
+		
+		if (blog.getRetweetedBlog().getSmallPic().length()>0){
+			reImage.loadUrl(blog.getRetweetedBlog().getSmallPic());
+		}
+		else{
+			reImage.setVisibility(View.GONE);
+		}
+	}
+
 	@Override
 	public int getViewTypeCount() {
-		return 1;
+		return 1;  //Only One type of view
 	}
 
 	@Override
