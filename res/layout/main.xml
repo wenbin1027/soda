@@ -35,7 +35,8 @@
 					android:id="@+id/tab_mix" android:orientation="vertical"
 					android:layout_width="fill_parent" android:layout_height="fill_parent">
 					<com.ade.soda.MixBlogListView android:id="@+id/AllList" android:layout_width="fill_parent"
-						android:layout_height="fill_parent" android:clickable="true">
+						android:layout_height="fill_parent" android:clickable="true"
+						android:divider="@drawable/divider" android:dividerHeight="1dp">
 					</com.ade.soda.MixBlogListView>
 				</RelativeLayout>
 				
@@ -43,14 +44,16 @@
 					android:id="@+id/tab_sina" android:orientation="vertical"
 					android:layout_width="fill_parent" android:layout_height="fill_parent">
 					<com.ade.soda.BlogListView android:id="@+id/SinaList" android:layout_width="fill_parent"
-						android:layout_height="fill_parent" android:clickable="true">
+						android:layout_height="fill_parent" android:clickable="true"
+						android:divider="@drawable/divider" android:dividerHeight="1dp">
 					</com.ade.soda.BlogListView>
 				</RelativeLayout>
 
 				<RelativeLayout android:layout_width="fill_parent"
 					android:layout_height="fill_parent" android:id="@+id/tab_sohu">
 					<com.ade.soda.BlogListView android:id="@+id/SohuList" android:layout_width="fill_parent"
-						android:layout_height="fill_parent" android:clickable="true">
+						android:layout_height="fill_parent" android:clickable="true"
+						android:divider="@drawable/divider" android:dividerHeight="1dp">
 					</com.ade.soda.BlogListView>
 				</RelativeLayout>
 			</FrameLayout>

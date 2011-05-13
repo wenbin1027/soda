@@ -51,4 +51,6 @@
 	
 	<string name="confirmtitle">退出提示</string>
 	<string name="confirmmessage">确定要退出苏打微博吗？</string>
+	
+	<string name="from">来自</string>
 </resources>

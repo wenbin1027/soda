@@ -8,13 +8,13 @@
   android:background="@color/white">
   <RelativeLayout android:layout_width="fill_parent" 
   	android:layout_height="fill_parent" >
- 	<WebView android:id="@+id/profileImage"
+ 	<com.ade.soda.PictureWebView android:id="@+id/profileImage"
  		android:layout_width="48dp"
  		android:layout_height="48dp"
  		android:scrollbars="none"
  		android:layout_alignParentLeft="true"
  		android:background="@drawable/portrait">
- 	</WebView>
+ 	</com.ade.soda.PictureWebView>
  	<ImageView android:id="@+id/vImage"
  		android:layout_width="wrap_content"
  		android:layout_height="wrap_content"
@@ -45,11 +45,11 @@
  			android:textSize="15sp" android:layout_width="wrap_content">
  		</com.ade.soda.BlogTextView>
  		<com.ade.soda.PictureWebView android:id="@+id/smallImage"
-	 		android:layout_width="50dp"
-	 		android:layout_height="50dp"
+	 		android:layout_width="68dp"
+	 		android:layout_height="48dp"
 	 		android:scrollbars="none"
 	 		android:layout_below="@+id/blogText"
-	 		android:background="@drawable/portrait">
+	 		android:background="@drawable/image">
 	 	</com.ade.soda.PictureWebView>	
 		<RelativeLayout android:layout_width="fill_parent" 
  			android:layout_height="wrap_content"
@@ -67,11 +67,11 @@
 	 			android:textSize="15sp">
 	 		</com.ade.soda.BlogTextView> 	
 	 		<com.ade.soda.PictureWebView android:id="@+id/reImage"
-		 		android:layout_width="50dp"
-		 		android:layout_height="50dp"
+		 		android:layout_width="68dp"
+		 		android:layout_height="48dp"
 		 		android:scrollbars="none"
 		 		android:layout_below="@+id/reBlogText"
-		 		android:background="@drawable/portrait">
+		 		android:background="@drawable/image">
 		 	</com.ade.soda.PictureWebView>		
  		</RelativeLayout>	
  		<TextView android:id="@+id/sourceText" android:layout_width="fill_parent"

@@ -87,10 +87,12 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			public void onClick(View v) {
 				String tab=tabHost.getCurrentTabTag();
 				Intent intentWrite = new Intent(MainActivity.this,WriteActivity.class);
-				if (tab==SINA)
+				if (tab==SINA){
 					intentWrite.putExtra("site", SiteManager.SINA);
-				else if (tab==SOHU)
+				}
+				else if (tab==SOHU){
 					intentWrite.putExtra("site", SiteManager.SOHU);
+				}
 				
 				MainActivity.this.startActivityForResult(intentWrite, WRITEREQUEST);
 			}
