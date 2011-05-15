@@ -9,6 +9,7 @@ import com.ade.site.SiteManager;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -115,10 +116,10 @@ public class BlogAdapter implements ListAdapter {
 		WebView profileImage=(WebView)view.findViewById(R.id.profileImage);
 		ImageView vImage=(ImageView)view.findViewById(R.id.vImage);
 		WebView smallImage=(WebView)view.findViewById(R.id.smallImage);
-		TextView sourceText=(TextView)view.findViewById(R.id.sourceText);
+		BlogTextView sourceText=(BlogTextView)view.findViewById(R.id.sourceText);
 
 		userName.setText(blog.getUser().getScreenName());
-		creatAtText.setText(blog.getCreatedAt().toString());
+		creatAtText.setText(blogTimeAdapter(blog));
 		sourceText.setText(context.getString(R.string.from)+blog.getSource());
 			
 		blogText.setText(blog.getText(),
@@ -163,6 +164,52 @@ public class BlogAdapter implements ListAdapter {
 		else{
 			reImage.setVisibility(View.GONE);
 		}
+	}
+	
+	private String blogTimeAdapter(Blog blog){
+		//设置显示微博时间格式，年月部分暂不计入格式
+		int blogSeconds=blog.getCreatedAt().getSeconds();
+		int blogMinutes=blog.getCreatedAt().getMinutes();
+		int blogHours=blog.getCreatedAt().getHours();
+		int blogDay=blog.getCreatedAt().getDate();
+		//		int blogMouth=blog.getCreatedAt().getMonth();
+		//		int blogYear=blog.getCreatedAt().getYear();
+		Time systemTime=new Time(); 
+		systemTime.setToNow();
+		int systemSeconds=systemTime.second;
+		int systemMinutes=systemTime.minute;
+		int systemHours=systemTime.hour;
+		int systemDay=systemTime.monthDay;
+		//		int systemMouth=systemTime.month;
+		//		int systemYear=systemTime.year;
+		int temp;//时间差
+		StringBuilder blogTime=new StringBuilder("约");
+		//		if(blogYear==systemYear&&blogMouth==systemMouth){
+		if(blogDay==systemDay){
+			if(blogHours==systemHours){
+				if(blogMinutes==systemMinutes){
+					temp=systemSeconds-blogSeconds;
+					blogTime.append(temp+"秒前");
+				}
+				else{
+					temp=systemMinutes-blogMinutes;
+					blogTime.append(temp+"分钟前");
+				}
+			}
+			else{
+				temp=systemHours-blogHours;
+				blogTime.append(temp+"小时前");
+			}
+		}
+		else{
+			temp=systemDay-blogDay;
+			blogTime.append(temp+"天前");
+		}
+		//		}
+		//		else{
+		//			blogTime.append("很久以前");
+		//		}
+		return blogTime.toString();
 	}
 
 	@Override
