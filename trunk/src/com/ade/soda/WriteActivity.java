@@ -1,16 +1,17 @@
 package com.ade.soda;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Set;
-import com.ade.restapi.UpdateInterface;
-import com.ade.site.Blog;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import com.ade.site.Site;
 import com.ade.site.SiteListener;
 import com.ade.site.SiteManager;
 
-import android.R.bool;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -24,17 +25,14 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.util.LogPrinter;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
-
 import android.widget.Toast;
 
 public class WriteActivity extends Activity implements OnClickListener,
@@ -52,7 +50,8 @@ public class WriteActivity extends Activity implements OnClickListener,
 	private ImageView imageView;
 	private final int CAMERA = 0;
 	private final int ALBUM = 1;
-	
+	private String filename;
+	private File mCurrentPhotoFile;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -151,33 +150,24 @@ public class WriteActivity extends Activity implements OnClickListener,
 	private void sendMsg(Site site) {
 		EditText mEditText = (EditText) findViewById(R.id.EditText);
 		String s = mEditText.getText().toString().trim();
-		
-		if (s.length() <= 0)
-			Toast.makeText(WriteActivity.this,
-					getResources().getString(R.string.PleaseWrite),
-					Toast.LENGTH_SHORT).show();
-		else {
+		if (!haveImage) {
+			if (s.length() <= 0)
+				Toast.makeText(WriteActivity.this,
+						getResources().getString(R.string.PleaseWrite),
+						Toast.LENGTH_SHORT).show();
+			else {
+				site.addListener(this);
+				site.updateText(s);
+			}
+		} else {
 			site.addListener(this);
-			site.updateText(s);
+			try {
+				site.uploadImage(filename, s);
+			} catch (IOException e) {
+				e.printStackTrace();
+
+			}
 		}
-//		if (!haveImage) {
-//			if (s.length() <= 0)
-//				Toast.makeText(WriteActivity.this,
-//						getResources().getString(R.string.PleaseWrite),
-//						Toast.LENGTH_SHORT).show();
-//			else {
-//				site.addListener(this);
-//				site.updateText(s);
-//			}
-//		} else {
-//			site.addListener(this);
-//			try {
-//				site.uploadImage( cur.getString(cur.getColumnIndex("_data")), s);
-//			} catch (IOException e) {
-//				e.printStackTrace();
-//
-//			}
-//		}
 
 	}
 
@@ -212,7 +202,7 @@ public class WriteActivity extends Activity implements OnClickListener,
 					Intent getImageByCamera = new Intent(
 							"android.media.action.IMAGE_CAPTURE");
 					startActivityForResult(getImageByCamera, CAMERA);
-
+					// doTakePhoto();
 					break;
 				case ALBUM:
 					Intent getImage = new Intent(Intent.ACTION_GET_CONTENT);
@@ -240,12 +230,16 @@ public class WriteActivity extends Activity implements OnClickListener,
 
 				Uri originalUri = data.getData();
 				cur = resolver.query(originalUri, null, null, null, null);
+				while (cur.moveToNext()) {
+					filename = cur.getString(cur.getColumnIndex("_data"));
+					Log.i("Other", filename);
+				}
 				mContent = readStream(resolver.openInputStream(Uri
 						.parse(originalUri.toString())));
 
 				myBitmap = getPicFromBytes(mContent, null);
 				imageView.setImageBitmap(myBitmap);
-				haveImage = true ;
+				haveImage = true;
 				imageView.setVisibility(View.VISIBLE);
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
@@ -256,18 +250,20 @@ public class WriteActivity extends Activity implements OnClickListener,
 				super.onActivityResult(requestCode, resultCode, data);
 				Bundle extras = data.getExtras();
 				myBitmap = (Bitmap) extras.get("data");
+				mCurrentPhotoFile = new File(Environment.getExternalStorageDirectory() + "/DCIM/Camera", getPhotoFileName());
+				filename = mCurrentPhotoFile.toString();
+				Log.i("Other", filename);
+				saveMyBitmap(filename);
 				ByteArrayOutputStream baos = new ByteArrayOutputStream();
 				myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
 				mContent = baos.toByteArray();
 			} catch (Exception e) {
-
 				e.printStackTrace();
 			}
 			imageView.setImageBitmap(myBitmap);
-			haveImage = true ;
+			haveImage = true;
 			imageView.setVisibility(View.VISIBLE);
-		}
-
+		} 
 	}
 
 	public static Bitmap getPicFromBytes(byte[] bytes,
@@ -294,21 +290,31 @@ public class WriteActivity extends Activity implements OnClickListener,
 		return data;
 
 	}
-
-/*	private void showImg(ImageView view, Drawable img) {
-		int w = img.getIntrinsicWidth();
-		int h = img.getIntrinsicHeight();
-		Log.e("w", w + "/" + h);
-		if (w > 300) {
-			int hh = 300 * h / w;
-			Log.e("hh", hh + "");
-			LayoutParams para = view.getLayoutParams();
-			para.width = 300;
-			para.height = hh;
-			view.setLayoutParams(para);
-		}
-		view.setImageDrawable(img); 
-		   }  */
-
-
+	public void saveMyBitmap(String bitName) throws IOException {
+        File f = new File( bitName );
+        f.createNewFile();
+        FileOutputStream fOut = null;
+        try {
+                fOut = new FileOutputStream(f);
+        } catch (FileNotFoundException e) {
+                e.printStackTrace();
+        }
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+        try {
+                fOut.flush();
+        } catch (IOException e) {
+                e.printStackTrace();
+        }
+        try {
+                fOut.close();
+        } catch (IOException e) {
+                e.printStackTrace();
+        }
+}
+	private String getPhotoFileName() {
+		Date date = new Date(System.currentTimeMillis());
+		SimpleDateFormat dateFormat = new SimpleDateFormat(
+				"'IMG'_yyyy-MM-dd HH:mm:ss");
+		return dateFormat.format(date) + ".jpg";
+	}
 }
