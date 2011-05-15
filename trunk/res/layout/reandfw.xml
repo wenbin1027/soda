@@ -42,8 +42,8 @@
  			android:layout_below="@+id/refwUsername">
  		</com.ade.soda.BlogTextView>
  		<com.ade.soda.PictureWebView android:id="@+id/refwPic"
- 		    	 android:layout_width="50dp"
-	 		     android:layout_height="50dp"
+ 		    	 android:layout_width="fill_parent"
+	 		     android:layout_height="fill_parent"
 	 		     android:scrollbars="none"
  		         android:layout_below="@+id/refwMsg"
  		         android:background="@drawable/portrait">
@@ -63,8 +63,8 @@
  					android:layout_below="@+id/refwPic" android:textSize="15sp" >
  	      </com.ade.soda.BlogTextView>	
  		  <com.ade.soda.PictureWebView android:id="@+id/refwRetPic"
- 		            android:layout_width="100dp"
-		 		    android:layout_height="100dp"
+ 		            android:layout_width="fill_parent"
+		 		    android:layout_height="fill_parent"
  		    	    android:scrollbars="none"
  		    	    android:background="@drawable/portrait"
  		    	    android:layout_below="@+id/refwRetMsg" >
