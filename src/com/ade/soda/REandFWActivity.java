@@ -9,9 +9,13 @@ import android.content.Intent;
 import android.os.Bundle;	
 import android.os.Handler;
 import android.os.Message;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.webkit.WebSettings;
+import android.webkit.WebSettings.LayoutAlgorithm;
+import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
 import android.widget.Button;	
 import android.widget.EditText;	
@@ -34,7 +38,6 @@ public class REandFWActivity extends Activity implements OnClickListener{
 			if (intent.hasExtra("CurrentBlog")){
 				//主界面会把Blog对象通过Intent传递到这里
 				blog=(Blog) intent.getSerializableExtra("CurrentBlog");
-				Log.i("REandFW", blog.toString());
 			}
 			site=SiteManager.getInstance().getSiteByID(blog.getSiteID());
 		}
@@ -64,7 +67,11 @@ public class REandFWActivity extends Activity implements OnClickListener{
 		}
 		
 		if ( pic.length()>0 ){
-			wvBlogPic.getSettings().setSupportZoom(false);
+			//wvBlogPic.getSettings().setSupportZoom(true);
+			wvBlogPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+			//wvBlogPic.setInitialScale(50);
+			wvBlogPic.getSettings().setJavaScriptEnabled(true);
+			wvBlogPic.getSettings().setBuiltInZoomControls(true); 
 			wvBlogPic.loadUrl(pic);
 		}else{
 			wvBlogPic.setVisibility(View.GONE);
@@ -98,7 +105,11 @@ public class REandFWActivity extends Activity implements OnClickListener{
 			}
 			
 			if (retPic.length()>0){
-				wvRetPic.getSettings().setSupportZoom(false);
+				//wvRetPic.getSettings().setSupportZoom(true);
+				//wvRetPic.setInitialScale(50);
+				wvRetPic.getSettings().setJavaScriptEnabled(true);
+				wvRetPic.getSettings().setBuiltInZoomControls(true);
+				wvRetPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 				wvRetPic.loadUrl(retPic);
 			}
 			else{
