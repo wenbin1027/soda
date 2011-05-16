@@ -3,30 +3,16 @@ package com.ade.soda;
 import com.ade.site.Blog;
 import com.ade.site.Site;
 import com.ade.site.SiteManager;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;	
-import android.os.Handler;
-import android.os.Message;
-import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.webkit.WebSettings;
-import android.webkit.WebSettings.LayoutAlgorithm;
-import android.webkit.WebSettings.ZoomDensity;
 import android.webkit.WebView;
-import android.widget.Button;	
-import android.widget.EditText;	
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
-import android.widget.Toast;
-
-public class REandFWActivity extends Activity implements OnClickListener{
+public class REandFWActivity extends Activity{
 	private Blog blog;
 	private Site site;
 	
@@ -67,16 +53,14 @@ public class REandFWActivity extends Activity implements OnClickListener{
 		}
 		
 		if ( pic.length()>0 ){
-			//wvBlogPic.getSettings().setSupportZoom(true);
-			wvBlogPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
-			//wvBlogPic.setInitialScale(50);
-			wvBlogPic.getSettings().setJavaScriptEnabled(true);
-			wvBlogPic.getSettings().setBuiltInZoomControls(true); 
+//			wvBlogPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+//			wvBlogPic.getSettings().setJavaScriptEnabled(true);
+//			wvBlogPic.getSettings().setBuiltInZoomControls(true); 
 			wvBlogPic.loadUrl(pic);
 		}else{
 			wvBlogPic.setVisibility(View.GONE);
 		}
-		
+
 		
 		//retweeted msg
 		Blog retBlog =blog.getRetweetedBlog();
@@ -105,11 +89,9 @@ public class REandFWActivity extends Activity implements OnClickListener{
 			}
 			
 			if (retPic.length()>0){
-				//wvRetPic.getSettings().setSupportZoom(true);
-				//wvRetPic.setInitialScale(50);
-				wvRetPic.getSettings().setJavaScriptEnabled(true);
-				wvRetPic.getSettings().setBuiltInZoomControls(true);
-				wvRetPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+//				wvRetPic.getSettings().setJavaScriptEnabled(true);
+//				wvRetPic.getSettings().setBuiltInZoomControls(true);
+//				wvRetPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 				wvRetPic.loadUrl(retPic);
 			}
 			else{
@@ -120,42 +102,5 @@ public class REandFWActivity extends Activity implements OnClickListener{
 			findViewById(R.id.refwReBlog).setVisibility(View.GONE);
 			findViewById(R.id.refwRetPic).setVisibility(View.GONE);
 		}
-		
-		
-		//findViewById(R.id.BtnRE).setOnClickListener(this);
-		//findViewById(R.id.BtnFW).setOnClickListener(this);
-		//findViewById(R.id.BtnMore).setOnClickListener(this);
-		//findViewById(R.id.BtnFace).setOnClickListener(this);
-		//findViewById(R.id.BtnImg).setOnClickListener(this);
-		//findViewById(R.id.BtnOK).setOnClickListener(this);
-
-		}
-	
-	//以下功能暂时不用
-	public void onClick(View v) {
-		
-		/*switch (v.getId()) {
-		case R.id.BtnRE:
-			// todo
-			break;
-		case R.id.BtnFW:
-			// todo
-			break;
-		case R.id.BtnMore:
-			// todo
-			break;
-		case R.id.BtnImg:
-			// todo
-			break;
-		case R.id.BtnFace:
-			// todo
-			break;
-		case R.id.BtnOK:
-			// todo
-			REandFWActivity.this.finish();
-			break;
-		default:
-			break;
-		}*/
 	}
 }

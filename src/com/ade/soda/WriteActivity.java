@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import com.ade.site.Site;
@@ -42,16 +43,15 @@ public class WriteActivity extends Activity implements OnClickListener,
 	private final int ERROR = 1;
 	private final int END = 2;
 	private Dialog progressDlg;
-	final int LIST_DIALOG = 2;
-	private Cursor cur;
 	private Bitmap myBitmap;
 	private Boolean haveImage = false;
 	private byte[] mContent;
 	private ImageView imageView;
-	private final int CAMERA = 0;
-	private final int ALBUM = 1;
+	private final int CAMERA = 3;
+	private final int ALBUM = 4;
+	private final int LIST_DIALOG = 5;
 	private String filename;
-	private File mCurrentPhotoFile;
+	private int toBeSendCount=1;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -89,21 +89,25 @@ public class WriteActivity extends Activity implements OnClickListener,
 				}
 				break;
 			case END:
-				site.removeListener(WriteActivity.this);
-				dismissDlg();
-				Toast.makeText(WriteActivity.this,
-						getResources().getString(R.string.SendSuccess),
-						Toast.LENGTH_SHORT).show();
-				setResult(RESULT_OK);
-				WriteActivity.this.finish();
+				toBeSendCount--;
+				if (toBeSendCount<=0){
+					dismissDlg();
+					Toast.makeText(WriteActivity.this,
+							getResources().getString(R.string.SendSuccess),
+							Toast.LENGTH_SHORT).show();
+					setResult(RESULT_OK);
+					WriteActivity.this.finish();
+				}
 				break;
 			case ERROR:
-				site.removeListener(WriteActivity.this);
-				dismissDlg();
-				if (msg.obj != null) {
-					Toast.makeText(WriteActivity.this,
-							getResources().getString(R.string.SendError),
-							Toast.LENGTH_SHORT).show();
+				toBeSendCount--;
+				if (toBeSendCount<=0){
+					dismissDlg();
+					if (msg.obj != null) {
+						Toast.makeText(WriteActivity.this,
+								getResources().getString(R.string.SendError),
+								Toast.LENGTH_SHORT).show();
+					}
 				}
 				break;
 			}
@@ -136,8 +140,16 @@ public class WriteActivity extends Activity implements OnClickListener,
 			WriteActivity.this.finish();
 			break;
 		case R.id.BtnSendMsg:
-
-			sendMsg(site);
+			if (site==null){
+				toBeSendCount=SiteManager.getInstance().getSites().size();
+				for(Site tempSite:SiteManager.getInstance().getSites()){
+					sendMsg(tempSite);
+				}
+			}
+			else{
+				toBeSendCount=1;
+				sendMsg(site);
+			}
 			break;
 		case R.id.shrinkPic:
 			showDialog(LIST_DIALOG);
@@ -150,25 +162,23 @@ public class WriteActivity extends Activity implements OnClickListener,
 	private void sendMsg(Site site) {
 		EditText mEditText = (EditText) findViewById(R.id.EditText);
 		String s = mEditText.getText().toString().trim();
-		if (!haveImage) {
-			if (s.length() <= 0)
-				Toast.makeText(WriteActivity.this,
-						getResources().getString(R.string.PleaseWrite),
-						Toast.LENGTH_SHORT).show();
-			else {
-				site.addListener(this);
+		if (s.length() <= 0)
+			Toast.makeText(WriteActivity.this,
+					getResources().getString(R.string.PleaseWrite),
+					Toast.LENGTH_SHORT).show();
+		else {
+			site.addListener(this);
+			if (!haveImage){
 				site.updateText(s);
 			}
-		} else {
-			site.addListener(this);
-			try {
-				site.uploadImage(filename, s);
-			} catch (IOException e) {
-				e.printStackTrace();
-
+			else{
+				try {
+					site.uploadImage(getFileStreamPath(filename).getAbsolutePath(), s==null?"":s);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
-
 	}
 
 	@Override
@@ -202,7 +212,6 @@ public class WriteActivity extends Activity implements OnClickListener,
 					Intent getImageByCamera = new Intent(
 							"android.media.action.IMAGE_CAPTURE");
 					startActivityForResult(getImageByCamera, CAMERA);
-					// doTakePhoto();
 					break;
 				case ALBUM:
 					Intent getImage = new Intent(Intent.ACTION_GET_CONTENT);
@@ -225,39 +234,39 @@ public class WriteActivity extends Activity implements OnClickListener,
 
 		ContentResolver resolver = getContentResolver();
 
-		if (requestCode == ALBUM) {
+		if (requestCode == ALBUM && resultCode==RESULT_OK) {
+			Uri originalUri = data.getData();
+			filename=(new Date()).toLocaleString();
 			try {
-
-				Uri originalUri = data.getData();
-				cur = resolver.query(originalUri, null, null, null, null);
-				while (cur.moveToNext()) {
-					filename = cur.getString(cur.getColumnIndex("_data"));
-					Log.i("Other", filename);
-				}
+				FileOutputStream os=this.openFileOutput(filename, MODE_PRIVATE);
 				mContent = readStream(resolver.openInputStream(Uri
 						.parse(originalUri.toString())));
-
-				myBitmap = getPicFromBytes(mContent, null);
-				imageView.setImageBitmap(myBitmap);
-				haveImage = true;
-				imageView.setVisibility(View.VISIBLE);
+				os.write(mContent);
+				os.close();	
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
 			} catch (Exception e) {
-				System.out.println(e.getMessage());
+				e.printStackTrace();
 			}
+			myBitmap = getPicFromBytes(mContent, null);
+			imageView.setImageBitmap(myBitmap);
+			haveImage = true;
+			imageView.setVisibility(View.VISIBLE);
 
-		} else if (requestCode == CAMERA) {
+		} else if (requestCode == CAMERA && resultCode==RESULT_OK) {
+			super.onActivityResult(requestCode, resultCode, data);
+			Bundle extras = data.getExtras();
+			myBitmap = (Bitmap) extras.get("data");
+			filename=(new Date()).toLocaleString();
 			try {
-				super.onActivityResult(requestCode, resultCode, data);
-				Bundle extras = data.getExtras();
-				myBitmap = (Bitmap) extras.get("data");
-				mCurrentPhotoFile = new File(Environment.getExternalStorageDirectory() + "/DCIM/Camera", getPhotoFileName());
-				filename = mCurrentPhotoFile.toString();
-				Log.i("Other", filename);
-				saveMyBitmap(filename);
-				ByteArrayOutputStream baos = new ByteArrayOutputStream();
-				myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-				mContent = baos.toByteArray();
-			} catch (Exception e) {
+				FileOutputStream fOut;
+				fOut = this.openFileOutput(filename,MODE_PRIVATE);
+		        myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
+		        fOut.flush();
+		        fOut.close();
+	        } catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			imageView.setImageBitmap(myBitmap);
@@ -288,33 +297,24 @@ public class WriteActivity extends Activity implements OnClickListener,
 		outStream.close();
 		inStream.close();
 		return data;
-
 	}
-	public void saveMyBitmap(String bitName) throws IOException {
-        File f = new File( bitName );
-        f.createNewFile();
-        FileOutputStream fOut = null;
-        try {
-                fOut = new FileOutputStream(f);
-        } catch (FileNotFoundException e) {
-                e.printStackTrace();
-        }
-        myBitmap.compress(Bitmap.CompressFormat.JPEG, 100, fOut);
-        try {
-                fOut.flush();
-        } catch (IOException e) {
-                e.printStackTrace();
-        }
-        try {
-                fOut.close();
-        } catch (IOException e) {
-                e.printStackTrace();
-        }
-}
-	private String getPhotoFileName() {
-		Date date = new Date(System.currentTimeMillis());
-		SimpleDateFormat dateFormat = new SimpleDateFormat(
-				"'IMG'_yyyy-MM-dd HH:mm:ss");
-		return dateFormat.format(date) + ".jpg";
+	
+	@Override
+	protected void onDestroy() {
+		for(Site tempSite:SiteManager.getInstance().getSites()){
+			tempSite.removeListener(this);
+		}
+		super.onDestroy();
+	}
+
+	/**
+	 * 
+	 */
+	private void deleteFile() {
+		if (filename!=null){
+			File file=getFileStreamPath(filename);
+			file.delete();
+			filename=null;
+		}
 	}
 }

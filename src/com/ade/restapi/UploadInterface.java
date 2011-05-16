@@ -61,7 +61,7 @@ public abstract class UploadInterface extends ApiInterface {
 		if (fileName==null)
 			return false;
 		int length=fileName.trim().length();
-		if (length<1 || length>300)
+		if (length<=0 || length>300 || text==null || text.length()<=0)
 			return false;
 		return true;
 	}

@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<ScrollView android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@color/white">
 <LinearLayout android:id="@+id/LinearLayoutREandFW"
 	android:layout_width="fill_parent" android:layout_height="fill_parent"
 	xmlns:android="http://schemas.android.com/apk/res/android"
@@ -12,12 +15,13 @@
 	
     <RelativeLayout android:layout_width="fill_parent" 
      	android:layout_height="fill_parent">
- 	  <WebView android:id="@+id/refwImage"
+ 	  <com.ade.soda.PictureWebView android:id="@+id/refwImage"
  		android:layout_width="48dp"
  		android:layout_height="48dp"
  		android:scrollbars="none"
- 		android:layout_alignParentLeft="true">
- 	   </WebView>
+ 		android:layout_alignParentLeft="true"
+ 		android:background="@drawable/portrait">
+ 	   </com.ade.soda.PictureWebView>
  	  <ImageView android:id="@+id/refwvImage"
  		android:layout_width="wrap_content"
  		android:layout_height="wrap_content"
@@ -46,7 +50,7 @@
 	 		     android:layout_height="fill_parent"
 	 		     android:scrollbars="none"
  		         android:layout_below="@+id/refwMsg"
- 		         android:background="@drawable/portrait">
+ 		         android:background="@drawable/image">
  		</com.ade.soda.PictureWebView>	
  		<RelativeLayout android:layout_width="fill_parent" 
  			android:layout_height="wrap_content"
@@ -66,7 +70,7 @@
  		            android:layout_width="fill_parent"
 		 		    android:layout_height="fill_parent"
  		    	    android:scrollbars="none"
- 		    	    android:background="@drawable/portrait"
+ 		    	    android:background="@drawable/image"
  		    	    android:layout_below="@+id/refwRetMsg" >
  		  </com.ade.soda.PictureWebView>
  		</RelativeLayout>	
@@ -75,3 +79,4 @@
 	
 
 </LinearLayout>
+</ScrollView>
