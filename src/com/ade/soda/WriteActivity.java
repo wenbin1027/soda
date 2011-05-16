@@ -152,7 +152,21 @@ public class WriteActivity extends Activity implements OnClickListener,
 			}
 			break;
 		case R.id.shrinkPic:
-			showDialog(LIST_DIALOG);
+			AlertDialog.Builder exitAlertDialog = new AlertDialog.Builder(this);
+			exitAlertDialog.setTitle(getResources().getString(R.string.delete)).setMessage(getResources().getString(R.string.isdelete))
+			.setPositiveButton(getResources().getString(R.string.dialogOK),new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog,int which) {
+					imageView.setImageBitmap(null);
+					haveImage = false;
+					imageView.setVisibility(View.GONE);   
+				}
+				})
+				.setNegativeButton(getResources().getString(R.string.dialogCancel),new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog,int which) {
+					}})
+					.setCancelable(false).create().show();
 			break;
 		default:
 			break;
