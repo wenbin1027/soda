@@ -126,8 +126,10 @@ public class BlogAdapter implements ListAdapter {
 				SiteManager.getInstance().getSiteByID(blog.getSiteID()).getFaceMap());
 		profileImage.loadUrl(blog.getUser().getProfileImageUrl());
 		
-		if (!blog.getUser().isVerified())
+		if (!blog.getUser().isVerified()){
 			vImage.setVisibility(View.INVISIBLE);
+		}
+		
 		if (blog.getSmallPic().length()>0){
 			smallImage.loadUrl(blog.getSmallPic());
 		}

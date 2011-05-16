@@ -67,10 +67,21 @@ public abstract class Site implements IHttpListener{
 	public void addListener(SiteListener listener){
 		if (listeners==null)
 			listeners=new ArrayList<SiteListenerNode>();
-		SiteListenerNode node=new SiteListenerNode();
-		node.listener=listener;
-		node.isRemoved=false;
-		listeners.add(node);
+		boolean exist=false;
+		Iterator<SiteListenerNode> iterator=listeners.iterator();
+		while(iterator.hasNext()){
+			SiteListenerNode temp=iterator.next();
+			if (temp.listener.equals(listener)){
+				temp.isRemoved=false;
+				exist=true;
+			}
+		}
+		if (!exist){
+			SiteListenerNode node=new SiteListenerNode();
+			node.listener=listener;
+			node.isRemoved=false;
+			listeners.add(node);
+		}
 	}
 	
 	public void removeListener(SiteListener listener){

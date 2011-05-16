@@ -49,7 +49,7 @@ public abstract class UpdateInterface extends ApiInterface {
 		if (text==null)
 			return false;
 		int length=text.trim().length();
-		if (length<1 || length>140)
+		if (length<=0 || length>140)
 			return false;
 		return true;
 	}
