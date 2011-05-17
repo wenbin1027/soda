@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 
 public class WelcomeActivity extends Activity{
-	private final int DISPLAY_LENGHT = 2000; //延迟两秒   
+	private final int DISPLAY_LENGHT = 2500; //延迟2.5秒   
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
