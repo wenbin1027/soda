@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;	
 import android.view.View;
+import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -34,10 +35,22 @@ public class REandFWActivity extends Activity{
 		ImageView vImage=(ImageView) findViewById(R.id.refwvImage);
 		BlogTextView tvMsg = (BlogTextView)findViewById(R.id.refwMsg); 
 		TextView tvUsrname = (TextView)findViewById(R.id.refwUsername);
-		
+		TextView tvBlogInfo1 =(TextView)findViewById(R.id.refwInfo1);
+		TextView tvBlogInfo2 =(TextView)findViewById(R.id.refwInfo2);
+		String info1="";
+		String info2="";
+		info1= getString(R.string.fav)+" "+  blog.getUser().getFavouritesCount() 
+		      + getString(R.string.separator)  
+		      + getString(R.string.fans) +" " + blog.getUser().getFollowersCount();
+        info2 = getString(R.string.blog) +" " + blog.getUser().getBlogsCount()
+		      + getString(R.string.separator)
+		      + getString(R.string.friends) + " " + blog.getUser().getFriendsCount() ;
+		      
+		tvBlogInfo1.setText(info1);
+		tvBlogInfo2.setText(info2);
 		
 		//write blog
-		tvUsrname.setText( blog.getUser().getScreenName() );
+		tvUsrname.setText( blog.getUser().getScreenName()+" "+blog.getUser().getLocation() );
 		tvMsg.setText(blog.getText(),site.getFaceMap());
 		wvProfileImage.loadUrl(blog.getUser().getProfileImageUrl());
 		
@@ -53,7 +66,7 @@ public class REandFWActivity extends Activity{
 		}
 		
 		if ( pic.length()>0 ){
-//			wvBlogPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+			wvBlogPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 //			wvBlogPic.getSettings().setJavaScriptEnabled(true);
 //			wvBlogPic.getSettings().setBuiltInZoomControls(true); 
 			wvBlogPic.loadUrl(pic);
@@ -91,7 +104,7 @@ public class REandFWActivity extends Activity{
 			if (retPic.length()>0){
 //				wvRetPic.getSettings().setJavaScriptEnabled(true);
 //				wvRetPic.getSettings().setBuiltInZoomControls(true);
-//				wvRetPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+				wvRetPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 				wvRetPic.loadUrl(retPic);
 			}
 			else{

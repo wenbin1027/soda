@@ -40,10 +40,23 @@
  			android:textColor="@color/red"  android:textSize="15sp"	
  			android:paddingBottom="5dp">
  		</TextView>
+ 		<TextView android:id="@+id/refwInfo1" android:layout_width="fill_parent"
+ 			android:layout_height="wrap_content" 
+ 			android:textColor="@color/red"  android:textSize="13sp"	
+ 			android:layout_below="@+id/refwUsername"
+ 			android:paddingBottom="5dp">
+ 		</TextView>
+ 		<TextView android:id="@+id/refwInfo2" android:layout_width="fill_parent"
+ 			android:layout_height="wrap_content" 
+ 			android:textColor="@color/red"  android:textSize="13sp"	
+ 			android:layout_below="@+id/refwInfo1"
+ 			android:paddingBottom="5dp">
+ 		</TextView>
+ 		
  		<com.ade.soda.BlogTextView android:id="@+id/refwMsg" android:layout_width="wrap_content"
  			android:layout_height="wrap_content" 
  			android:textColor="@color/black"
- 			android:layout_below="@+id/refwUsername">
+ 			android:layout_below="@+id/refwInfo2">
  		</com.ade.soda.BlogTextView>
  		<com.ade.soda.PictureWebView android:id="@+id/refwPic"
  		    	 android:layout_width="fill_parent"
