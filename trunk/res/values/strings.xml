@@ -10,7 +10,10 @@
 
 	<string name="all">全部</string>
 	<string name="about">关于</string>
+	<string name="abouttitle">关于我们</string>
 	<string name="abouttext">苏打微博1.0，由ADE小组倾情打造。</string>
+	<string name="aboutqq">QQ群：</string>
+	<string name="aboutphoneNo">客服热线：</string>
 	<string name="set">设置</string>
 
 	<string name="writeMsg">请在此写信息</string>

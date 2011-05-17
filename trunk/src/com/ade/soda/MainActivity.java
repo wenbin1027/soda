@@ -147,14 +147,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			MainActivity.this.startActivityForResult(intentSet,SETREQUEST);
 			return true;
 		case R.id.aboutmenu:
-			//字符串封装后会有异常，改进中
-			AlertDialog.Builder aboutAlertDialog = new AlertDialog.Builder(this);
-			aboutAlertDialog.setTitle("关于我们").setMessage("苏打微博1.0， 由ADE小组倾情打造，谢谢支持！")
-			.setPositiveButton("确定",new DialogInterface.OnClickListener() {
-				@Override
-				public void onClick(DialogInterface dialog,int which) { 
-				}}).setCancelable(false).create().show();
-			return true;
+			  MainActivity.this.startActivity(new Intent(MainActivity.this,AboutActivity.class));
+              return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -163,17 +157,16 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 		if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
-			//字符串封装后会有异常，改进中
 			AlertDialog.Builder exitAlertDialog = new AlertDialog.Builder(this);
-			exitAlertDialog.setTitle("退出提示").setMessage("确定要退出苏打微博吗？")
-			.setPositiveButton("确定",new DialogInterface.OnClickListener() {
+			exitAlertDialog.setTitle(getResources().getString(R.string.confirmtitle)).setMessage(getResources().getString(R.string.confirmmessage))
+			.setPositiveButton(getResources().getString(R.string.dialogOK),new DialogInterface.OnClickListener() {
 				@Override
 				public void onClick(DialogInterface dialog,int which) {
 					siteMgr.saveSites(MainActivity.this);
 					 finish();   
 				}
 				})
-				.setNegativeButton("取消",new DialogInterface.OnClickListener() {
+				.setNegativeButton(getResources().getString(R.string.dialogCancel),new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog,int which) {
 					}})

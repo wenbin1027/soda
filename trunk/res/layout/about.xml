@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/AboutLinearLayout"
+        android:layout_height="fill_parent"
+        xmlns:android="http://schemas.android.com/apk/res/android" 
+        android:layout_width="fill_parent"
+        android:background="@drawable/soda_face"
+        android:orientation="vertical">
+     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" 
+        android:orientation="horizontal" 
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content">
+         <ImageView android:id="@+id/welcomeimageview"
+            android:src="@drawable/soda" 
+            android:layout_height="fill_parent" 
+            android:layout_width="wrap_content">
+	     </ImageView>
+         <TextView android:textSize="25sp" 
+            android:id="@+id/abouttitle" 
+            android:textColor="@color/black" 
+            android:layout_height="wrap_content" 
+            android:text="@string/abouttitle" 
+            android:layout_width="fill_parent">
+         </TextView>
+     </LinearLayout> 
+    <TextView android:textSize="20sp" 
+         android:id="@+id/abouttext" 
+         android:textColor="@color/black" 
+         android:layout_height="wrap_content" 
+         android:text="@string/abouttext" 
+         android:layout_width="fill_parent"
+         android:paddingBottom="20dp" 
+         android:paddingTop="30dp" >
+    </TextView>
+        <TextView android:textSize="20sp" 
+         android:id="@+id/abouttext" 
+         android:textColor="@color/black" 
+         android:layout_height="wrap_content" 
+         android:text="@string/aboutphoneNo" 
+         android:layout_width="fill_parent"
+         android:paddingBottom="20dp" 
+         android:paddingTop="20dp" >
+    </TextView>
+        <TextView android:textSize="20sp" 
+         android:id="@+id/abouttext" 
+         android:textColor="@color/black" 
+         android:layout_height="wrap_content" 
+         android:text="@string/aboutqq" 
+         android:layout_width="fill_parent"
+         android:paddingBottom="20dp" 
+         android:paddingTop="20dp" >
+    </TextView>
+</LinearLayout>
