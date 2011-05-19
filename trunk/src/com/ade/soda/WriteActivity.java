@@ -222,12 +222,12 @@ public class WriteActivity extends Activity implements OnClickListener,
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
-				case CAMERA:
+				case 0:
 					Intent getImageByCamera = new Intent(
 							"android.media.action.IMAGE_CAPTURE");
 					startActivityForResult(getImageByCamera, CAMERA);
 					break;
-				case ALBUM:
+				case 1:
 					Intent getImage = new Intent(Intent.ACTION_GET_CONTENT);
 					getImage.addCategory(Intent.CATEGORY_OPENABLE);
 					getImage.setType("image/jpeg");
