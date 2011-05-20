@@ -37,6 +37,11 @@
 		android:visibility="visible" android:layout_gravity="center_horizontal">
 	</ImageView>
 
+	<GridView android:id="@+id/facesView" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:visibility="gone"
+		android:numColumns="10" android:background="@color/gray">
+	</GridView>
+	
 	<RelativeLayout android:id="@+id/LinearLayoutWriteBottom"
 		android:layout_width="fill_parent" android:layout_height="44dp"
 		android:background="@drawable/titlebar_lightgray_bg"

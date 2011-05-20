@@ -6,9 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Map.Entry;
+
 import com.ade.site.Site;
 import com.ade.site.SiteListener;
 import com.ade.site.SiteManager;
@@ -21,20 +21,20 @@ import android.app.AlertDialog.Builder;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Toast;
+import android.widget.AdapterView.OnItemClickListener;
 
 public class WriteActivity extends Activity implements OnClickListener,
 		SiteListener {
@@ -52,6 +52,9 @@ public class WriteActivity extends Activity implements OnClickListener,
 	private final int LIST_DIALOG = 5;
 	private String filename;
 	private int toBeSendCount=1;
+	private boolean faceShown=false;
+	private GridView faceView;
+	private EditText mEditText;
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -69,6 +72,30 @@ public class WriteActivity extends Activity implements OnClickListener,
 		findViewById(R.id.Btnwriteback).setOnClickListener(this);
 		imageView = (ImageView) findViewById(R.id.shrinkPic);
 		imageView.setOnClickListener(this);
+		mEditText = (EditText) findViewById(R.id.EditText);
+		faceView=(GridView)findViewById(R.id.facesView);
+		faceView.setOnItemClickListener(new OnItemClickListener(){
+			@SuppressWarnings("unchecked")
+			@Override
+			public void onItemClick(AdapterView<?> arg0, View arg1, int arg2,
+					long arg3) {
+				int s=mEditText.getSelectionStart();
+				int e=mEditText.getSelectionEnd();
+				if (s>e){  //swap
+					s=s+e;
+					e=s-e;
+					s=s-e;
+				}
+				mEditText.getEditableText().replace(
+						s, 
+						e, 
+						((Entry<String,String>)(arg0.getItemAtPosition(arg2))).getKey());
+			}
+		});
+		
+		if (site==null){
+			findViewById(R.id.BtnFace).setVisibility(View.INVISIBLE);
+		}
 	}
 
 	private Handler mainHandler = new Handler(new Handler.Callback() {
@@ -133,7 +160,9 @@ public class WriteActivity extends Activity implements OnClickListener,
 			showDialog(LIST_DIALOG);
 			break;
 		case R.id.BtnFace:
-			// todo invoke face
+			faceShown=!faceShown;
+			faceView.setVisibility(faceShown?View.VISIBLE:View.GONE);
+			faceView.setAdapter(new FaceAdapter(site.getFaceMap(),this));
 			break;
 		case R.id.Btnwriteback:
 
@@ -230,7 +259,7 @@ public class WriteActivity extends Activity implements OnClickListener,
 				case 1:
 					Intent getImage = new Intent(Intent.ACTION_GET_CONTENT);
 					getImage.addCategory(Intent.CATEGORY_OPENABLE);
-					getImage.setType("image/jpeg");
+					getImage.setType("image/*");
 					startActivityForResult(getImage, ALBUM);
 					break;
 				default:
