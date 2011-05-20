@@ -14,6 +14,7 @@ import android.widget.TextView;
 public class BlogTextView extends TextView {
 	private static final int NAMELENGTH=15; //假设昵称不超过15个字符
 	private Map<String,String> faceMap;
+	private CharSequence text;
 	
 	private ImageGetter imageGetter = new Html.ImageGetter() {
         @Override
@@ -54,7 +55,13 @@ public class BlogTextView extends TextView {
 	}
 
 	@Override
+	public CharSequence getText() {
+		return text==null?"":text;
+	}
+	
+	@Override
 	public void setText(CharSequence text, BufferType type) {
+		this.text=text;
 		String cs=text.toString();
 		String font1="<font color=#339966>";
 		String font2="</font>";

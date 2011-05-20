@@ -66,7 +66,7 @@ public class REandFWActivity extends Activity{
 		}
 		
 		if ( pic.length()>0 ){
-			wvBlogPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+//			wvBlogPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 //			wvBlogPic.getSettings().setJavaScriptEnabled(true);
 //			wvBlogPic.getSettings().setBuiltInZoomControls(true); 
 			wvBlogPic.loadUrl(pic);
@@ -104,7 +104,7 @@ public class REandFWActivity extends Activity{
 			if (retPic.length()>0){
 //				wvRetPic.getSettings().setJavaScriptEnabled(true);
 //				wvRetPic.getSettings().setBuiltInZoomControls(true);
-				wvRetPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+//				wvRetPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 				wvRetPic.loadUrl(retPic);
 			}
 			else{
