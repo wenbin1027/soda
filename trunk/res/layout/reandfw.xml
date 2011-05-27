@@ -59,11 +59,10 @@
  			android:layout_below="@+id/refwInfo2">
  		</com.ade.soda.BlogTextView>
  		<com.ade.soda.PictureWebView android:id="@+id/refwPic"
- 		    	 android:layout_width="fill_parent"
-	 		     android:layout_height="fill_parent"
+ 		    	 android:layout_width="wrap_content"
+	 		     android:layout_height="wrap_content"
 	 		     android:scrollbars="none"
- 		         android:layout_below="@+id/refwMsg"
- 		         android:background="@drawable/image">
+ 		         android:layout_below="@+id/refwMsg">
  		</com.ade.soda.PictureWebView>	
  		<RelativeLayout android:layout_width="fill_parent" 
  			android:layout_height="wrap_content"
@@ -80,10 +79,9 @@
  					android:layout_below="@+id/refwPic" android:textSize="15sp" >
  	      </com.ade.soda.BlogTextView>	
  		  <com.ade.soda.PictureWebView android:id="@+id/refwRetPic"
- 		            android:layout_width="fill_parent"
-		 		    android:layout_height="fill_parent"
+ 		            android:layout_width="wrap_content"
+		 		    android:layout_height="wrap_content"
  		    	    android:scrollbars="none"
- 		    	    android:background="@drawable/image"
  		    	    android:layout_below="@+id/refwRetMsg" >
  		  </com.ade.soda.PictureWebView>
  		</RelativeLayout>	

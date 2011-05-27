@@ -23,13 +23,11 @@ public class REandFWActivity extends Activity{
 		Intent intent=getIntent();
 		if (intent!=null){
 			if (intent.hasExtra("CurrentBlog")){
-				//主界面会把Blog对象通过Intent传递到这里
 				blog=(Blog) intent.getSerializableExtra("CurrentBlog");
 			}
 			site=SiteManager.getInstance().getSiteByID(blog.getSiteID());
 		}
 		
-		//display blog content 
 		WebView wvProfileImage=(WebView)findViewById(R.id.refwImage);
 		WebView wvBlogPic =(WebView) findViewById(R.id.refwPic);
 		ImageView vImage=(ImageView) findViewById(R.id.refwvImage);
@@ -66,9 +64,6 @@ public class REandFWActivity extends Activity{
 		}
 		
 		if ( pic.length()>0 ){
-//			wvBlogPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
-//			wvBlogPic.getSettings().setJavaScriptEnabled(true);
-//			wvBlogPic.getSettings().setBuiltInZoomControls(true); 
 			wvBlogPic.loadUrl(pic);
 		}else{
 			wvBlogPic.setVisibility(View.GONE);
@@ -102,9 +97,6 @@ public class REandFWActivity extends Activity{
 			}
 			
 			if (retPic.length()>0){
-//				wvRetPic.getSettings().setJavaScriptEnabled(true);
-//				wvRetPic.getSettings().setBuiltInZoomControls(true);
-//				wvRetPic.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 				wvRetPic.loadUrl(retPic);
 			}
 			else{

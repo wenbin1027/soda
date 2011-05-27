@@ -48,11 +48,10 @@
  			android:textSize="15sp" android:layout_width="wrap_content">
  		</com.ade.soda.BlogTextView>
  		<com.ade.soda.PictureWebView android:id="@+id/smallImage"
-	 		android:layout_width="68dp"
-	 		android:layout_height="48dp"
+	 		android:layout_width="wrap_content"
+	 		android:layout_height="wrap_content"
 	 		android:scrollbars="none"
-	 		android:layout_below="@+id/blogText"
-	 		android:background="@drawable/image">
+	 		android:layout_below="@+id/blogText">
 	 	</com.ade.soda.PictureWebView>	
 		<RelativeLayout android:layout_width="fill_parent" 
  			android:layout_height="wrap_content"
@@ -68,13 +67,12 @@
 	 			android:layout_below="@+id/reUserName"
 	 			android:textColor="@color/black"
 	 			android:textSize="15sp">
-	 		</com.ade.soda.BlogTextView> 	
+	 		</com.ade.soda.BlogTextView>
 	 		<com.ade.soda.PictureWebView android:id="@+id/reImage"
-		 		android:layout_width="68dp"
-		 		android:layout_height="48dp"
+		 		android:layout_width="wrap_content"
+		 		android:layout_height="wrap_content"
 		 		android:scrollbars="none"
-		 		android:layout_below="@+id/reBlogText"
-		 		android:background="@drawable/image">
+		 		android:layout_below="@+id/reBlogText">
 		 	</com.ade.soda.PictureWebView>		
  		</RelativeLayout>	
  		<com.ade.soda.BlogTextView android:id="@+id/sourceText" android:layout_width="fill_parent"
