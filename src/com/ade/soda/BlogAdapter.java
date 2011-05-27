@@ -9,6 +9,7 @@ import com.ade.site.SiteManager;
 
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.net.Uri;
 import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;

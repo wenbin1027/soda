@@ -7,4 +7,5 @@
 	<color name="black">#000000</color>		<!-- 声明名为black的资源 -->
     <color name="yellow">#FFFF00</color>		<!-- 声明名为yellow的资源 -->
     <color name="gray">#DDDDDD</color>
+    
 </resources>

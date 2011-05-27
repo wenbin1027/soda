@@ -36,6 +36,7 @@
 					android:layout_width="fill_parent" android:layout_height="fill_parent">
 					<com.ade.soda.MixBlogListView android:id="@+id/AllList" android:layout_width="fill_parent"
 						android:layout_height="fill_parent" android:clickable="true"
+						android:descendantFocusability="blocksDescendants"
 						android:divider="@drawable/divider" android:dividerHeight="1dp">
 					</com.ade.soda.MixBlogListView>
 				</RelativeLayout>
@@ -45,6 +46,7 @@
 					android:layout_width="fill_parent" android:layout_height="fill_parent">
 					<com.ade.soda.BlogListView android:id="@+id/SinaList" android:layout_width="fill_parent"
 						android:layout_height="fill_parent" android:clickable="true"
+						android:descendantFocusability="blocksDescendants"
 						android:divider="@drawable/divider" android:dividerHeight="1dp">
 					</com.ade.soda.BlogListView>
 				</RelativeLayout>
@@ -53,6 +55,7 @@
 					android:layout_height="fill_parent" android:id="@+id/tab_sohu">
 					<com.ade.soda.BlogListView android:id="@+id/SohuList" android:layout_width="fill_parent"
 						android:layout_height="fill_parent" android:clickable="true"
+						android:descendantFocusability="blocksDescendants"
 						android:divider="@drawable/divider" android:dividerHeight="1dp">
 					</com.ade.soda.BlogListView>
 				</RelativeLayout>

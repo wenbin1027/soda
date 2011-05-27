@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.TabHost; 
+import android.widget.Toast;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TabHost.OnTabChangeListener;
 import android.widget.TextView;
@@ -88,13 +89,32 @@ public class MainActivity extends Activity implements OnItemClickListener {
 				String tab=tabHost.getCurrentTabTag();
 				Intent intentWrite = new Intent(MainActivity.this,WriteActivity.class);
 				if (tab==SINA){
-					intentWrite.putExtra("site", SiteManager.SINA);
+					if (SiteManager.getInstance().getSiteByID(SiteManager.SINA).isLoggedIn()){
+						intentWrite.putExtra("site", SiteManager.SINA);
+						MainActivity.this.startActivityForResult(intentWrite, WRITEREQUEST);
+					}
+					else{
+						Toast.makeText(MainActivity.this, MainActivity.this.getText(R.string.unAuthTips), Toast.LENGTH_SHORT).show();
+					}
 				}
 				else if (tab==SOHU){
-					intentWrite.putExtra("site", SiteManager.SOHU);
+					if (SiteManager.getInstance().getSiteByID(SiteManager.SOHU).isLoggedIn()){
+						intentWrite.putExtra("site", SiteManager.SOHU);
+						MainActivity.this.startActivityForResult(intentWrite, WRITEREQUEST);
+					}
+					else{
+						Toast.makeText(MainActivity.this, MainActivity.this.getText(R.string.unAuthTips), Toast.LENGTH_SHORT).show();
+					}
 				}
-				
-				MainActivity.this.startActivityForResult(intentWrite, WRITEREQUEST);
+				else{
+					if (SiteManager.getInstance().getSiteByID(SiteManager.SINA).isLoggedIn() 
+							|| SiteManager.getInstance().getSiteByID(SiteManager.SOHU).isLoggedIn()){
+						MainActivity.this.startActivityForResult(intentWrite, WRITEREQUEST);
+					}
+					else{
+						Toast.makeText(MainActivity.this, MainActivity.this.getText(R.string.unAuthTips), Toast.LENGTH_SHORT).show();
+					}
+				}
 			}
 		});
 		
@@ -210,14 +230,22 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	private void refreshBlogList() {
 		String tab=tabHost.getCurrentTabTag();
 		if (tab==SINA){
-			sinaListView.refresh();
+			if (SiteManager.getInstance().getSiteByID(SiteManager.SINA).isLoggedIn()){
+				sinaListView.refresh();
+			}
 		}
 		else if (tab==SOHU){
-			sohuListView.refresh();
+			if (SiteManager.getInstance().getSiteByID(SiteManager.SOHU).isLoggedIn()){
+				sohuListView.refresh();
+			}
 		}
 		else{
-			sinaListView.refresh();
-			sohuListView.refresh();
+			if (SiteManager.getInstance().getSiteByID(SiteManager.SINA).isLoggedIn()){
+				sinaListView.refresh();
+			}
+			if (SiteManager.getInstance().getSiteByID(SiteManager.SOHU).isLoggedIn()){
+				sohuListView.refresh();
+			}
 		}		
 	}
 }
