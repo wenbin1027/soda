@@ -22,7 +22,8 @@
 		<ImageButton android:text="@string/sendMsg" android:id="@+id/BtnSendMsg"
 			android:layout_width="50dp" android:layout_height="fill_parent"
 			android:layout_alignParentRight="true" android:background="@android:color/transparent"
-			android:src="@drawable/send_button">
+			android:src="@drawable/send_button"
+			>
 		</ImageButton>
 	</RelativeLayout>
 
@@ -38,8 +39,11 @@
 	</ImageView>
 
 	<GridView android:id="@+id/facesView" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:visibility="gone"
-		android:numColumns="10" android:background="@color/gray">
+		android:layout_height="150dp" android:visibility="gone"
+		android:horizontalSpacing="5dp"
+		android:verticalSpacing="10dp"
+		android:scrollbars="vertical"
+		android:numColumns="6" android:background="@color/gray">
 	</GridView>
 	
 	<RelativeLayout android:id="@+id/LinearLayoutWriteBottom"
