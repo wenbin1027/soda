@@ -57,11 +57,11 @@ public abstract class UploadInterface extends ApiInterface {
 	 * @param fileName
 	 * @param text
 	 */
-	static public boolean isValid(String fileName, String text){
+	public boolean isValid(String fileName, String text){
 		if (fileName==null)
 			return false;
 		int length=fileName.trim().length();
-		if (length<=0 || length>300 || text==null || text.length()<=0)
+		if (length<=0 || length>300 || text==null || text.length()<=0 || text.length()>140)
 			return false;
 		return true;
 	}

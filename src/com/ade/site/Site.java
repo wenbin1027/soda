@@ -279,9 +279,14 @@ public abstract class Site implements IHttpListener{
 	 */
 	public void updateText(String text){
 		if (updateInterface!=null){
-			httpNet=new HttpNet();
-			httpNet.setListener(this);
-			httpNet.request(updateInterface.getRequest(text, this),updateInterface.getParser());
+			if (updateInterface.isValid(text)){
+				httpNet=new HttpNet();
+				httpNet.setListener(this);
+				httpNet.request(updateInterface.getRequest(text, this),updateInterface.getParser());
+			}
+			else{
+				notifyError("文字不能超过140个。");
+			}
 		}
 	}
 
@@ -293,15 +298,18 @@ public abstract class Site implements IHttpListener{
 	 */
 	public void uploadImage( String fileName,String text) throws IOException{
 		if (uploadInterface!=null){
-			httpNet=new HttpNet();
-			httpNet.setListener(this);
-			try {
-				Log.i("Nancy", "Entering into uploadImage");
-				httpNet.request(uploadInterface.getRequest(fileName,text, this),uploadInterface.getParser());
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-				throw new IOException("读取照片文件时出错");
+			if (uploadInterface.isValid(fileName, text)){
+				httpNet=new HttpNet();
+				httpNet.setListener(this);
+				try {
+					httpNet.request(uploadInterface.getRequest(fileName,text, this),uploadInterface.getParser());
+				} catch (IOException e) {
+					e.printStackTrace();
+					throw new IOException("读取照片文件时出错");
+				}
+			}
+			else{
+				notifyError("文字不能超过140个。");
 			}
 		}
 	}
