@@ -91,10 +91,10 @@ public class HttpNet {
 					client.execute(HttpNet.this.request, responseHandler);
 				} catch (ClientProtocolException e) {
 					e.printStackTrace();
-					notifyError("Client Protocol ERROR!");
+					notifyError("数据协议出错!");
 				} catch (IOException e) {
 					e.printStackTrace();
-					notifyError("Internet access ERROR!");
+					notifyError("网络访问出错!");
 				}				
 			}
 		}).start();

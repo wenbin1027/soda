@@ -123,6 +123,7 @@ public class WriteActivity extends Activity implements OnClickListener,
 							getResources().getString(R.string.SendSuccess),
 							Toast.LENGTH_SHORT).show();
 					setResult(RESULT_OK);
+					deleteFile();
 					WriteActivity.this.finish();
 				}
 				break;
@@ -132,7 +133,7 @@ public class WriteActivity extends Activity implements OnClickListener,
 					dismissDlg();
 					if (msg.obj != null) {
 						Toast.makeText(WriteActivity.this,
-								getResources().getString(R.string.SendError),
+								(String)msg.obj,
 								Toast.LENGTH_SHORT).show();
 					}
 				}
@@ -172,7 +173,9 @@ public class WriteActivity extends Activity implements OnClickListener,
 			if (site==null){
 				toBeSendCount=SiteManager.getInstance().getSites().size();
 				for(Site tempSite:SiteManager.getInstance().getSites()){
-					sendMsg(tempSite);
+					if (tempSite.isLoggedIn()){
+						sendMsg(tempSite);
+					}
 				}
 			}
 			else{
@@ -278,6 +281,7 @@ public class WriteActivity extends Activity implements OnClickListener,
 		ContentResolver resolver = getContentResolver();
 
 		if (requestCode == ALBUM && resultCode==RESULT_OK) {
+			deleteFile();
 			Uri originalUri = data.getData();
 			filename=(new Date()).toLocaleString();
 			try {
@@ -297,7 +301,8 @@ public class WriteActivity extends Activity implements OnClickListener,
 			imageView.setVisibility(View.VISIBLE);
 
 		} else if (requestCode == CAMERA && resultCode==RESULT_OK) {
-			super.onActivityResult(requestCode, resultCode, data);
+			//super.onActivityResult(requestCode, resultCode, data);
+			deleteFile();
 			Bundle extras = data.getExtras();
 			myBitmap = (Bitmap) extras.get("data");
 			filename=(new Date()).toLocaleString();
@@ -347,6 +352,7 @@ public class WriteActivity extends Activity implements OnClickListener,
 		for(Site tempSite:SiteManager.getInstance().getSites()){
 			tempSite.removeListener(this);
 		}
+		deleteFile();
 		super.onDestroy();
 	}
 

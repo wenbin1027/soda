@@ -45,7 +45,7 @@ public abstract class UpdateInterface extends ApiInterface {
 	 * 
 	 * @param text
 	 */
-	static public boolean isValid(String text){
+	public boolean isValid(String text){
 		if (text==null)
 			return false;
 		int length=text.trim().length();
