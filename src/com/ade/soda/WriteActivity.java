@@ -171,7 +171,12 @@ public class WriteActivity extends Activity implements OnClickListener,
 			break;
 		case R.id.BtnSendMsg:
 			if (site==null){
-				toBeSendCount=SiteManager.getInstance().getSites().size();
+				toBeSendCount=0;
+				for(Site tempSite:SiteManager.getInstance().getSites()){
+					if (tempSite.isLoggedIn()){
+						toBeSendCount++;
+					}
+				}
 				for(Site tempSite:SiteManager.getInstance().getSites()){
 					if (tempSite.isLoggedIn()){
 						sendMsg(tempSite);

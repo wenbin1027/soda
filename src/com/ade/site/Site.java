@@ -269,8 +269,8 @@ public abstract class Site implements IHttpListener{
 	}
 	
 	public void logOut(){
-		this.loggedInUser=null;
-		this.blogs.clear();
+		clearBlogs();
+		loggedInUser=null;
 	}
 
 	/**

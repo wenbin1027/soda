@@ -69,12 +69,11 @@ public class MixBlogListView extends ListView implements BlogListViewListener {
 		for(int i=0;i<views.size();i++){
 			if (views.get(i)!=null 
 				&& views.get(i).getSite()!=null 
-				&& views.get(i).getSite().getBlogs()!=null
-				&& views.get(i).getSite().isLoggedIn()){
+				&& views.get(i).getSite().getBlogs()!=null){
 				blogs.addAll(views.get(i).getSite().getBlogs());
 			}
 		}
-		if (blogs.size()>0){
+		if (blogs.size()>=0){
 			setAdapter(new BlogAdapter(blogs,getContext()));
 		}
 	}
