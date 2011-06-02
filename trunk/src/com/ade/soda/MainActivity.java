@@ -228,24 +228,18 @@ public class MainActivity extends Activity implements OnItemClickListener {
 	 * 
 	 */
 	private void refreshBlogList() {
-		String tab=tabHost.getCurrentTabTag();
-		if (tab==SINA){
-			if (SiteManager.getInstance().getSiteByID(SiteManager.SINA).isLoggedIn()){
-				sinaListView.refresh();
-			}
-		}
-		else if (tab==SOHU){
-			if (SiteManager.getInstance().getSiteByID(SiteManager.SOHU).isLoggedIn()){
-				sohuListView.refresh();
-			}
+		if (SiteManager.getInstance().getSiteByID(SiteManager.SINA).isLoggedIn()){
+			sinaListView.refresh();
 		}
 		else{
-			if (SiteManager.getInstance().getSiteByID(SiteManager.SINA).isLoggedIn()){
-				sinaListView.refresh();
-			}
-			if (SiteManager.getInstance().getSiteByID(SiteManager.SOHU).isLoggedIn()){
-				sohuListView.refresh();
-			}
-		}		
+			sinaListView.init(SiteManager.getInstance().getSiteByID(SiteManager.SINA));
+		}
+		
+		if (SiteManager.getInstance().getSiteByID(SiteManager.SOHU).isLoggedIn()){
+			sohuListView.refresh();
+		}
+		else{
+			sinaListView.init(SiteManager.getInstance().getSiteByID(SiteManager.SOHU));
+		}
 	}
 }

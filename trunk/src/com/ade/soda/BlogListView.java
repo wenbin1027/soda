@@ -110,8 +110,11 @@ public class BlogListView extends ListView implements SiteListener {
 
 	public void init(Site site){
 		this.site=site;
-		if (site!=null && site.getBlogsCount()>0){
+		if (site!=null){
 			setAdapter(new BlogAdapter(site.getBlogs(),getContext()));
+		}
+		if (listener!=null){
+			listener.onChanged(site);
 		}
 	}
 	
