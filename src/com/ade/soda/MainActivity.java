@@ -239,7 +239,7 @@ public class MainActivity extends Activity implements OnItemClickListener {
 			sohuListView.refresh();
 		}
 		else{
-			sinaListView.init(SiteManager.getInstance().getSiteByID(SiteManager.SOHU));
+			sohuListView.init(SiteManager.getInstance().getSiteByID(SiteManager.SOHU));
 		}
 	}
 }
