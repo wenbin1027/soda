@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:background="@color/white">
+<LinearLayout android:id="@+id/LinearLayoutREandFW"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical" android:gravity="left"
+	android:scrollbars="vertical"
+	android:padding="10dp"
+	android:background="@color/white"
+	android:descendantFocusability="blocksDescendants"
+	android:alwaysDrawnWithCache="false">
+	
+    <RelativeLayout android:layout_width="fill_parent" 
+     	android:layout_height="fill_parent">
+ 	  <com.ade.soda.PictureWebView android:id="@+id/refwImage"
+ 		android:layout_width="48dp"
+ 		android:layout_height="48dp"
+ 		android:scrollbars="none"
+ 		android:layout_alignParentLeft="true"
+ 		android:background="@drawable/portrait">
+ 	   </com.ade.soda.PictureWebView>
+ 	  <ImageView android:id="@+id/refwvImage"
+ 		android:layout_width="wrap_content"
+ 		android:layout_height="wrap_content"
+ 		android:layout_alignRight="@+id/refwImage"
+ 		android:layout_alignBottom="@+id/refwImage"
+ 		android:src="@drawable/v">
+ 	  </ImageView>
+ 	
+ 	 <RelativeLayout android:layout_alignParentRight="true"
+ 	  	android:layout_toRightOf="@+id/refwImage"
+ 		android:layout_width="fill_parent"
+ 		android:layout_height="fill_parent"
+ 		android:layout_marginLeft="10dp">
+ 		<TextView android:id="@+id/refwUsername" android:layout_width="fill_parent"
+ 			android:layout_height="wrap_content" android:layout_alignParentTop="true"
+ 			android:textColor="@color/red"  android:textSize="15sp"	
+ 			android:paddingBottom="5dp">
+ 		</TextView>
+ 		<TextView android:id="@+id/refwInfo1" android:layout_width="fill_parent"
+ 			android:layout_height="wrap_content" 
+ 			android:textColor="@color/red"  android:textSize="13sp"	
+ 			android:layout_below="@+id/refwUsername"
+ 			android:paddingBottom="5dp">
+ 		</TextView>
+ 		<TextView android:id="@+id/refwInfo2" android:layout_width="fill_parent"
+ 			android:layout_height="wrap_content" 
+ 			android:textColor="@color/red"  android:textSize="13sp"	
+ 			android:layout_below="@+id/refwInfo1"
+ 			android:paddingBottom="5dp">
+ 		</TextView>
+ 		
+ 		<com.ade.soda.BlogTextView android:id="@+id/refwMsg" android:layout_width="wrap_content"
+ 			android:layout_height="wrap_content" 
+ 			android:textColor="@color/black"
+ 			android:layout_below="@+id/refwInfo2">
+ 		</com.ade.soda.BlogTextView>
+ 		<com.ade.soda.PictureWebView android:id="@+id/refwPic"
+ 		    	 android:layout_width="wrap_content"
+	 		     android:layout_height="wrap_content"
+	 		     android:scrollbars="none"
+ 		         android:layout_below="@+id/refwMsg">
+ 		</com.ade.soda.PictureWebView>	
+ 		<RelativeLayout android:layout_width="fill_parent" 
+ 			android:layout_height="wrap_content"
+ 			android:layout_below="@+id/refwPic"
+ 			android:background="@drawable/popup"
+ 			android:paddingTop="10dp"
+ 			android:paddingBottom="5dp"
+ 			android:paddingLeft="5dp"
+ 			android:paddingRight="5dp"
+ 			android:id="@+id/refwReBlog">
+ 		 		
+ 		  <com.ade.soda.BlogTextView android:id="@+id/refwRetMsg" android:layout_width="fill_parent"
+ 		        	android:layout_height="wrap_content" android:textColor="@color/black"
+ 					android:layout_below="@+id/refwPic" android:textSize="15sp" >
+ 	      </com.ade.soda.BlogTextView>	
+ 		  <com.ade.soda.PictureWebView android:id="@+id/refwRetPic"
+ 		            android:layout_width="wrap_content"
+		 		    android:layout_height="wrap_content"
+ 		    	    android:scrollbars="none"
+ 		    	    android:layout_below="@+id/refwRetMsg" >
+ 		  </com.ade.soda.PictureWebView>
+ 		</RelativeLayout>	
+ 	</RelativeLayout>
+  </RelativeLayout>
+	
+
+</LinearLayout>
+</ScrollView>
