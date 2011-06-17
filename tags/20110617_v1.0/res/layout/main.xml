@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/LinearLayout"
+	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:orientation="vertical">
+	<RelativeLayout android:id="@+id/LinearLayoutMainTop"
+		android:layout_width="fill_parent" android:layout_height="44dp"
+		android:background="@drawable/titlebar_lightgray_bg" android:orientation="horizontal">
+		<ImageButton android:text="@string/write" android:id="@+id/BtnWrite"
+			android:layout_width="wrap_content" android:layout_height="fill_parent"
+			android:layout_alignParentLeft="true" android:background="@android:color/transparent"
+			android:src="@drawable/write_button">
+		</ImageButton>
+		<TextView android:text="@string/username" android:id="@+id/TextViewUsername"
+			android:layout_width="fill_parent" android:layout_height="fill_parent"
+			android:textColor="@color/black" android:gravity="center" android:textSize="18sp">
+		</TextView>
+		<ImageButton android:text="@string/refresh" android:id="@+id/BtnRefresh"
+			android:layout_width="wrap_content" android:layout_height="fill_parent"
+			android:layout_alignParentRight="true" android:background="@android:color/transparent"
+			android:src="@drawable/refresh_button">
+		</ImageButton>
+	</RelativeLayout>
+	<TabHost
+		android:id="@+id/tabhost" android:layout_width="fill_parent"
+		android:layout_height="fill_parent">
+		<RelativeLayout android:orientation="vertical"
+			android:layout_width="fill_parent" android:layout_height="fill_parent">
+			<TabWidget android:id="@android:id/tabs" android:layout_alignParentBottom="true"
+				android:layout_width="fill_parent" android:layout_height="wrap_content"/>
+			<FrameLayout android:id="@android:id/tabcontent"
+				android:layout_width="fill_parent" android:layout_height="fill_parent"
+				android:layout_above="@android:id/tabs">
+				<RelativeLayout
+					android:id="@+id/tab_mix" android:orientation="vertical"
+					android:layout_width="fill_parent" android:layout_height="fill_parent">
+					<com.ade.soda.MixBlogListView android:id="@+id/AllList" android:layout_width="fill_parent"
+						android:layout_height="fill_parent" android:clickable="true"
+						android:descendantFocusability="blocksDescendants"
+						android:divider="@drawable/divider" android:dividerHeight="1dp">
+					</com.ade.soda.MixBlogListView>
+				</RelativeLayout>
+				
+				<RelativeLayout
+					android:id="@+id/tab_sina" android:orientation="vertical"
+					android:layout_width="fill_parent" android:layout_height="fill_parent">
+					<com.ade.soda.BlogListView android:id="@+id/SinaList" android:layout_width="fill_parent"
+						android:layout_height="fill_parent" android:clickable="true"
+						android:descendantFocusability="blocksDescendants"
+						android:divider="@drawable/divider" android:dividerHeight="1dp">
+					</com.ade.soda.BlogListView>
+				</RelativeLayout>
+
+				<RelativeLayout android:layout_width="fill_parent"
+					android:layout_height="fill_parent" android:id="@+id/tab_sohu">
+					<com.ade.soda.BlogListView android:id="@+id/SohuList" android:layout_width="fill_parent"
+						android:layout_height="fill_parent" android:clickable="true"
+						android:descendantFocusability="blocksDescendants"
+						android:divider="@drawable/divider" android:dividerHeight="1dp">
+					</com.ade.soda.BlogListView>
+				</RelativeLayout>
+			</FrameLayout>
+		</RelativeLayout>
+	</TabHost>
+</LinearLayout>
