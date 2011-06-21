@@ -21,6 +21,8 @@ import com.ade.restapi.UploadInterface;
 
 
 public abstract class Site implements IHttpListener{
+	public static final String OAUTH_GET="GET";
+	public static final String OAUTH_POST="POST";
 	
 	protected String appKey;
 	protected String appSecret;
@@ -38,6 +40,7 @@ public abstract class Site implements IHttpListener{
 	protected String oauthRequestUrl;
 	protected String oauthUrl;
 	protected String oauthAccessUrl;
+	protected String oauthMethod;
 	protected String proxyHost;
 	protected int proxyPort;
 	protected int siteID;
@@ -381,5 +384,9 @@ public abstract class Site implements IHttpListener{
 		if (isLoggedIn()){
 			loggedInUser.save(out);
 		}
+	}
+	
+	public String getOauthMethod() {
+		return oauthMethod;
 	}
 }

@@ -19,6 +19,7 @@ public class SohuSite extends Site {
 		oauthRequestUrl="/oauth/request_token";
 		oauthUrl="/oauth/authorize";
 		oauthAccessUrl="/oauth/access_token";
+		oauthMethod=Site.OAUTH_POST;
 		siteID=SiteManager.SOHU;
 		initFaceMap();
 	}

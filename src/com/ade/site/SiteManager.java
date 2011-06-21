@@ -36,11 +36,14 @@ import com.ade.restapi.SohuUpload;
 public class SiteManager {
 	public static final int SOHU=0;
 	public static final int SINA=1;
+	public static final int TENCENT=2;
+	public static final int NETEASE=3;
+	public static final int SITESCOUNT=4;
 	private static SiteManager instance=null;
 	private List<Site> sites;
 	
 	private SiteManager(){
-		sites=new ArrayList<Site>(2);
+		sites=new ArrayList<Site>(SITESCOUNT);
 	}
 
 	public static SiteManager getInstance(){
@@ -71,12 +74,18 @@ public class SiteManager {
 		sites.clear();
 		sites.add(makeSite(SINA));
 		sites.add(makeSite(SOHU));
+		sites.add(makeSite(TENCENT));
+		sites.add(makeSite(NETEASE));
 		
 		loadUser(context,sites.get(SINA));
 		loadUser(context,sites.get(SOHU));
+		loadUser(context,sites.get(TENCENT));
+		loadUser(context,sites.get(NETEASE));
 		
 		loadBlogs(context,sites.get(SINA));
 		loadBlogs(context,sites.get(SOHU));
+		loadBlogs(context,sites.get(TENCENT));
+		loadBlogs(context,sites.get(NETEASE));
 
 		return true;
 	}
@@ -98,6 +107,20 @@ public class SiteManager {
 			site.setUploadInterface(new SinaUpload(new SinaUpdateParser()));
 			site.setFriendsTimeline(new SinaFriendsTimeline(new SinaFriendsTimelineParser()));
 			site.setAccountInterface(new SinaAccountVerify(new SinaAccountVerifyParser()));
+			break;
+		case TENCENT:
+			site=new TencentSite();
+//			site.setUpdateInterface(new SinaUpdate(new SinaUpdateParser()));
+//			site.setUploadInterface(new SinaUpload(new SinaUpdateParser()));
+//			site.setFriendsTimeline(new SinaFriendsTimeline(new SinaFriendsTimelineParser()));
+//			site.setAccountInterface(new SinaAccountVerify(new SinaAccountVerifyParser()));
+			break;
+		case NETEASE:
+			site=new NeteaseSite();
+//			site.setUpdateInterface(new SinaUpdate(new SinaUpdateParser()));
+//			site.setUploadInterface(new SinaUpload(new SinaUpdateParser()));
+//			site.setFriendsTimeline(new SinaFriendsTimeline(new SinaFriendsTimelineParser()));
+//			site.setAccountInterface(new SinaAccountVerify(new SinaAccountVerifyParser()));
 			break;
 		}
 
