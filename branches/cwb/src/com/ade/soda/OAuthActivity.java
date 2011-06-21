@@ -131,7 +131,9 @@ public class OAuthActivity extends Activity implements OAuthListener,SiteListene
 				oauth.setProxy(Proxy.getDefaultHost(), Proxy.getDefaultPort());
 			}
 		}
-		oauth.requestAccessToken(site.getAppKey(), site.getAppSecret());
+		
+		oauth.requestAccessToken(site.getAppKey(), site.getAppSecret()
+				,site.getOauthMethod().equals(Site.OAUTH_GET));
 	}
 
 	@Override
