@@ -329,15 +329,15 @@ public abstract class Site implements IHttpListener{
 	}
 
 	public String getOauthRequestUrl() {
-		return getRootUrl()+oauthRequestUrl;
+		return oauthRequestUrl;
 	}
 
 	public String getOauthUrl() {
-		return getRootUrl()+oauthUrl;
+		return oauthUrl;
 	}
 
 	public String getOauthAccessUrl() {
-		return getRootUrl()+oauthAccessUrl;
+		return oauthAccessUrl;
 	}
 	
 	public void setProxy(String proxyHost,int port){

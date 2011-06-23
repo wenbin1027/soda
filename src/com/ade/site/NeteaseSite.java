@@ -19,9 +19,9 @@ public class NeteaseSite extends Site {
 		rootUrl="http://api.t.163.com";
 		appKey="KtbNU3B2tmfVwpWB";  
 		appSecret="YEZc4DUdlPZVeDSpCEhYALXa9wd34VIM";
-		oauthRequestUrl="/oauth/request_token";
-		oauthUrl="/oauth/authenticate";
-		oauthAccessUrl="/oauth/access_token";
+		oauthRequestUrl="http://api.t.163.com/oauth/request_token";
+		oauthUrl="http://api.t.163.com/oauth/authenticate";
+		oauthAccessUrl="http://api.t.163.com/oauth/access_token";
 		oauthMethod=Site.OAUTH_GET;
 		siteID=SiteManager.NETEASE;
 	}

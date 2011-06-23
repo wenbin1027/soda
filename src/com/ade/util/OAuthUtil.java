@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +20,9 @@ import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.message.BasicNameValuePair;
+
+import android.net.Uri;
 
 public class OAuthUtil {
 	public static final String OAUTH_TOKEN="oauth_token";
@@ -92,8 +96,25 @@ public class OAuthUtil {
 	        	params.add(data.get(i).getName()+LINK+URLEncoder.encode(data.get(i).getValue()));
 	        }
         }
-
-        String baseString = makeBaseString(params,"GET",url);
+        
+		Uri uri = Uri.parse(url);
+		String tempUrl=new String(url);
+		String encodedQuery=uri.getEncodedQuery();
+		if (encodedQuery!=null){
+			if (encodedQuery.contains("&")){
+				String tempParams[]=uri.getEncodedQuery().split("&");
+		        if (tempParams!=null){
+		        	for(String temp:tempParams)
+		        		params.add(temp);
+		        }
+			}
+			else{
+				params.add(encodedQuery);
+			}
+			tempUrl=tempUrl.substring(0,url.indexOf('?'));
+	    }
+        
+        String baseString = makeBaseString(params,"GET",tempUrl);
         String signature=makeSignature(baseString,URLEncoder.encode(consumerSecret)+'&'+accessSecret);
         
     	char and='&';

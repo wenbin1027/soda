@@ -27,6 +27,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.graphics.*;
@@ -129,7 +130,7 @@ public class OAuth implements IHttpListener{
 			params.add(OAuthUtil.OAUTH_CONSUMER_KEY+OAuthUtil.LINK+consumerKey);
 			params.add(OAuthUtil.OAUTH_VERSION+OAuthUtil.LINK+OAuthUtil.VERSION10);
 			params.add(OAuthUtil.OAUTH_TOKEN+OAuthUtil.LINK+token.token);
-			params.add(OAuthUtil.OAUTH_VERIFIER+OAuthUtil.LINK+token.secret);
+        	params.add(OAuthUtil.OAUTH_VERIFIER+OAuthUtil.LINK+token.secret);
 
 			String baseString = OAuthUtil.makeBaseString(params,request.getMethod(),accessUrl);
 			String signature=OAuthUtil.makeSignature(baseString,URLEncoder.encode(consumerSecret)+'&'+oauth_token_secret);
@@ -310,11 +311,11 @@ public class OAuth implements IHttpListener{
 		webView.setWebViewClient(new WebViewClient(){
 			String url="";
 			public void onPageStarted (WebView view, String url, Bitmap favicon){
-				System.out.println(url);
+				Log.i(TAG,"onPageStarted:"+url);
 				if (!this.url.equals(url) && url.startsWith(CALLBACKURL)){
 					this.url=url;
-					view.stopLoading();
 					saveAccessToken(url);  //对用户同意授权的回调页面进行处理
+					view.stopLoading();
 					Log.i(TAG,"onPageStarted");
 				}				
 			}
@@ -322,7 +323,6 @@ public class OAuth implements IHttpListener{
 			public void onReceivedSslError (WebView view, SslErrorHandler handler, SslError error) {  
 				handler.proceed() ;  
 			}  
-
 			
 			/**分离用户授权时的临时令牌和密钥
 			 * @param url
@@ -334,7 +334,7 @@ public class OAuth implements IHttpListener{
 
 				AccessToken authorizeToken=new AccessToken();
 				authorizeToken.token=oauth_token;
-				authorizeToken.secret=oauth_verifier;
+				authorizeToken.secret=/*oauth_verifier==null?"":*/oauth_verifier;
 				
 				Message msg=new Message();
 				msg.obj=authorizeToken;
@@ -379,6 +379,7 @@ public class OAuth implements IHttpListener{
 	public void onResponsed(StatusLine statusLine, Header[] headers,
 			HttpEntity entity,Parser parser) {
 		InputStream content=null;
+		
 		try {
 			content = entity.getContent();
 		} catch (IllegalStateException e) {
@@ -386,31 +387,27 @@ public class OAuth implements IHttpListener{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
 		if (content!=null){
 			InputStreamReader reader=new InputStreamReader(content);
-//			char[] buf=new char[512];
-//			int i=0;
-//			while(i<512){
-//				try {
-//					buf[i]=(char)reader.read();
-//					if (buf[i]==-1){
-//						break;
-//					}
-//					i++;
-//				} catch (IOException e) {
-//					e.printStackTrace();
-//				} 
-//			}
-			char[] buf=new char[(int) entity.getContentLength()];
-			try {
-				reader.read(buf);
-				reader.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-				notifyListener();
-				return;
+			char[] buf=new char[1024];
+			int i=0;
+			int data=0;
+			while(true && i<1024){
+				try {
+					data=reader.read();
+					if (data==-1 || data==0){
+						break;
+					}
+					buf[i++]=(char) data;
+				} catch (IOException e) {
+					e.printStackTrace();
+					notifyListener();
+					break;
+				} 
 			}
-			String str=new String(buf);
+
+			String str=new String(buf,0,i);
 			Log.i(TAG, "Auth="+str);
 			if (currentStep==REQUESTTOKEN){
 				parseRequestToken(str);
@@ -464,6 +461,7 @@ public class OAuth implements IHttpListener{
 			}
 			if (item[0].equalsIgnoreCase("oauth_token_secret")){
 				oauth_token_secret=item[1];
+				Log.i(TAG,"parseAccessToken:"+oauth_token_secret);
 			}
 			item=null;
 		}
