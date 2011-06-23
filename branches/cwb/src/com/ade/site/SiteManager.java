@@ -17,6 +17,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Proxy;
 
+import com.ade.parser.NeteaseAccountVerifyParser;
 import com.ade.parser.SinaAccountVerifyParser;
 import com.ade.parser.SinaFriendsTimelineParser;
 import com.ade.parser.SinaUpdateParser;
@@ -24,6 +25,8 @@ import com.ade.parser.SohuAccountVerifyParser;
 import com.ade.parser.SohuFriendsTimelineParser;
 import com.ade.parser.SohuUpdateParser;
 import com.ade.parser.SohuUploadParser;
+import com.ade.parser.TencentAccountVerifyParser;
+import com.ade.restapi.NeteaseAccountVerify;
 import com.ade.restapi.SinaAccountVerify;
 import com.ade.restapi.SinaFriendsTimeline;
 import com.ade.restapi.SinaUpdate;
@@ -32,6 +35,7 @@ import com.ade.restapi.SohuAccountVerify;
 import com.ade.restapi.SohuFriendsTimeline;
 import com.ade.restapi.SohuUpdate;
 import com.ade.restapi.SohuUpload;
+import com.ade.restapi.TencentAccountVerify;
 
 public class SiteManager {
 	public static final int SOHU=0;
@@ -113,14 +117,14 @@ public class SiteManager {
 //			site.setUpdateInterface(new SinaUpdate(new SinaUpdateParser()));
 //			site.setUploadInterface(new SinaUpload(new SinaUpdateParser()));
 //			site.setFriendsTimeline(new SinaFriendsTimeline(new SinaFriendsTimelineParser()));
-//			site.setAccountInterface(new SinaAccountVerify(new SinaAccountVerifyParser()));
+			site.setAccountInterface(new TencentAccountVerify(new TencentAccountVerifyParser()));
 			break;
 		case NETEASE:
 			site=new NeteaseSite();
 //			site.setUpdateInterface(new SinaUpdate(new SinaUpdateParser()));
 //			site.setUploadInterface(new SinaUpload(new SinaUpdateParser()));
 //			site.setFriendsTimeline(new SinaFriendsTimeline(new SinaFriendsTimelineParser()));
-//			site.setAccountInterface(new SinaAccountVerify(new SinaAccountVerifyParser()));
+			site.setAccountInterface(new NeteaseAccountVerify(new NeteaseAccountVerifyParser()));
 			break;
 		}
 

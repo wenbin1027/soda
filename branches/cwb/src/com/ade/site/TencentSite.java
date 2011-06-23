@@ -16,12 +16,12 @@ public class TencentSite extends Site {
 	@Override
 	protected void onConstruct() {
 		name="腾讯微博";
-		rootUrl="https://open.t.qq.com";
+		rootUrl="http://open.t.qq.com";
 		appKey="1754dad6631144c293bbe8ebe95333cd";  
 		appSecret="c1f57e49d92eb25b9fb3d8e46437773a";
-		oauthRequestUrl="/cgi-bin/request_token";
-		oauthUrl="/cgi-bin/authorize";
-		oauthAccessUrl="/cgi-bin/access_token";
+		oauthRequestUrl="https://open.t.qq.com/cgi-bin/request_token";
+		oauthUrl="https://open.t.qq.com/cgi-bin/authorize";
+		oauthAccessUrl="https://open.t.qq.com/cgi-bin/access_token";
 		oauthMethod=Site.OAUTH_GET;
 		siteID=SiteManager.TENCENT;
 	}
