@@ -16,9 +16,10 @@ public class SohuSite extends Site {
 		rootUrl="http://api.t.sohu.com";
 		appKey="bHi9G9CcHCeXBMhWReow";  
 		appSecret="ITDdmLZCeALHO847#DWlRn2Vl-z2lcU%U!RO4DIo";
-		oauthRequestUrl="/oauth/request_token";
-		oauthUrl="/oauth/authorize";
-		oauthAccessUrl="/oauth/access_token";
+		oauthRequestUrl="http://api.t.sohu.com/oauth/request_token";
+		oauthUrl="http://api.t.sohu.com/oauth/authorize";
+		oauthAccessUrl="http://api.t.sohu.com/oauth/access_token";
+		oauthMethod=Site.OAUTH_POST;
 		siteID=SiteManager.SOHU;
 		initFaceMap();
 	}

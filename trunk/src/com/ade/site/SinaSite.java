@@ -18,9 +18,10 @@ public class SinaSite extends Site {
 		rootUrl="http://api.t.sina.com.cn";
 		appKey="2321851444";  
 		appSecret="786fd8cb4d3f237599b5d587b6f6c0e9";
-		oauthRequestUrl="/oauth/request_token";
-		oauthUrl="/oauth/authorize";
-		oauthAccessUrl="/oauth/access_token";
+		oauthRequestUrl="http://api.t.sina.com.cn/oauth/request_token";
+		oauthUrl="http://api.t.sina.com.cn/oauth/authorize";
+		oauthAccessUrl="http://api.t.sina.com.cn/oauth/access_token";
+		oauthMethod=Site.OAUTH_POST;
 		siteID=SiteManager.SINA;
 		initFaceMap();
 	}
